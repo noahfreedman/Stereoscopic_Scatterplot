@@ -1,0 +1,456 @@
+fileFormatVersion: 2
+guid: 5ece66e8c0389447b9a6dde823e903bf
+ModelImporter:
+  fileIDToRecycleName:
+    4300000: ceiling
+    4300002: boxWide.1
+    4300004: wall.1
+    4300006: door.1
+    4300008: knob.1
+    4300010: frame.1.1
+    4300012: frame.1.2
+    4300014: wall.3
+    4300016: door.3
+    4300018: knob.1.1
+    4300020: frame.3.1
+    4300022: frame.3.1.1
+    4300024: wall.2
+    4300026: door.2
+    4300028: knob.2
+    4300030: wall.4
+    4300032: door.4
+    4300034: knob.4
+    4300036: floor
+    4300038: box.1
+    4300040: bookshelf.1
+    4300042: books.2
+    4300044: books.3
+    4300046: books.1
+  serializedVersion: 10
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    generateAnimations: 3
+    bakeSimulation: 0
+    splitAnimations: 1
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    clipAnimations: []
+  meshes:
+    lODScreenPercentages: []
+    globalScale: .00999999978
+    meshCompression: 0
+    addColliders: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMesh: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  textMetaNamesToFileIDs:
+    //RootNode:
+      data:
+        first: 1
+        second: a0860100
+      data:
+        first: 4
+        second: 801a0600
+      data:
+        first: 111
+        second: 605fa900
+    books.1:
+      data:
+        first: 1
+        second: a2860100
+      data:
+        first: 4
+        second: 821a0600
+      data:
+        first: 23
+        second: 60182300
+      data:
+        first: 33
+        second: a05a3200
+      data:
+        first: 64
+        second: 26a86100
+    books.2:
+      data:
+        first: 1
+        second: a6860100
+      data:
+        first: 4
+        second: 861a0600
+      data:
+        first: 23
+        second: 64182300
+      data:
+        first: 33
+        second: a45a3200
+      data:
+        first: 64
+        second: 02a86100
+    books.3:
+      data:
+        first: 1
+        second: a4860100
+      data:
+        first: 4
+        second: 841a0600
+      data:
+        first: 23
+        second: 62182300
+      data:
+        first: 33
+        second: a25a3200
+      data:
+        first: 64
+        second: 00a86100
+    bookshelf.1:
+      data:
+        first: 1
+        second: a8860100
+      data:
+        first: 4
+        second: 881a0600
+      data:
+        first: 23
+        second: 66182300
+      data:
+        first: 33
+        second: a65a3200
+      data:
+        first: 64
+        second: 1ea86100
+    box.1:
+      data:
+        first: 1
+        second: aa860100
+      data:
+        first: 4
+        second: 8a1a0600
+      data:
+        first: 23
+        second: 68182300
+      data:
+        first: 33
+        second: a85a3200
+      data:
+        first: 64
+        second: 12a86100
+    boxWide.1:
+      data:
+        first: 1
+        second: ce860100
+      data:
+        first: 4
+        second: ae1a0600
+      data:
+        first: 23
+        second: 8c182300
+      data:
+        first: 33
+        second: cc5a3200
+      data:
+        first: 64
+        second: 06a86100
+    ceiling:
+      data:
+        first: 1
+        second: d0860100
+      data:
+        first: 4
+        second: b01a0600
+      data:
+        first: 23
+        second: 8e182300
+      data:
+        first: 33
+        second: ce5a3200
+      data:
+        first: 64
+        second: 18a86100
+    door.1:
+      data:
+        first: 1
+        second: ca860100
+      data:
+        first: 4
+        second: aa1a0600
+      data:
+        first: 23
+        second: 88182300
+      data:
+        first: 33
+        second: c85a3200
+      data:
+        first: 64
+        second: 0ea86100
+    door.2:
+      data:
+        first: 1
+        second: b6860100
+      data:
+        first: 4
+        second: 961a0600
+      data:
+        first: 23
+        second: 74182300
+      data:
+        first: 33
+        second: b45a3200
+      data:
+        first: 64
+        second: 1ca86100
+    door.3:
+      data:
+        first: 1
+        second: c0860100
+      data:
+        first: 4
+        second: a01a0600
+      data:
+        first: 23
+        second: 7e182300
+      data:
+        first: 33
+        second: be5a3200
+      data:
+        first: 64
+        second: 22a86100
+    door.4:
+      data:
+        first: 1
+        second: b0860100
+      data:
+        first: 4
+        second: 901a0600
+      data:
+        first: 23
+        second: 6e182300
+      data:
+        first: 33
+        second: ae5a3200
+      data:
+        first: 64
+        second: 20a86100
+    floor:
+      data:
+        first: 1
+        second: ac860100
+      data:
+        first: 4
+        second: 8c1a0600
+      data:
+        first: 23
+        second: 6a182300
+      data:
+        first: 33
+        second: aa5a3200
+      data:
+        first: 64
+        second: 04a86100
+    frame.1.1:
+      data:
+        first: 1
+        second: c6860100
+      data:
+        first: 4
+        second: a61a0600
+      data:
+        first: 23
+        second: 84182300
+      data:
+        first: 33
+        second: c45a3200
+      data:
+        first: 64
+        second: 08a86100
+    frame.1.2:
+      data:
+        first: 1
+        second: c4860100
+      data:
+        first: 4
+        second: a41a0600
+      data:
+        first: 23
+        second: 82182300
+      data:
+        first: 33
+        second: c25a3200
+      data:
+        first: 64
+        second: 14a86100
+    frame.3.1:
+      data:
+        first: 1
+        second: bc860100
+      data:
+        first: 4
+        second: 9c1a0600
+      data:
+        first: 23
+        second: 7a182300
+      data:
+        first: 33
+        second: ba5a3200
+      data:
+        first: 64
+        second: 0ca86100
+    frame.3.1.1:
+      data:
+        first: 1
+        second: ba860100
+      data:
+        first: 4
+        second: 9a1a0600
+      data:
+        first: 23
+        second: 78182300
+      data:
+        first: 33
+        second: b85a3200
+      data:
+        first: 64
+        second: 1aa86100
+    knob.1:
+      data:
+        first: 1
+        second: c8860100
+      data:
+        first: 4
+        second: a81a0600
+      data:
+        first: 23
+        second: 86182300
+      data:
+        first: 33
+        second: c65a3200
+      data:
+        first: 64
+        second: 10a86100
+    knob.1.1:
+      data:
+        first: 1
+        second: be860100
+      data:
+        first: 4
+        second: 9e1a0600
+      data:
+        first: 23
+        second: 7c182300
+      data:
+        first: 33
+        second: bc5a3200
+      data:
+        first: 64
+        second: 2ca86100
+    knob.2:
+      data:
+        first: 1
+        second: b4860100
+      data:
+        first: 4
+        second: 941a0600
+      data:
+        first: 23
+        second: 72182300
+      data:
+        first: 33
+        second: b25a3200
+      data:
+        first: 64
+        second: 24a86100
+    knob.4:
+      data:
+        first: 1
+        second: ae860100
+      data:
+        first: 4
+        second: 8e1a0600
+      data:
+        first: 23
+        second: 6c182300
+      data:
+        first: 33
+        second: ac5a3200
+      data:
+        first: 64
+        second: 28a86100
+    wall.1:
+      data:
+        first: 1
+        second: cc860100
+      data:
+        first: 4
+        second: ac1a0600
+      data:
+        first: 23
+        second: 8a182300
+      data:
+        first: 33
+        second: ca5a3200
+      data:
+        first: 64
+        second: 2aa86100
+    wall.2:
+      data:
+        first: 1
+        second: b8860100
+      data:
+        first: 4
+        second: 981a0600
+      data:
+        first: 23
+        second: 76182300
+      data:
+        first: 33
+        second: b65a3200
+      data:
+        first: 64
+        second: 2ea86100
+    wall.3:
+      data:
+        first: 1
+        second: c2860100
+      data:
+        first: 4
+        second: a21a0600
+      data:
+        first: 23
+        second: 80182300
+      data:
+        first: 33
+        second: c05a3200
+      data:
+        first: 64
+        second: 16a86100
+    wall.4:
+      data:
+        first: 1
+        second: b2860100
+      data:
+        first: 4
+        second: 921a0600
+      data:
+        first: 23
+        second: 70182300
+      data:
+        first: 33
+        second: b05a3200
+      data:
+        first: 64
+        second: 0aa86100
