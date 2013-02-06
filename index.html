@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Stereoscopic scatterplot : Unity Project for Side-By-Side Stereoscopic 3d Scatter Plot" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Stereoscopic scatterplot</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/noahfreedman/Stereoscopic_Scatterplot">View on GitHub</a>
+
+          <h1 id="project_title">Stereoscopic scatterplot</h1>
+          <h2 id="project_tagline">Unity Project for Side-By-Side Stereoscopic 3d Scatter Plot</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/noahfreedman/Stereoscopic_Scatterplot/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/noahfreedman/Stereoscopic_Scatterplot/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Stereoscopic Scatter Plot</h1>
+
+<p>The goal of this project is to enable 3D stereoscopic visualizations of data to assist in the teaching of statistics and to enable clearer visual analysis of data. No existing tools were found that are designed to display data in stereoscopic 3D visualizations. While there are a variety of available software packages that display 3d charts, none were found that can output stereoscopic visuals.</p>
+
+<p>Requirements:</p>
+
+<ul>
+<li>Unity 3.5</li>
+<li> Graphics card with decent 3D rendering capability</li>
+<li> 3D TV or monitor that accepts side-by-side format stereoscopic input</li>
+</ul><p>Code overview:</p>
+
+<ul>
+<li><p>This project uses the Unity 3D game engine. It uses the open-source Stereoskopix FOV2GO for Unity to project the output from the Main Camera as two side-by-side images from slightly different camera angles that can be combined into one image on 3D TVs.</p></li>
+<li><p>The main scene is Stereoscopic_Scatterplot/Assets/Scatter0.unity. The Cube object has data points added to it by the GeneratePoints.cs script. The GeneratePoints.cs script contains several parameters which can be set within the Unity editor. </p></li>
+<li><p>The points in the scatterplot can be imported from an external file or randomly generated. There are two paramters which identify the absolute file path and file name to load data points from. The format for the data is comma-deliminated x, y, and z coordinates. A first line of header data is ignored if any non-digits or commas are detected.</p></li>
+<li><p>The collection of data points is normalized to fit inside the cube. There is an paramted on GeneratePoints.cs to normalize the data points by either indiviudally scaling each axis (and distoring the projection), or maintaining the aspect ratio of the collection of data points as they are normalized to the scale of the the display cube. Alternatively, if the 'Auto Detect Data Range' option is disabled, then parameters for minimum and maximum X, Y, and Z values </p></li>
+<li><p>The cube can be rotated to by dragging it with the mouse. The cube on the right-side projection accepts mouse input. There is also a parameter to change the materials that the cube is rendered from.</p></li>
+</ul><p>Areas for further work:</p>
+
+<ul>
+<li>Accepting input for lines or triangles in addition to points that can be rendered inside the display cube.</li>
+<li>Scaling the display cube to different rectangular dimensions based on input, and properly repositioning the camera.</li>
+<li>Camera controls, possibly by arrow key.</li>
+<li>Adding scale markers to the cube, or labels indicating axis name.</li>
+<li>A GUI to set parameters in, so the project does not need to be run from the Unity editor.</li>
+</ul><p>This project was developed using the FOV2GO  toolkit created by the MxR Lab at USC: <a href="http://diy.mxrlab.com">http://diy.mxrlab.com</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Stereoscopic scatterplot maintained by <a href="https://github.com/noahfreedman">noahfreedman</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
