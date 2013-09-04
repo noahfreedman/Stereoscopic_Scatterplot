@@ -11,8 +11,13 @@ public class GeneratePoints : MonoBehaviour {
 	public _cubeDisplay cubeDisplay;
 	public bool generateRandomData = false;
 	public int numPoints = 100;
+	//points data
 	public string _filePath = Application.streamingAssetsPath;
 	public string fileName = "test0.csv";
+	//plane data
+	public string planePath = Application.streamingAssetsPath;
+	public string planeName = "plane.csv";
+	
 	public bool autoDetectDataRange = true;
 	public bool normalizeAxesIndividually = true;
 	public float minX = 0;
@@ -24,12 +29,16 @@ public class GeneratePoints : MonoBehaviour {
 	
 	public Material outlineMaterial;
 	public Material glassMaterial;
+	public Material planeMaterial;
 	
 	private ArrayList points;
 	private string filePath;
 	
 	//GUI state vars
 	private string notificationMessage = "";
+	
+	//state vars
+	private Vector3? oldAV = null;
 	
 	// Use this for initialization
 	void Start () {
@@ -147,14 +156,99 @@ public class GeneratePoints : MonoBehaviour {
 			go.transform.position = point;
 			float red = (point.z + 0.50f);
 			float green = 1f - (point.z + 0.50f);
-			Debug.Log (red + ", " + green);
+			//Debug.Log (red + ", " + green);
 			go.renderer.material.color = new Color(red, green, 0f);
 		}
+		//GeneratePlain
+		//Draw plane
+		//load plane data
+		//load data from file path 
+		
+		try {
+			string planeFile = System.IO.Path.Combine(planePath, planeName);
+			string[] lines = File.ReadAllLines(planeFile);
+			ArrayList pointsList = new ArrayList();
+			if (lines.Length > 0) {
+				for (int i = 0; i < lines.Length; i++) {
+					string s = lines[i];
+					string[] values = s.Split(',');
+					//add data point
+					float x = float.Parse(values[0]);
+					float y = float.Parse(values[1]);
+					float z = float.Parse(values[2]);
+					pointsList.Add(new Vector3(x,y,z));
+				}
+			}
+			//sort all items by x, then by y in one list
+			pointsList.Sort(new VectorComparer());
+			//record length of x row, so then can process points in grid
+			int rowLength = 0;
+			float firstX = ((Vector3) pointsList[0]).x;
+			for (int i = 0; i < pointsList.Count; i++) {
+				if (((Vector3) pointsList[i]).x != firstX) {
+					break;	
+				}
+				rowLength++;
+			}
+			//draw mesh
+			int height = pointsList.Count / rowLength;
+			GameObject plane = GeneratePlane.GeneratePlane(this.gameObject, pointsList, rowLength, height);
+			plane.transform.parent = this.transform;
+			plane.renderer.material = planeMaterial;
+			} catch (FileNotFoundException f) {
+				showNotification(f.Message);		
+			}
+		
+		/*
+		Vector3 tl = new Vector3(-0.3f,0f,0.3f);
+		Vector3 tr = new Vector3(0.3f,0,0.3f);
+		Vector3 ml = new Vector3(-0.3f,0,-0.3f);
+		Vector3 mr = new Vector3(0.3f,0,-0.3f);
+		Vector3 bl = new Vector3(-0.3f,0.4f,-0.5f);
+		Vector3 br = new Vector3(0.3f,0.4f,-0.5f);
+		newMesh.vertices = new Vector3[]{tl,tr,ml,mr,bl,br};
+		Vector2[] uvs = new Vector2[newMesh.vertices.Length];
+		for (var i = 0; i < uvs.Length; i++) {
+			uvs[i] = new Vector2(newMesh.vertices[i].x, newMesh.vertices[i].z);	
+		}
+		newMesh.uv = uvs;
+		newMesh.triangles = new int[]{3,2,0,0,1,3,0,2,3,0,3,1,5,4,2,2,4,5,2,3,5,5,3,2};
+		newMesh.RecalculateNormals();
+		newMesh.RecalculateBounds();
+		newMesh.Optimize();
+		
+        meshRenderer.renderer.material = planeMaterial;
+		//plane.transform.parent = this.transform;
+		*/
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		//listen for key 
+		if (Input.GetKeyDown ("x")) {
+			if (oldAV.HasValue) {
+				this.rigidbody.angularVelocity = (Vector3) oldAV;
+				oldAV = null;
+			} else {
+				oldAV = rigidbody.angularVelocity;
+				this.rigidbody.angularVelocity = new Vector3(0,0,0);
+			}
+		} else if (Input.GetKeyDown ("r")) { 
+			this.rigidbody.rotation = new Quaternion(0,0,0,1);
+			this.rigidbody.angularVelocity = new Vector3(0,0,0);
+		} else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
+			float f = rigidbody.angularVelocity.y;
+			this.rigidbody.angularVelocity = new Vector3(0, f + .2f,0);
+		} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
+			float f = rigidbody.angularVelocity.y;
+			this.rigidbody.angularVelocity = new Vector3(0,f-.2f,0);
+		} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
+			float f = rigidbody.angularVelocity.x;
+			this.rigidbody.angularVelocity = new Vector3(f - .2f,0,0);
+		} else if (Input.GetKeyDown (KeyCode.UpArrow)) {
+			float f = rigidbody.angularVelocity.x;
+			this.rigidbody.angularVelocity = new Vector3(f + .2f,0,0);
+		}
 	}
 	
 	/*void OnGUI () {
@@ -182,4 +276,18 @@ public class GeneratePoints : MonoBehaviour {
 	public void closeNotification() {
 		notificationMessage = "";	
 	}
+}
+public class VectorComparer : IComparer  {
+   Comparer _comparer = new Comparer(System.Globalization.CultureInfo.CurrentCulture);
+
+   public int Compare(object aa, object bb) {
+       // Convert string comparisons to int
+		Vector3 a = (Vector3) aa;
+		Vector3 b = (Vector3) bb;
+		if (a.x == b.x) {
+            return _comparer.Compare(a.y, b.y);
+		} else {
+	        return _comparer.Compare(a.x, b.x);	
+		}
+    }
 }
