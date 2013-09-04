@@ -45,8 +45,10 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\GeneratePoints.cs" />
+     <Compile Include="Assets\Scripts\GraphPoint.cs" />
+     <Compile Include="Assets\Scripts\LinesAxes.cs" />
+     <Compile Include="Assets\Scripts\LinesAxes_LR.cs" />
      <Compile Include="Assets\Scripts\MouseForce.cs" />
-     <Compile Include="Assets\Scripts\Point.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurfacePro Hidden Front Cut Out Specular.shader" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurface Free Cut Out Opaque Bump.shader" />
@@ -88,6 +90,7 @@
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurface Free Opaque Specular.shader" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurfacePro Hidden Front Opaque Specular.shader" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurface SFX Depth Write Only.shader" />
+     <None Include="Assets\Shaders\BlackLine.shader" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">

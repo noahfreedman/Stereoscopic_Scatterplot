@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Point : MonoBehaviour {
+public class GraphPoint : MonoBehaviour {
 	
 	//public Color color = new Color(255f,255f,0f);
 	

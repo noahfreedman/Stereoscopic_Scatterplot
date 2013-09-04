@@ -44,9 +44,13 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\003 Drawing Lines\src\LinesGL.cs" />
+     <Compile Include="Assets\003 Drawing Lines\src\LinesGR.cs" />
+     <Compile Include="Assets\003 Drawing Lines\src\LinesLR.cs" />
      <Compile Include="Assets\Sources\LightningBolt.cs" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurfacePro Hidden Front Cut Out Specular.shader" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurface Free Cut Out Opaque Bump.shader" />
+     <None Include="Assets\003 Drawing Lines\src\BlackLine.shader" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurfacePro Hidden Front Transparent.shader" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurfacePro Hidden Front Transparent Specular.shader" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurface Free Transparent Specular.shader" />

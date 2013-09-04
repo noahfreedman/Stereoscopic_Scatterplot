@@ -22,7 +22,7 @@ Properties {
 		// Zprime frontfaces
 		Pass {
 			Tags {"Queue"="Transparent" "IgnoreProjector"="True" "LightMode" = "Always"}
-			zwrite on Cull back
+			zwrite on Cull off
 			colormask 0
 		}
 

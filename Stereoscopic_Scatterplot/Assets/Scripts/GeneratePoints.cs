@@ -46,19 +46,6 @@ public class GeneratePoints : MonoBehaviour {
 		filePath = System.IO.Path.Combine(_filePath, fileName);
 		points = new ArrayList();
 		
-		//set material
-		switch (cubeDisplay) {
-			case _cubeDisplay.Outline:
-				renderer.material = outlineMaterial;
-				break;
-			case _cubeDisplay.Glass:
-				renderer.material = glassMaterial;
-				break;
-			case _cubeDisplay.None:
-				renderer.enabled = false;
-				break;
-		}	
-		
 		
 		if (generateRandomData) {
 			//generate some dummy data
@@ -152,7 +139,7 @@ public class GeneratePoints : MonoBehaviour {
 			point.z = ((point.z - minZ) / (maxZ - minZ)) - 0.5f;
 			//Draw Point
 			GameObject go = (GameObject) Instantiate (PointPrefab);
-			go.transform.parent = this.transform;
+			go.transform.parent = transform;
 			go.transform.position = point;
 			float red = (point.z + 0.50f);
 			float green = 1f - (point.z + 0.50f);
@@ -193,7 +180,7 @@ public class GeneratePoints : MonoBehaviour {
 			//draw mesh
 			int height = pointsList.Count / rowLength;
 			GameObject plane = GeneratePlane.GeneratePlane(this.gameObject, pointsList, rowLength, height);
-			plane.transform.parent = this.transform;
+			plane.transform.parent = transform;
 			plane.renderer.material = planeMaterial;
 			} catch (FileNotFoundException f) {
 				showNotification(f.Message);		

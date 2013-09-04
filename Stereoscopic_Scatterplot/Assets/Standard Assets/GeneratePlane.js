@@ -52,8 +52,8 @@ public static function GeneratePlane (parent:GameObject, points:ArrayList, width
 			var vertexR = new Vector3( x+1, nextZ.z, y );
 			var tan = new Vector3.Scale( sizeScale, vertexR - vertexL ).normalized;
 			tangents[y*width + x] = Vector4( tan.x, tan.y, tan.z, -1.0 );
-			Debug.Log(y*width + x);
-			Debug.Log(vertex);
+			//Debug.Log(y*width + x);
+			//Debug.Log(vertex);
 		}
 	}
 	
