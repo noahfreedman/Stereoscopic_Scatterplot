@@ -12,10 +12,10 @@ public class GeneratePoints : MonoBehaviour {
 	public bool generateRandomData = false;
 	public int numPoints = 100;
 	//points data
-	public string _filePath = Application.streamingAssetsPath;
+	public string _filePath;
 	public string fileName = "test0.csv";
 	//plane data
-	public string planePath = Application.streamingAssetsPath;
+	public string planePath;
 	public string planeName = "plane.csv";
 	
 	public bool autoDetectDataRange = true;
@@ -36,9 +36,6 @@ public class GeneratePoints : MonoBehaviour {
 	
 	//GUI state vars
 	private string notificationMessage = "";
-	
-	//state vars
-	private Vector3? oldAV = null;
 	
 	// Use this for initialization
 	void Start () {
@@ -144,7 +141,8 @@ public class GeneratePoints : MonoBehaviour {
 			float red = (point.z + 0.50f);
 			float green = 1f - (point.z + 0.50f);
 			//Debug.Log (red + ", " + green);
-			go.renderer.material.color = new Color(red, green, 0f);
+			//go.renderer.material.color = new Color(red, green, 0f);
+			go.renderer.material.color = new Color (1f, 0, 0);
 		}
 		//GeneratePlain
 		//Draw plane
@@ -208,37 +206,7 @@ public class GeneratePoints : MonoBehaviour {
 		//plane.transform.parent = this.transform;
 		*/
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		//listen for key 
-		if (Input.GetKeyDown ("x")) {
-			if (oldAV.HasValue) {
-				this.rigidbody.angularVelocity = (Vector3) oldAV;
-				oldAV = null;
-			} else {
-				oldAV = rigidbody.angularVelocity;
-				this.rigidbody.angularVelocity = new Vector3(0,0,0);
-			}
-		} else if (Input.GetKeyDown ("r")) { 
-			this.rigidbody.rotation = new Quaternion(0,0,0,1);
-			this.rigidbody.angularVelocity = new Vector3(0,0,0);
-		} else if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-			float f = rigidbody.angularVelocity.y;
-			this.rigidbody.angularVelocity = new Vector3(0, f + .2f,0);
-		} else if (Input.GetKeyDown (KeyCode.RightArrow)) {
-			float f = rigidbody.angularVelocity.y;
-			this.rigidbody.angularVelocity = new Vector3(0,f-.2f,0);
-		} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
-			float f = rigidbody.angularVelocity.x;
-			this.rigidbody.angularVelocity = new Vector3(f - .2f,0,0);
-		} else if (Input.GetKeyDown (KeyCode.UpArrow)) {
-			float f = rigidbody.angularVelocity.x;
-			this.rigidbody.angularVelocity = new Vector3(f + .2f,0,0);
-		}
-	}
-	
-	/*void OnGUI () {
+		/*void OnGUI () {
 		if (!notificationMessage.Equals("")) {
 			// Make a background box
 			int width = 1000;

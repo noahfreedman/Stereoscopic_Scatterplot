@@ -5,14 +5,20 @@ public class LinesAxes_LR : MonoBehaviour {
 
 	public Shader shader;
 	public Color xColor = new Color(1, 0, 0, 1f);
+	public Color xTickColor = new Color(1, 0, 0, 1f);
 	public Color yColor = new Color(0, 1, 0, 1f);
+	public Color yTickColor = new Color(0, 1, 0, 1f);
 	public Color zColor = new Color(0, 0, 1, 1f);
+	public Color zTickColor = new Color(0, 0, 1, 1f);
 		
 	public int axis_range = 1000;
 	public float marker_interval = 0.2f;
 	public float marker_depth = 2f;
 	public float marker_height = 0.05f;
 	public float marker_size = 0.003f;
+	
+	public Font axisLabelFont;
+	public Color defaultLabelColor = new Color(0,0,0);
 	
 	public Shader grid_shader;
 	public int grid_depth = 2;
@@ -38,17 +44,20 @@ public class LinesAxes_LR : MonoBehaviour {
 				//add x marker
 				Vector3 start = new Vector3(i, -marker_height / 2, 0);
 				Vector3 end = new Vector3(i, marker_height / 2, 0);
-				createLine(start, end, marker_size, xColor);
+				GameObject line = createLine(start, end, marker_size, xTickColor);
+				attachObjectLabel(line, i.ToString(), xColor);
 				
 				//add y marker
 				start = new Vector3(-marker_height / 2, i, 0);
 				end = new Vector3(marker_height / 2, i, 0);
-				createLine(start, end, marker_size, yColor);
+				line = createLine(start, end, marker_size, yTickColor);
+				attachObjectLabel(line, i.ToString(), yColor);
 				
 				//add z marker
 				start = new Vector3(0, -marker_height / 2, i);
 				end = new Vector3(0, marker_height / 2, i);
-				createLine(start, end, marker_size, zColor);
+				line = createLine(start, end, marker_size, zTickColor);
+				attachObjectLabel(line, i.ToString(), zColor);
 			}
 		}
 		
@@ -72,6 +81,7 @@ public class LinesAxes_LR : MonoBehaviour {
 					Vector3 end = new Vector3(i, grid_range, j);
 					createLine(start, end, marker_size, grid_color, grid_shader);
 					
+					
 					//add y grid
 					start = new Vector3(-grid_range, i, j);
 					end = new Vector3(grid_range, i, j);
@@ -86,12 +96,12 @@ public class LinesAxes_LR : MonoBehaviour {
 		}
 	}
 	
-	private void createLine(Vector3 start, Vector3 end, float lineSize, Color c) {
-		createLine (start, end, lineSize, c, shader);
+	private GameObject createLine(Vector3 start, Vector3 end, float lineSize, Color c) {
+		return createLine (start, end, lineSize, c, shader);
 	}
 	
-	private void createLine(Vector3 start, Vector3 end, float lineSize, Color c, Shader s) {
-		GameObject canvas = new GameObject("canvas" + canvasIndex); 
+	private GameObject createLine(Vector3 start, Vector3 end, float lineSize, Color c, Shader s) {
+		GameObject canvas = new GameObject("line" + canvasIndex); 
 		canvas.transform.parent = transform;
 		canvas.transform.rotation = transform.rotation;
 		LineRenderer lines = (LineRenderer) canvas.AddComponent<LineRenderer>();
@@ -100,9 +110,24 @@ public class LinesAxes_LR : MonoBehaviour {
 		lines.useWorldSpace = false;
 		lines.SetWidth(lineSize, lineSize);
 		lines.SetVertexCount(2);
-		lines.SetPosition(0, start);
+		lines.SetPosition(0, new Vector3(0, 0, 0));
+		end = end - start;
 		lines.SetPosition(1, end);
+		canvas.transform.position = start;
 		canvasIndex++;
+		return canvas;
+	}
+	
+	private void attachObjectLabel(GameObject target, string text, Color? color = null) {
+		if (color == null) color = defaultLabelColor;
+		GameObject go = new GameObject("Axis Label");
+		GUIText gt = (GUIText) go.AddComponent(typeof(GUIText));
+		gt.font = axisLabelFont;
+		gt.text = text;
+		gt.alignment = TextAlignment.Center;
+		gt.material.color = (Color) color;
+		((ObjectLabel) go.AddComponent("ObjectLabel")).target = target.transform;
+		go.transform.parent = this.transform;
 	}
 }
 
