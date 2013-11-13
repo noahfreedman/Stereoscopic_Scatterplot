@@ -45,19 +45,19 @@ public class LinesAxes_LR : MonoBehaviour {
 				Vector3 start = new Vector3(i, -marker_height / 2, 0);
 				Vector3 end = new Vector3(i, marker_height / 2, 0);
 				GameObject line = createLine(start, end, marker_size, xTickColor);
-				attachObjectLabel(line, i.ToString(), xColor);
+				attachObjectLabel(line, SigFigs(i), xColor);
 				
 				//add y marker
 				start = new Vector3(-marker_height / 2, i, 0);
 				end = new Vector3(marker_height / 2, i, 0);
 				line = createLine(start, end, marker_size, yTickColor);
-				attachObjectLabel(line, i.ToString(), yColor);
+				attachObjectLabel(line, SigFigs(i), yColor);
 				
 				//add z marker
 				start = new Vector3(0, -marker_height / 2, i);
 				end = new Vector3(0, marker_height / 2, i);
 				line = createLine(start, end, marker_size, zTickColor);
-				attachObjectLabel(line, i.ToString(), zColor);
+				attachObjectLabel(line, SigFigs(i), zColor);
 			}
 		}
 		
@@ -128,6 +128,10 @@ public class LinesAxes_LR : MonoBehaviour {
 		gt.material.color = (Color) color;
 		((ObjectLabel) go.AddComponent("ObjectLabel")).target = target.transform;
 		go.transform.parent = this.transform;
+	}
+	
+	private string SigFigs(float i) {
+		return SignificantDigits.ToString(System.Convert.ToDouble(i), 2);
 	}
 }
 
