@@ -1,12 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LinesAxes_LR.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\LinesAxes_LR.cs">
     <Files>
-      <File FileName="Assets/Scripts/GeneratePoints.cs" Line="11" Column="34" />
-      <File FileName="Assets/Scripts/LinesAxes_LR.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/ObjectLabel.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/TickMark.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/LinesAxes.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\LinesAxes_LR.cs" Line="129" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

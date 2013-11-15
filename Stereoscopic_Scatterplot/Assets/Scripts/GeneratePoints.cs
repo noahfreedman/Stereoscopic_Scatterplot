@@ -177,10 +177,11 @@ public class GeneratePoints : MonoBehaviour {
 			}
 			//draw mesh
 			int height = pointsList.Count / rowLength;
-			GameObject plane = GeneratePlane.GeneratePlane(this.gameObject, pointsList, rowLength, height);
-			plane.transform.parent = transform;
-			plane.renderer.material = planeMaterial;
-			} catch (FileNotFoundException f) {
+			//GameObject plane = GeneratePlane.GeneratePlane(this.gameObject, pointsList, rowLength, height);
+//			plane.transform.parent = transform;
+//			plane.renderer.material = planeMaterial;
+			} 
+		catch (FileNotFoundException f) {
 				showNotification(f.Message);		
 			}
 		
