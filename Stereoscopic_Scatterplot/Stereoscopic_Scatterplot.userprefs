@@ -1,13 +1,14 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Menu1.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MouseOrbitClicked.js">
     <Files>
-      <File FileName="Assets\Scripts\Menu1.cs" Line="244" Column="32" />
-      <File FileName="Assets\Scripts\LoadPoints.cs" Line="11" Column="33" />
+      <File FileName="Assets\Scripts\WASDKeyMovement.cs" Line="36" Column="70" />
+      <File FileName="Assets\Scripts\Menu1.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\LoadPoints.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\AlwaysFacing.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\MouseOrbitClicked.js" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\RandomPoints.cs" Line="37" Column="1" />
-      <File FileName="Assets\Scripts\LinesAxes_LR.cs" Line="128" Column="20" />
+      <File FileName="Assets\Scripts\MouseOrbitClicked.js" Line="18" Column="37" />
+      <File FileName="Assets\Scripts\RandomPoints.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\LinesAxes_LR.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\LOD.cs" Line="1" Column="1" />
     </Files>
     <Pads>

@@ -66,6 +66,7 @@
      <Compile Include="Assets\Scripts\RandomPoints.cs" />
      <Compile Include="Assets\Scripts\TickMark.cs" />
      <Compile Include="Assets\Scripts\Utilities\SignificantFigures.cs" />
+     <Compile Include="Assets\Scripts\WASDKeyMovement.cs" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurfacePro Hidden Front Cut Out Specular.shader" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurface Free Cut Out Opaque Bump.shader" />

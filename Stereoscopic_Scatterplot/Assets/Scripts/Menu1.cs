@@ -327,7 +327,6 @@ public class Menu1 : MonoBehaviour
 
 		void MenuOptions ()
 		{
-//Options menu touches a lot of other components...
 				string csvPath = Stage.GetComponent<LoadPoints> ()._filePath.ToString ();
 				string csvFilename = Stage.GetComponent<LoadPoints> ().fileName.ToString ();
 
