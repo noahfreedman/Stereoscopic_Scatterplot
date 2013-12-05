@@ -5,26 +5,28 @@ public class WASDKeyMovement : MonoBehaviour
 {
 		public int mouseButtonWASD = 1;
 		public bool requireMouseButton = false;
-		public bool arrowKeysEnabled = false;
-		private Vector3 Velocity;
-		private float Mass = 1;
-		
+		private float CurrentSpeed = 1.0f;
+		private float Speed = 1.0f;
+		private float FastSpeed = 4.0f;
+
 		void LateUpdate ()
 		{
-				//		if (Input.GetKey(KeyCode.LeftShift)) {
-				//			currentScrollSpeed = scrollSpeedFast;
-				//		}   	
+				if (Input.GetKey (KeyCode.LeftShift)) {
+						CurrentSpeed = FastSpeed;
+				} else {
+						CurrentSpeed = Speed;
+				}
 				if (requireMouseButton & Input.GetMouseButton (mouseButtonWASD) || !requireMouseButton) {
 
-						if (Input.GetKey ("w")) {
-								transform.Translate (Vector3.forward);
-						} else if (Input.GetKey ("s")) { 
-								transform.Translate (Vector3.back);
+						if (Input.GetKey ("w") || Input.GetKey (KeyCode.UpArrow)) {
+								transform.Translate (Vector3.forward * CurrentSpeed);
+						} else if (Input.GetKey ("s") || Input.GetKey (KeyCode.DownArrow)) { 
+								transform.Translate (Vector3.back * CurrentSpeed);
 						} 
-						if (Input.GetKey ("a")) {
-								transform.Translate (Vector3.right);
-						} else if (Input.GetKey ("d")) { 
-								transform.Translate (Vector3.left);
+						if (Input.GetKey ("a") || Input.GetKey (KeyCode.LeftArrow)) {
+								transform.Translate (Vector3.left * CurrentSpeed);
+						} else if (Input.GetKey ("d") || Input.GetKey (KeyCode.RightArrow)) { 
+								transform.Translate (Vector3.right * CurrentSpeed);
 						} 
 				}
 		
