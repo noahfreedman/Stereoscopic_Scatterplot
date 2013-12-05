@@ -17,27 +17,18 @@ public class WASDKeyMovement : MonoBehaviour
 				if (requireMouseButton & Input.GetMouseButton (mouseButtonWASD) || !requireMouseButton) {
 
 						if (Input.GetKey ("w")) {
-								Move (1);
+								transform.Translate (Vector3.forward);
 						} else if (Input.GetKey ("s")) { 
-								Move (-1);
+								transform.Translate (Vector3.back);
 						} 
 						if (Input.GetKey ("a")) {
-								Strafe (1);
-								Debug.Log('a');
+								transform.Translate (Vector3.right);
 						} else if (Input.GetKey ("d")) { 
-								Strafe (-1);
+								transform.Translate (Vector3.left);
 						} 
 				}
 		
 		}
 
-		void Strafe (int direction)
-		{
-			transform.position = transform.position + Vector3.left * direction;
-		}
 
-		void Move (int direction)
-		{
-			transform.position = transform.position + Vector3.forward * direction;
-		}
 }

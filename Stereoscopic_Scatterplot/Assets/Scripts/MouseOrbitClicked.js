@@ -45,11 +45,11 @@ function LateUpdate () {
     if (shiftToAccelerate) {
 
     	if (Input.GetKey(KeyCode.LeftShift)) {
-    	currentScrollSpeed = scrollSpeedFast;
+    		currentScrollSpeed = scrollSpeedFast;
     	}
     	else
     	{
-    	currentScrollSpeed = scrollSpeed;
+    		currentScrollSpeed = scrollSpeed;
     	}
     }
 	if (Input.GetAxis("Mouse ScrollWheel") != 0) {
