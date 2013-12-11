@@ -32,7 +32,7 @@ public class Menu1 : MonoBehaviour
     private string menuFileName = "default.csv";
     private string menuFilePath = "";
     //private string LoadPath = "";
-    private int MenuWidth = 400;
+    private int MenuWidth = 300;
     private int MenuHeight = 600;
     void Start()
     {
@@ -436,7 +436,7 @@ public class Menu1 : MonoBehaviour
                 ShowOptionsMenu = true;
             }
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Back"))
+            if (GUILayout.Button("Minimize"))
             {
                 BackButton();
             }
