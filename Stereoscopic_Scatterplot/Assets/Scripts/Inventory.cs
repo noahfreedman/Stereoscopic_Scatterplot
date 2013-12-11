@@ -6,6 +6,7 @@
 // show edit sub menus (??)
 public class Inventory : MonoBehaviour
 {
+    public Transform MainCamera;
     public bool ShowMenu = true;
     public float MenuAreaWidth = 200;
     private float AreaHeight = 100;
@@ -51,14 +52,16 @@ public class Inventory : MonoBehaviour
         GUI.enabled = true;
         GUILayout.BeginVertical("box");
         GUILayout.Label(obj.name);
-        if (GUILayout.Button("Look At"))
+        if (MainCamera)
         {
-            Camera.main.transform.LookAt(obj.transform);
+            if (GUILayout.Button("Look At"))
+            {
+                MainCamera.LookAt(obj.transform);
+            }
         }
-
         if (GUILayout.Button("delete"))
         {
-            Destroy(obj);
+            Destroy(obj); // note this makes SelectedObject null, making it unselected.
         }
 
         GUILayout.EndVertical();
