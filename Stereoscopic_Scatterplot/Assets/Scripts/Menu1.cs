@@ -4,12 +4,9 @@ using UnityEngine;
 public class Menu1 : MonoBehaviour
 {
     public bool DoubleMenu = false;
-    //public bool DoubleMenuInSteroMode = true;
-    public GameObject Inventory;//TODO:oddly named
-    //public Camera MainCamera;
+    public GameObject Inventory;
     public GameObject AxisObject;
     public Texture OnButtonTexture;
-    //public Texture OffButtonTexture;
     private bool ShowMenu = false;
     private bool ShowCreateLineMenu = false;
     private bool ShowCreatePlaneMenu = false;
@@ -18,13 +15,6 @@ public class Menu1 : MonoBehaviour
     private bool ShowOptionsMenu = false;
     private bool ShowCreateSinglePointMenu = false;
     private bool ShowCreatePlanarFunctionMenu = false;
-    //private Rect FullScreenRect = new Rect(0, 0, Screen.width, Screen.height);
-    //private Rect MenuRect = new Rect(0, 30, 130, 300);
-    // Settings
-    //private int CameraModeSetting = 0;
-    //private bool DisableMenu = false;
-    //TODO:rename refactor to vector3
-
     private string string_X_0 = "0.0";
     private string string_Y_0 = "0.0";
     private string string_Z_0 = "0.0";
@@ -42,13 +32,14 @@ public class Menu1 : MonoBehaviour
     private string menuFileName = "default.csv";
     private string menuFilePath = "";
     //private string LoadPath = "";
-    private int menuWidth = 400;
-
+    private int MenuWidth = 400;
+    private int MenuHeight = 600;
     void Start()
     {
         centerPosition = Vector3.zero;
         menuFileName = Inventory.GetComponent<LoadPoints>().fileName.ToString();
         menuFilePath = Inventory.GetComponent<LoadPoints>()._filePath.ToString();
+        MenuHeight = Screen.height;
     }
 
     void Update()
@@ -74,12 +65,12 @@ public class Menu1 : MonoBehaviour
 
     void OnGUI()
     {
-        GUILayout.BeginArea(new Rect(2, 0, menuWidth, 700));
+        GUILayout.BeginArea(new Rect(0, 0, MenuWidth, MenuHeight));
         DisplayMenu();
         GUILayout.EndArea();
         if (DoubleMenu)
         {
-            GUILayout.BeginArea(new Rect(Screen.width / 2, 0, menuWidth, 700));
+            GUILayout.BeginArea(new Rect(Screen.width / 2, 0, MenuWidth, MenuHeight));
             DisplayMenu();
             GUILayout.EndArea();
         }
@@ -444,12 +435,18 @@ public class Menu1 : MonoBehaviour
             {
                 ShowOptionsMenu = true;
             }
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Back"))
+            {
+                BackButton();
+            }
             if (GUILayout.Button("Quit."))
             {
                 ShowMenu = false;
                 // TODO: Application.Quit isn't working in debug... be sure to try in a build
                 Application.Quit();
             }
+            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
             GUI.enabled = true;
         }

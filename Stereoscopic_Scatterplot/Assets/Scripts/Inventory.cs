@@ -17,6 +17,7 @@ public class Inventory : MonoBehaviour
     private Color MenuDefaultGUIColor;
     public Color SelectedColor = Color.green;
     private bool ShowSelectedObjectMenu = false; //toggle showing the pop up menu
+    public Color[] AssignableColors;
 
     void Start()
     {
@@ -50,11 +51,17 @@ public class Inventory : MonoBehaviour
         GUI.enabled = true;
         GUILayout.BeginVertical("box");
         GUILayout.Label(obj.name);
+        if (GUILayout.Button("Look At"))
+        {
+            Camera.main.transform.LookAt(obj.transform);
+        }
+
         if (GUILayout.Button("delete"))
         {
             Destroy(obj);
         }
-        GUILayout.EndHorizontal();
+
+        GUILayout.EndVertical();
     }
     void SelectObject(GameObject obj)
     {
