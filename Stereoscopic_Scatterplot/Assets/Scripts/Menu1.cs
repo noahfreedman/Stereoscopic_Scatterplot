@@ -3,8 +3,6 @@ using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 
-//TODO: will be better putting all the collections on the stage... This is a reorganization
-
 public class Menu1 : MonoBehaviour
 {
 		public bool doubleMenu = false;
@@ -325,7 +323,7 @@ public class Menu1 : MonoBehaviour
 	
 		void MenuMain ()
 		{
-				//Main Menu Hides itself here...
+				//Menu Hides itself here
 				if (ShowCreateLineMenu 
 					|| ShowCreatePlaneMenu 
 					|| ShowLoadPointsMenu 

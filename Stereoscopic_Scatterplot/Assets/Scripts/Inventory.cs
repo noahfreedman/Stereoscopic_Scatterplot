@@ -6,63 +6,92 @@ using System.Collections;
 // delete
 // show edit sub menus (??)
 public class Inventory : MonoBehaviour
-{
+{	
 		public bool ShowMenu = true;
-		public float areaWidth = 130;
-		public float areaHeight = 100;
-		public float ScreenX = 800;
-		public float ScreenY = 0;
-		public bool doubleMenu = false;
+		public float MenuAreaWidth = 200;
+		private float areaHeight = 100;
+		public float ScreenXOffset = 10;
+		public bool doubleMenu = false; // Main menu controls this
+		private GameObject CurrentSelection;
+		private Rect MenuAreaRect;
+		private Rect MenuAreaRightScreen;
+		private Rect fullScreenRect = new Rect (0, 0, Screen.width, Screen.height);
+		private Rect MenuRect = new Rect (0, 30, 130, 300);
+		private Color MenuDefaultGUIColor;
+		public Color SelectedColor = Color.green;
 
 		void Start ()
 		{
-				//ScreenX = ((Screen.width * 0.5f) - (areaWidth * 0.5f));
-				//ScreenY = ((Screen.height) - 200f);
+				MenuDefaultGUIColor = GUI.contentColor;
+
+				ScreenXOffset = (Screen.width / 2) - ScreenXOffset;
+
+				areaHeight = Screen.height;
+				MenuAreaRect = new Rect (ScreenXOffset, 0, MenuAreaWidth, areaHeight);
+				MenuAreaRightScreen = new Rect (Screen.width, 0, MenuAreaWidth, areaHeight);
+
 		}
 
-		void Update ()
-		{
-				//TODO: menu should be correctly position on all resolutions & modes
-				areaHeight = Screen.height;
-		}
-	
 		void OnGUI ()
 		{
-				GUILayout.BeginArea (new Rect (Screen.width / 2 - areaWidth, 0, areaWidth, areaHeight));
 
-				Display ();
+				GUILayout.BeginArea (MenuAreaRect);
+
+				DisplayGUI ();
 				GUILayout.EndArea ();
-			
 				if (doubleMenu) {
-						GUILayout.BeginArea (new Rect (Screen.width - areaWidth, 0, areaWidth, areaHeight));
-					
-						Display ();
+
+						GUILayout.BeginArea (MenuAreaRightScreen);
+						DisplayGUI ();
 						GUILayout.EndArea ();
 				}
 		}
-		
-		void Display ()
+
+		void SelectObject (GameObject obj)
 		{
-		
+				if (CurrentSelection) {
+						if (CurrentSelection.GetInstanceID () == obj.GetInstanceID ()) {
+								//toggle selection off when selected twice.
+								CurrentSelection = null;
+						} else {
+								CurrentSelection = obj;
+						}
+				} else {
+						CurrentSelection = obj;
+				}
+		}
+
+		Color CurrentButtonColor (GameObject obj)
+		{
+				if (CurrentSelection) {
+						if (CurrentSelection.GetInstanceID () == obj.GetInstanceID ()) {					
+								return SelectedColor;
+						} else {
+								return MenuDefaultGUIColor;
+						}
+				} else {
+						return MenuDefaultGUIColor;
+				}
+		}
+
+		void DisplayGUI ()
+		{
 				if (ShowMenu) {
-				
 						GUILayout.BeginVertical ("box");
 						if (transform.childCount > 0) {
 								foreach (Transform child in transform) {
-						
-										GUILayout.Label (child.name);
-						
-										if (GUILayout.Button ("Delete")) {
-												Destroy (child.gameObject);
+										GUILayout.BeginHorizontal ();
+										GUI.contentColor = CurrentButtonColor (child.gameObject);
+										if (GUILayout.Button (child.name)) {
+												SelectObject (child.gameObject);
 										}
+										GUI.contentColor = MenuDefaultGUIColor;
+										GUILayout.EndHorizontal ();
 								}
 						} else {
 								GUILayout.Label ("0 Objects");
 						}
 						GUILayout.EndVertical ();
-				
-				
 				} 
-		
 		}
 }
