@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 // display a list of objects that are a child of this component's transform.
 // methods to select (??) 
@@ -9,14 +8,12 @@ public class Inventory : MonoBehaviour
 {
     public bool ShowMenu = true;
     public float MenuAreaWidth = 200;
-    private float areaHeight = 100;
+    private float AreaHeight = 100;
     public float ScreenXOffset = 10;
-    public bool doubleMenu = false; // Main menu controls this
+    public bool DoubleMenu = false; // Main menu controls this
     private GameObject CurrentSelection;
     private Rect MenuAreaRect;
     private Rect MenuAreaRightScreen;
-    private Rect fullScreenRect = new Rect(0, 0, Screen.width, Screen.height);
-    private Rect MenuRect = new Rect(0, 30, 130, 300);
     private Color MenuDefaultGUIColor;
     public Color SelectedColor = Color.green;
     private bool ShowSelectedObjectMenu = false; //toggle showing the pop up menu
@@ -27,9 +24,9 @@ public class Inventory : MonoBehaviour
 
         ScreenXOffset = (Screen.width / 2) - ScreenXOffset;
 
-        areaHeight = Screen.height;
-        MenuAreaRect = new Rect(ScreenXOffset, 0, MenuAreaWidth, areaHeight);
-        MenuAreaRightScreen = new Rect(Screen.width, 0, MenuAreaWidth, areaHeight);
+        AreaHeight = Screen.height;
+        MenuAreaRect = new Rect(ScreenXOffset, 0, MenuAreaWidth, AreaHeight);
+        MenuAreaRightScreen = new Rect(Screen.width, 0, MenuAreaWidth, AreaHeight);
 
     }
 
@@ -40,7 +37,7 @@ public class Inventory : MonoBehaviour
 
         DisplayGUI();
         GUILayout.EndArea();
-        if (doubleMenu)
+        if (DoubleMenu)
         {
 
             GUILayout.BeginArea(MenuAreaRightScreen);

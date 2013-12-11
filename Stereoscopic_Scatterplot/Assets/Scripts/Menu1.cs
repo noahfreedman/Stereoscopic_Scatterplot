@@ -1,17 +1,15 @@
-using UnityEngine;
-using System.Collections;
-using System.IO;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class Menu1 : MonoBehaviour
 {
-    public bool doubleMenu = false;
-    public bool doubleMenuInSteroMode = true;
-    public GameObject Stage;//TODO:oddly named
-    public Camera mainCamera;
+    public bool DoubleMenu = false;
+    //public bool DoubleMenuInSteroMode = true;
+    public GameObject Inventory;//TODO:oddly named
+    //public Camera MainCamera;
     public GameObject AxisObject;
     public Texture OnButtonTexture;
-    public Texture OffButtonTexture;
+    //public Texture OffButtonTexture;
     private bool ShowMenu = false;
     private bool ShowCreateLineMenu = false;
     private bool ShowCreatePlaneMenu = false;
@@ -20,11 +18,11 @@ public class Menu1 : MonoBehaviour
     private bool ShowOptionsMenu = false;
     private bool ShowCreateSinglePointMenu = false;
     private bool ShowCreatePlanarFunctionMenu = false;
-    private Rect fullScreenRect = new Rect(0, 0, Screen.width, Screen.height);
-    private Rect MenuRect = new Rect(0, 30, 130, 300);
+    //private Rect FullScreenRect = new Rect(0, 0, Screen.width, Screen.height);
+    //private Rect MenuRect = new Rect(0, 30, 130, 300);
     // Settings
-    private int CameraModeSetting = 0;
-    private bool DisableMenu = false;
+    //private int CameraModeSetting = 0;
+    //private bool DisableMenu = false;
     //TODO:rename refactor to vector3
 
     private string string_X_0 = "0.0";
@@ -43,14 +41,14 @@ public class Menu1 : MonoBehaviour
     private Vector3 centerPosition;
     private string menuFileName = "default.csv";
     private string menuFilePath = "";
-    private string LoadPath = "";
+    //private string LoadPath = "";
     private int menuWidth = 400;
 
     void Start()
     {
         centerPosition = Vector3.zero;
-        menuFileName = Stage.GetComponent<LoadPoints>().fileName.ToString();
-        menuFilePath = Stage.GetComponent<LoadPoints>()._filePath.ToString();
+        menuFileName = Inventory.GetComponent<LoadPoints>().fileName.ToString();
+        menuFilePath = Inventory.GetComponent<LoadPoints>()._filePath.ToString();
     }
 
     void Update()
@@ -79,7 +77,7 @@ public class Menu1 : MonoBehaviour
         GUILayout.BeginArea(new Rect(2, 0, menuWidth, 700));
         DisplayMenu();
         GUILayout.EndArea();
-        if (doubleMenu)
+        if (DoubleMenu)
         {
             GUILayout.BeginArea(new Rect(Screen.width / 2, 0, menuWidth, 700));
             DisplayMenu();
@@ -154,7 +152,7 @@ public class Menu1 : MonoBehaviour
         {
             Vector3 startPosition = GUIVectorFromStrings(string_X_0, string_Y_0, string_Z_0);
             Vector3 endPosition = VectorFromStrings(string_X_1, string_Y_1, string_Z_1);
-            Stage.GetComponent<PlanesList>().AddPlane(startPosition, endPosition);
+            Inventory.GetComponent<PlanesList>().AddPlane(startPosition, endPosition);
         }
         if (GUILayout.Button("Back"))
         {
@@ -220,7 +218,7 @@ public class Menu1 : MonoBehaviour
 
             Vector3 point = GUIVectorFromStrings(string_X_0, string_Y_0, string_Z_0);
 
-            Stage.GetComponent<RandomPoints>().createSinglePoint(point);
+            Inventory.GetComponent<RandomPoints>().createSinglePoint(point);
         }
         if (GUILayout.Button("Back"))
         {
@@ -245,7 +243,7 @@ public class Menu1 : MonoBehaviour
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Generate"))
         {
-            Stage.GetComponent<RandomPoints>().createRandomPoints(centerPosition, 333);
+            Inventory.GetComponent<RandomPoints>().createRandomPoints(centerPosition, 333);
         }
         if (GUILayout.Button("Back"))
         {
@@ -257,8 +255,8 @@ public class Menu1 : MonoBehaviour
 
     void MenuLoadPoints()
     {
-        string fp = Stage.GetComponent<LoadPoints>()._filePath;
-        string fn = Stage.GetComponent<LoadPoints>().fileName;
+        string fp = Inventory.GetComponent<LoadPoints>()._filePath;
+        string fn = Inventory.GetComponent<LoadPoints>().fileName;
         string labelName = System.IO.Path.Combine(fp, fn);
 
         GUILayout.BeginVertical("box");
@@ -269,12 +267,12 @@ public class Menu1 : MonoBehaviour
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Set"))
         {
-            Stage.GetComponent<LoadPoints>().fileName = menuFileName;
+            Inventory.GetComponent<LoadPoints>().fileName = menuFileName;
 
         }
         if (GUILayout.Button("Load"))
         {
-            Stage.GetComponent<LoadPoints>().LoadPointsFile();
+            Inventory.GetComponent<LoadPoints>().LoadPointsFile();
         }
         if (GUILayout.Button("Back"))
         {
@@ -285,7 +283,7 @@ public class Menu1 : MonoBehaviour
         GUILayout.EndVertical();
 
         GUILayout.BeginVertical("box");
-        List<string> foundRecentFilenames = Stage.GetComponent<LoadPoints>().recentFiles;
+        List<string> foundRecentFilenames = Inventory.GetComponent<LoadPoints>().recentFiles;
         if (foundRecentFilenames.Count > 0)
         {
             foreach (string recentFile in foundRecentFilenames)
@@ -321,7 +319,7 @@ public class Menu1 : MonoBehaviour
         {
             Vector3 startPosition = GUIVectorFromStrings(string_X_0, string_Y_0, string_Z_0);
             Vector3 endPosition = GUIVectorFromStrings(string_X_1, string_Y_1, string_Z_1);
-            Stage.GetComponent<LinesList>().AddALine(startPosition, endPosition);
+            Inventory.GetComponent<LinesList>().AddALine(startPosition, endPosition);
         }
         if (GUILayout.Button("Back"))
         {
@@ -332,15 +330,15 @@ public class Menu1 : MonoBehaviour
 
     void MenuOptions()
     {
-        string csvPath = Stage.GetComponent<LoadPoints>()._filePath.ToString();
-        string csvFilename = Stage.GetComponent<LoadPoints>().fileName.ToString();
+        string csvPath = Inventory.GetComponent<LoadPoints>()._filePath.ToString();
+        string csvFilename = Inventory.GetComponent<LoadPoints>().fileName.ToString();
 
         GUI.enabled = true;
         GUILayout.BeginVertical("box");
 
         AxisObject.active = GUILayout.Toggle(AxisObject.active, "Show Axis?");
-        doubleMenu = GUILayout.Toggle(doubleMenu, "Show Double Menu?");
-        Stage.GetComponent<Inventory>().doubleMenu = doubleMenu;
+        DoubleMenu = GUILayout.Toggle(DoubleMenu, "Show Double Menu?");
+        Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu;
 
         if (GUILayout.Button("Back"))
         {
