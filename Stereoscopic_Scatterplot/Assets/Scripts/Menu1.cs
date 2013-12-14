@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class Menu1 : MonoBehaviour
 {
+    #region
     public bool DoubleMenu = false;
     public GameObject Inventory;
     public GameObject AxisObject;
     public Texture OnButtonTexture;
-    private bool ShowMenu = false;
+    private bool ShowMinimizeMenu = false;
     private bool ShowCreateLineMenu = false;
     private bool ShowCreatePlaneMenu = false;
     private bool ShowLoadPointsMenu = false;
@@ -32,8 +33,9 @@ public class Menu1 : MonoBehaviour
     private string menuFileName = "default.csv";
     private string menuFilePath = "";
     //private string LoadPath = "";
-    private int MenuWidth = 300;
+    public int MenuWidth = 180;
     private int MenuHeight = 600;
+    #endregion
     void Start()
     {
         centerPosition = Vector3.zero;
@@ -53,7 +55,7 @@ public class Menu1 : MonoBehaviour
 
     void BackButton()
     {
-        ShowMenu = !ShowMenu;
+        ShowMinimizeMenu = !ShowMinimizeMenu;
         ShowCreateLineMenu = false;
         ShowCreatePlaneMenu = false;
         ShowCreatePlanarFunctionMenu = false;
@@ -82,14 +84,14 @@ public class Menu1 : MonoBehaviour
         {
             if (GUI.Button(new Rect(0, 0, OnButtonTexture.height + 8, OnButtonTexture.width + 8), OnButtonTexture))
             {
-                ShowMenu = true;
+                ShowMinimizeMenu = true;
             }
         }
         else
         {
             if (GUI.Button(new Rect(0, 0, 100, 20), "menu"))
 
-                ShowMenu = true;
+                ShowMinimizeMenu = true;
         }
 
     }
@@ -327,8 +329,8 @@ public class Menu1 : MonoBehaviour
         GUI.enabled = true;
         GUILayout.BeginVertical("box");
 
-        AxisObject.active = GUILayout.Toggle(AxisObject.active, "Show Axis?");
-        DoubleMenu = GUILayout.Toggle(DoubleMenu, "Show Double Menu?");
+        AxisObject.active = GUILayout.Toggle(AxisObject.active, "Hide Axis");
+        DoubleMenu = GUILayout.Toggle(DoubleMenu, "Steroscope Menu");
         Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu;
 
         if (GUILayout.Button("Back"))
@@ -340,7 +342,7 @@ public class Menu1 : MonoBehaviour
 
     void DisplayMenu()
     {
-        if (ShowMenu)
+        if (ShowMinimizeMenu)
         {
 
             GUILayout.BeginHorizontal();
@@ -442,7 +444,7 @@ public class Menu1 : MonoBehaviour
             }
             if (GUILayout.Button("Quit."))
             {
-                ShowMenu = false;
+                ShowMinimizeMenu = false;
                 // TODO: Application.Quit isn't working in debug... be sure to try in a build
                 Application.Quit();
             }
