@@ -4,9 +4,11 @@ using UnityEngine;
 public class Menu1 : MonoBehaviour
 {
     #region
+
     public bool DoubleMenu = false;
     public GameObject Inventory;
     public GameObject AxisObject;
+    public Transform MainCamera;
     public Texture OnButtonTexture;
     private bool ShowMinimizeMenu = false;
     private bool ShowCreateLineMenu = false;
@@ -16,6 +18,7 @@ public class Menu1 : MonoBehaviour
     private bool ShowOptionsMenu = false;
     private bool ShowCreateSinglePointMenu = false;
     private bool ShowCreatePlanarFunctionMenu = false;
+    private bool ShowDemoMenu = false;
     private string string_X_0 = "0.0";
     private string string_Y_0 = "0.0";
     private string string_Z_0 = "0.0";
@@ -35,6 +38,8 @@ public class Menu1 : MonoBehaviour
     //private string LoadPath = "";
     public int MenuWidth = 180;
     private int MenuHeight = 600;
+    public float hSliderValue = 0.0f;
+    private float RotationalSpeedMax = 6.0f;
     #endregion
     void Start()
     {
@@ -63,6 +68,7 @@ public class Menu1 : MonoBehaviour
         ShowGenPointsMenu = false;
         ShowOptionsMenu = false;
         ShowCreateSinglePointMenu = false;
+        ShowDemoMenu = false;
     }
 
     void OnGUI()
@@ -321,6 +327,35 @@ public class Menu1 : MonoBehaviour
         GUILayout.EndVertical();
     }
 
+    void MenuDemoMode()
+    {
+
+
+        GUILayout.BeginVertical("box");
+        GUILayout.Label("Demo Rotation");
+
+        hSliderValue = GUI.HorizontalSlider(new Rect(25, 25, 100, 30), hSliderValue, -(RotationalSpeedMax), RotationalSpeedMax);
+        if (MainCamera)
+        {
+            MainCamera.GetComponent<DemoOrbitCamera>().RotationSpeed = hSliderValue;
+        }
+
+
+        GUILayout.Label("Speed");
+        if (GUILayout.Button("Stop"))
+        {
+            hSliderValue = 0.0f;
+        }
+
+        if (GUILayout.Button("Back"))
+        {
+            BackButton();
+        }
+
+        GUILayout.EndVertical();
+
+    }
+
     void MenuOptions()
     {
         string csvPath = Inventory.GetComponent<LoadPoints>()._filePath.ToString();
@@ -373,6 +408,10 @@ public class Menu1 : MonoBehaviour
             {
                 MenuCreatePlanarFunction();
             }
+            if (ShowDemoMenu)
+            {
+                MenuDemoMode();
+            }
             if (ShowOptionsMenu)
             {
                 MenuOptions();
@@ -393,14 +432,15 @@ public class Menu1 : MonoBehaviour
 
     void MenuMain()
     {
-        //Menu Hides itself here
+        //Menu Hides itself
         if (ShowCreateLineMenu
             || ShowCreatePlaneMenu
             || ShowLoadPointsMenu
             || ShowGenPointsMenu
             || ShowOptionsMenu
             || ShowCreateSinglePointMenu
-            || ShowCreatePlanarFunctionMenu)
+            || ShowCreatePlanarFunctionMenu
+            || ShowDemoMenu)
         {
 
         }
@@ -436,6 +476,10 @@ public class Menu1 : MonoBehaviour
             if (GUILayout.Button("Options"))
             {
                 ShowOptionsMenu = true;
+            }
+            if (GUILayout.Button("Demo Mode"))
+            {
+                ShowDemoMenu = true;
             }
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Minimize"))

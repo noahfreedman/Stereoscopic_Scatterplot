@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\AlwaysFacing.cs" />
+     <Compile Include="Assets\Scripts\DemoOrbitCamera.cs" />
      <Compile Include="Assets\Scripts\GraphPoint.cs" />
      <Compile Include="Assets\Scripts\Grapher.cs" />
      <Compile Include="Assets\Scripts\Inventory.cs" />
