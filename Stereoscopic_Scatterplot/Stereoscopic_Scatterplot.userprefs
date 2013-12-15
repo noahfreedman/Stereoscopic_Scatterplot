@@ -1,8 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\DemoOrbitCamera.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\MouseOrbitClicked.js">
     <Files>
-      <File FileName="Assets\Scripts\DemoOrbitCamera.cs" Line="18" Column="1" />
+      <File FileName="Assets\Scripts\MouseOrbitClicked.js" Line="65" Column="1" />
+      <File FileName="Assets\Scripts\DemoOrbitCamera.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\MatLabInterface.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Menu1.cs" Line="1" Column="1" />
     </Files>

@@ -60,6 +60,12 @@ function LateUpdate () {
         rotation = Quaternion.Euler(y, x, 0);
         position = rotation * Vector3(0.0, 0.0, -distance) + target.position;
         transform.position = position;
+		// mouse scrolling zoom conflicts with DemoOrbitCamera 
+		//if (MainCamera.GetComponent<DemoOrbitCamera>()) {
+		//	MainCamera.GetComponent<DemoOrbitCamera>.Pause;
+		//}
+
+		
 	}
 }
 
