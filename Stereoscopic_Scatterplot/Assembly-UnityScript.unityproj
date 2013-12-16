@@ -81,7 +81,6 @@
      <Compile Include="Assets\FOV2GO\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" />
      <Compile Include="Assets\Scripts\GeneratePlane.js" />
      <Compile Include="Assets\Scripts\MouseOrbitClicked.js" />
-     <Compile Include="Assets\Scripts\SaveLoad.js" />
      <None Include="Assets\Standard Assets\Projectors\Guidelines.txt" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurfacePro Hidden Front Cut Out Specular.shader" />
      <None Include="Assets\Hard Surface Free\HardSurface Shaders\HardSurface Free Cut Out Opaque Bump.shader" />

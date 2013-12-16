@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
-
+using System;
+using System.IO;
+using System.IO.Stream;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 public class Inventory : MonoBehaviour
 {
     public Transform MainCamera;
@@ -75,7 +79,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    
+    void TestSave(GameObject obj)
+    {
+        string filename = "TestSave.txt";
+        SaveLoad.Save(filename, obj);
+    }
     void OnGUI()
     {
         if (ShowMinimizeMenu) // Show
@@ -165,5 +173,38 @@ public class Inventory : MonoBehaviour
         }
 
         GUILayout.EndVertical();
+    }
+
+    public static void SaveFile(string filename, System.Object obj)
+    {
+        try
+        {
+            Stream fileStream = File.Open(filename, FileMode.Create);
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(fileStream, obj);
+            fileStream.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("Save.SaveFile(): Failed to serialize object to a file " + filename + " (Reason: " + e.ToString() + ")");
+        }
+    }
+
+    public static System.Object LoadFile(String filename)
+    {
+        try
+        {
+            Debug.Log("LoadFile...");
+            Stream fileStream = File.Open(filename, FileMode.Open, FileAccess.Read);
+            BinaryFormatter formatter = new BinaryFormatter();
+            System.Object obj = formatter.Deserialize(fileStream);
+            fileStream.Close();
+            return obj;
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("SaveLoad.LoadFile(): Failed to deserialize a file " + filename + " (Reason: " + e.ToString() + ")");
+            return null;
+        }
     }
 }
