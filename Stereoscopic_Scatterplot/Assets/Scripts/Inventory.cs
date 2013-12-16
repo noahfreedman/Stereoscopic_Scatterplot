@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.IO;
-using System.IO.Stream;
+//using System.IO.Stream;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 public class Inventory : MonoBehaviour
@@ -82,7 +82,7 @@ public class Inventory : MonoBehaviour
     void TestSave(GameObject obj)
     {
         string filename = "TestSave.txt";
-        SaveLoad.Save(filename, obj);
+        SaveFile(filename, obj);
     }
     void OnGUI()
     {
@@ -170,6 +170,10 @@ public class Inventory : MonoBehaviour
         if (GUILayout.Button("delete"))
         {
             Destroy(obj); // note this makes SelectedObject null, making it unselected.
+        }
+        if (GUILayout.Button("save test"))
+        {
+            TestSave(obj); // note this makes SelectedObject null, making it unselected.
         }
 
         GUILayout.EndVertical();
