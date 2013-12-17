@@ -63,6 +63,7 @@
      <Compile Include="Assets\Scripts\MouseLook.cs" />
      <Compile Include="Assets\Scripts\NetTest.cs" />
      <Compile Include="Assets\Scripts\ObjectLabel.cs" />
+     <Compile Include="Assets\Scripts\PlanarFunctionsList.cs" />
      <Compile Include="Assets\Scripts\PlanesList.cs" />
      <Compile Include="Assets\Scripts\RandomPointManager.cs" />
      <Compile Include="Assets\Scripts\RandomPoints.cs" />

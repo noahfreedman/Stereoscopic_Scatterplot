@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>Stereoscopic_Scatterplot</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Unity Player version 4.3.0f4 (e01000627d60). (c) 2013 Unity Technologies ApS. All rights reserved.</string>
+	<key>CFBundleIconFile</key>
+	<string>UnityPlayer.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>unity.Noah.Stereoscopic_Scatterplot</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Stereoscopic_Scatterplot</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>Unity Player version 4.3.0f4</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>4.3.0f4</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>PlayerApplication</string>
+	<key>UnityBuildNumber</key>
+	<string>e01000627d60</string>
+</dict>
+</plist>

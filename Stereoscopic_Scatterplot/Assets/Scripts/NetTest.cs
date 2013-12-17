@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class NetTest : MonoBehaviour {
-	public string baseAPI = "http://localhost/";
+	public string baseAPI = "http://171.64.185.236:8080/";
 
 	void Start() {
 		callMatLab();
