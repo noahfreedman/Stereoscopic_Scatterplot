@@ -268,22 +268,36 @@ public class Inventory : MonoBehaviour
     }
     void ColorSelector(GameObject obj)
     {
-        GUILayout.BeginVertical();
+        GUILayout.BeginHorizontal();
         if (AssignableColors.Length > 0)
         {
 
             foreach (Color c in AssignableColors)
             {
                 GUI.contentColor = c;
-                if (GUILayout.Button("Color test"))
+
+                if (ColorButtonTexture)
                 {
-                    ColorChildAssignment(obj, c);
+                    if (GUILayout.Button(ColorButtonTexture))
+                    {
+                        ColorChildAssignment(obj, c);
+                    }
                 }
+                else
+                {
+                    if (GUILayout.Button("x"))
+                    {
+                        ColorChildAssignment(obj, c);
+                    }
+
+
+                }
+
             }
             GUI.contentColor = MenuDefaultGUIColor;
             GUI.color = MenuDefaultGUIColor;
         }
-        GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
     }
     void ColorChildAssignment(GameObject obj, Color color)
     {
