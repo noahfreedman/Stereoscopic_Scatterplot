@@ -19,12 +19,17 @@ public class Inventory : MonoBehaviour
     private GameObject CurrentSelection;
     private Color MenuDefaultGUIColor;
     private Color SelectedColor = Color.green;
-    public Color[] AssignableColors;
+    private Color[] AssignableColors;
     #endregion
     void Start()
     {
         MenuDefaultGUIColor = GUI.contentColor;
         MenuHeight = Screen.height;
+        AssignableColors = new Color[4];
+        AssignableColors[0] = Color.white;
+        AssignableColors[1] = Color.red;
+        AssignableColors[2] = Color.green;
+        AssignableColors[3] = Color.blue;
     }
     void Update()
     {
@@ -45,7 +50,7 @@ public class Inventory : MonoBehaviour
         }
 
         GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
-        
+
 
 
 
@@ -55,7 +60,7 @@ public class Inventory : MonoBehaviour
 
         if (DoubleMenu)
         {
-            GUILayout.BeginArea(new Rect(Screen.width / 2, 0, Screen.width, Screen.height)); 
+            GUILayout.BeginArea(new Rect(Screen.width / 2, 0, Screen.width, Screen.height));
             DisplayMenus();
             GUILayout.EndArea();
         }
@@ -68,8 +73,7 @@ public class Inventory : MonoBehaviour
 
         GUI.enabled = true;
         GUILayout.BeginHorizontal();
-        GUILayout.Space((Screen.width/2) - (MenuWidth * 2));
-        //GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth)); 
+        GUILayout.Space((Screen.width / 2) - (MenuWidth * 2));
         Debug.Log("DisplayMenus");
 
         if (CurrentSelection == null)
@@ -85,12 +89,12 @@ public class Inventory : MonoBehaviour
 
         }
 
-        GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth)); 
+        GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth));
 
         SelectableObjectsMenu();
 
         GUILayout.EndVertical();
-        GUILayout.EndHorizontal(); 
+        GUILayout.EndHorizontal();
         GUI.enabled = true;
         Debug.Log("DisplayMenus exit");
     }
@@ -132,6 +136,9 @@ public class Inventory : MonoBehaviour
         {
 
             GUILayout.Label(obj.name);
+
+            ColorSelector(obj);
+
             if (MainCamera)
             {
                 if (GUILayout.Button("Look At"))
@@ -208,7 +215,26 @@ public class Inventory : MonoBehaviour
         GameObject obj = (GameObject)LoadFile(filename);
 
     }
+    void TexturedButton(Texture texture)
+    {
+        if (texture)
+        {
+            if (GUI.Button(new Rect(0, 0, texture.height + 8, texture.width + 8), texture))
+            {
 
+            }
+        }
+        else
+        {
+            if (GUI.Button(new Rect(0, 0, 100, 20), "x"))
+            {
+
+            }
+
+
+        }
+
+    }
     public static void SaveFile(string filename, System.Object obj)
     {
         try
@@ -240,21 +266,45 @@ public class Inventory : MonoBehaviour
             return null;
         }
     }
-    void ColorSelector()
+    void ColorSelector(GameObject obj)
     {
-        //GUILayout.BeginHorizontal();
-        foreach (Color c in AssignableColors)
+        GUILayout.BeginVertical();
+        if (AssignableColors.Length > 0)
         {
 
-            GUI.color = c;
-            //Debug.Log(GUI.color.ToString());
-            if (GUILayout.Button(ColorButtonTexture))
+            foreach (Color c in AssignableColors)
             {
-                TestLoad();
+                GUI.contentColor = c;
+                if (GUILayout.Button("Color test"))
+                {
+                    ColorChildAssignment(obj, c);
+                }
+            }
+            GUI.contentColor = MenuDefaultGUIColor;
+            GUI.color = MenuDefaultGUIColor;
+        }
+        GUILayout.EndVertical();
+    }
+    void ColorChildAssignment(GameObject obj, Color color)
+    {
+        if (obj.renderer)
+        {
+            obj.renderer.material.color = color;
+        }
+        if (obj.transform.childCount > 0)
+        {
+            Debug.Log(obj.transform.childCount.ToString());
+            foreach (Transform child in obj.transform)
+            {
+                if (child.renderer)
+                {
+                    child.renderer.material.color = color;
+                }
             }
 
         }
-        //GUILayout.EndHorizontal();
-        GUI.color = MenuDefaultGUIColor;
+        
     }
+
+
 }
