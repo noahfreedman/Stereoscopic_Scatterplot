@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Menu1 : MonoBehaviour
+public class Menu3 : MonoBehaviour
 {
     #region
     public GUISkin MenuSkin;
@@ -40,6 +40,21 @@ public class Menu1 : MonoBehaviour
     private string menuFilePath = "";
     public float hSliderValue = 0.0f;
     private float RotationalSpeedMax = 6.0f;
+    #endregion
+    #region
+    //public GUISkin MenuSkin;
+    //public Transform MainCamera;
+    //public Texture ColorButtonTexture;
+    //public bool DoubleMenu = false; // Main menu controls this
+    //public bool ShowMinimizeMenu = true;
+    //public float MenuWidth = 200;
+    //private float MenuHeight = 200;
+    //private string filename = "TestSave.txt";
+    //private string ScaleString = "";
+    //private GameObject CurrentSelection;
+    //private Color MenuDefaultGUIColor;
+    //private Color SelectedColor = Color.green;
+    //public Color[] AssignableColors;
     #endregion
     void Start()
     {

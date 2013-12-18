@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\MatLabInterface.cs" />
      <Compile Include="Assets\Scripts\Menu.cs" />
      <Compile Include="Assets\Scripts\Menu1.cs" />
+     <Compile Include="Assets\Scripts\Menu3.cs" />
      <Compile Include="Assets\Scripts\MouseForce.cs" />
      <Compile Include="Assets\Scripts\MouseLook.cs" />
      <Compile Include="Assets\Scripts\NetTest.cs" />

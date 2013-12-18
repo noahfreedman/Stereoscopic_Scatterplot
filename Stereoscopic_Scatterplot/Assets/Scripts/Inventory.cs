@@ -6,39 +6,158 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 public class Inventory : MonoBehaviour
 {
+    #region
+    public GUISkin MenuSkin;
     public Transform MainCamera;
+    public Texture ColorButtonTexture;
+    public bool DoubleMenu = false; // Main menu controls this
     public bool ShowMinimizeMenu = true;
     public float MenuWidth = 200;
     private float MenuHeight = 200;
-    public float MenuXOffset = 100;
-    public bool DoubleMenu = false; // Main menu controls this
-    private GameObject CurrentSelection;
-    private Rect MenuAreaLeftScreen;
-    private Color MenuDefaultGUIColor;
-    public Color SelectedColor = Color.green;
-    private bool ShowSelectedObjectMenu = false; //toggle showing the pop up menu
-    public Color[] AssignableColors;
+    private string filename = "TestSave.txt";
     private string ScaleString = "";
+    private GameObject CurrentSelection;
+    private Color MenuDefaultGUIColor;
+    private Color SelectedColor = Color.green;
+    public Color[] AssignableColors;
+    #endregion
     void Start()
     {
         MenuDefaultGUIColor = GUI.contentColor;
-
-        MenuXOffset = ((Screen.width / 2) - MenuWidth);
         MenuHeight = Screen.height;
-        MenuAreaLeftScreen = new Rect(MenuXOffset, 0, MenuWidth, MenuHeight);
-
-        Debug.Log(Screen.width);
     }
     void Update()
     {
         MenuDefaultGUIColor = GUI.contentColor;
-
-        MenuXOffset = (Screen.width - MenuWidth * 2);
         MenuHeight = Screen.height;
-        MenuAreaLeftScreen = new Rect(Screen.width / 4, 0, MenuWidth, MenuHeight);
+    }
+    void OnGUI()
+    {
+        if (MenuSkin)
+        {
+
+            GUI.skin = MenuSkin;
+            if (MenuSkin.box.fixedWidth != 0)
+            {
+                MenuWidth = MenuSkin.box.fixedWidth;
+                // dont override skin set width.
+            }
+        }
+
+        GUILayout.BeginArea(new Rect(0, 0, Screen.width, Screen.height));
+        
+
+
+
+
+        DisplayMenus();
+        GUILayout.EndArea();
+
+        if (DoubleMenu)
+        {
+            GUILayout.BeginArea(new Rect(Screen.width / 2, 0, Screen.width, Screen.height)); 
+            DisplayMenus();
+            GUILayout.EndArea();
+        }
 
     }
 
+    void DisplayMenus()
+    {
+
+
+        GUI.enabled = true;
+        GUILayout.BeginHorizontal();
+        GUILayout.Space((Screen.width/2) - (MenuWidth * 2));
+        //GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth)); 
+        Debug.Log("DisplayMenus");
+
+        if (CurrentSelection == null)
+        {
+
+            GUILayout.Space(MenuWidth);
+        }
+        else
+        {
+            GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth));
+            SubMenuObjectProperties(CurrentSelection);
+            GUILayout.EndVertical();
+
+        }
+
+        GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth)); 
+
+        SelectableObjectsMenu();
+
+        GUILayout.EndVertical();
+        GUILayout.EndHorizontal(); 
+        GUI.enabled = true;
+        Debug.Log("DisplayMenus exit");
+    }
+
+    void SelectableObjectsMenu()
+    {
+
+        Debug.Log("SelectableObjectsMenu");
+        if (GUILayout.Button("(load test)"))
+        {
+            TestLoad(); // note this makes SelectedObject null, making it unselected.
+        }
+        if (transform.childCount > 0)
+        {
+            foreach (Transform child in transform)
+            {
+
+                GUI.color = CurrentButtonColor(child.gameObject);
+                if (GUILayout.Button(child.name))
+                {
+                    SelectObject(child.gameObject);
+                }
+                GUI.contentColor = MenuDefaultGUIColor;
+                GUI.color = MenuDefaultGUIColor;
+
+            }
+        }
+        else
+        {
+            GUILayout.Label("0 Objects");
+        }
+
+        Debug.Log("SelectableObjectsMenu exit");
+
+    }
+    void SubMenuObjectProperties(GameObject obj)
+    {
+        if (CurrentSelection != null)
+        {
+
+            GUILayout.Label(obj.name);
+            if (MainCamera)
+            {
+                if (GUILayout.Button("Look At"))
+                {
+                    MainCamera.LookAt(obj.transform);
+                }
+            }
+            GUILayout.BeginHorizontal();
+            ScaleString = GUILayout.TextField(ScaleString);
+            if (GUILayout.Button("Set Scale"))
+            {
+                MainCamera.LookAt(obj.transform);
+            }
+            GUILayout.EndHorizontal();
+            if (GUILayout.Button("delete"))
+            {
+                Destroy(obj); // note this makes SelectedObject null, making it unselected.
+            }
+            if (GUILayout.Button("save test"))
+            {
+                TestSave(obj); // note this makes SelectedObject null, making it unselected.
+            }
+
+        }
+
+    }
 
     void SelectObject(GameObject obj)
     {
@@ -81,102 +200,13 @@ public class Inventory : MonoBehaviour
 
     void TestSave(GameObject obj)
     {
-        string filename = "TestSave.txt";
+
         SaveFile(filename, obj);
     }
-    void OnGUI()
+    void TestLoad()
     {
-        if (ShowMinimizeMenu) // Show
-        {
-            GUILayout.BeginArea(MenuAreaLeftScreen);
-            DisplayGUI();
-            GUILayout.EndArea();
-            if (DoubleMenu)
-            {
-                GUILayout.BeginArea(new Rect(Screen.width, 0, MenuWidth, MenuHeight));
-                DisplayGUI();
-                GUILayout.EndArea();
-            }
-        }
-        else // Minimize
-        {
-            if (GUILayout.Button("nothing"))
-            {
-                // TODO: minimize button
-            }
-        }
-    }
-    void DisplayGUI()
-    {
-        ShowSelectedObjectMenu = (CurrentSelection != null);
-        if (ShowSelectedObjectMenu)
-        {
-            MenuDisplayObjectEdit(CurrentSelection);
-        }
-        else
-        {
-            GUILayout.BeginVertical();
-            //GUILayout.Box("", GUILayout.Width(MenuWidth), GUILayout.Height(20));
-            GUILayout.EndVertical();
-        }
-        MenuListSelectableObjects();
-    }
+        GameObject obj = (GameObject)LoadFile(filename);
 
-
-    void MenuListSelectableObjects()
-    {
-        GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth));
-        if (transform.childCount > 0)
-        {
-            foreach (Transform child in transform)
-            {
-                GUILayout.BeginHorizontal();
-                GUI.contentColor = CurrentButtonColor(child.gameObject);
-                if (GUILayout.Button(child.name))
-                {
-                    SelectObject(child.gameObject);
-                }
-                GUI.contentColor = MenuDefaultGUIColor;
-                GUILayout.EndHorizontal();
-            }
-        }
-        else
-        {
-            GUILayout.Label("0 Objects");
-        }
-        GUILayout.EndVertical();
-
-
-    }
-    void MenuDisplayObjectEdit(GameObject obj)
-    {
-        GUI.enabled = true;
-        GUILayout.BeginVertical("box");
-        GUILayout.Label(obj.name);
-        if (MainCamera)
-        {
-            if (GUILayout.Button("Look At"))
-            {
-                MainCamera.LookAt(obj.transform);
-            }
-        }
-        GUILayout.BeginHorizontal();
-        ScaleString = GUILayout.TextField(ScaleString);
-        if (GUILayout.Button("Set Scale"))
-        {
-            MainCamera.LookAt(obj.transform);
-        }
-        GUILayout.EndHorizontal();
-        if (GUILayout.Button("delete"))
-        {
-            Destroy(obj); // note this makes SelectedObject null, making it unselected.
-        }
-        if (GUILayout.Button("save test"))
-        {
-            TestSave(obj); // note this makes SelectedObject null, making it unselected.
-        }
-
-        GUILayout.EndVertical();
     }
 
     public static void SaveFile(string filename, System.Object obj)
@@ -193,7 +223,6 @@ public class Inventory : MonoBehaviour
             Debug.LogWarning("Save.SaveFile(): Failed to serialize object to a file " + filename + " (Reason: " + e.ToString() + ")");
         }
     }
-
     public static System.Object LoadFile(String filename)
     {
         try
@@ -210,5 +239,22 @@ public class Inventory : MonoBehaviour
             Debug.LogWarning("SaveLoad.LoadFile(): Failed to deserialize a file " + filename + " (Reason: " + e.ToString() + ")");
             return null;
         }
+    }
+    void ColorSelector()
+    {
+        //GUILayout.BeginHorizontal();
+        foreach (Color c in AssignableColors)
+        {
+
+            GUI.color = c;
+            //Debug.Log(GUI.color.ToString());
+            if (GUILayout.Button(ColorButtonTexture))
+            {
+                TestLoad();
+            }
+
+        }
+        //GUILayout.EndHorizontal();
+        GUI.color = MenuDefaultGUIColor;
     }
 }
