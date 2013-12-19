@@ -4,6 +4,7 @@ using UnityEngine;
 public class Menu1 : MonoBehaviour
 {
     #region
+
     public GUISkin MenuSkin;
     public Transform MainCamera;
     public Texture OnButtonTexture;
@@ -11,6 +12,7 @@ public class Menu1 : MonoBehaviour
     public GameObject Inventory;
     public GameObject AxisObject;
 
+    // menu state
     public bool DoubleMenu = false;
     private bool ShowingSubmenu = false;
     private bool SubMenuCreateLine = false;
@@ -21,7 +23,13 @@ public class Menu1 : MonoBehaviour
     private bool SubMenuCreateSinglePoint = false;
     private bool SubMenuCreatePlanarFunction = false;
     private bool SubMenuDemo = false;
+
+    // input
     public float MenuWidth = 200;
+    private int numberInput = 100;
+    private float floatInput = 1.0f;
+    private string floatInputString = "1.0";
+    private string numberInputString = "500";
     private string string_X_0 = "0.0";
     private string string_Y_0 = "0.0";
     private string string_Z_0 = "0.0";
@@ -40,6 +48,7 @@ public class Menu1 : MonoBehaviour
     private string menuFilePath = "";
     public float hSliderValue = 0.0f;
     private float RotationalSpeedMax = 6.0f;
+
     #endregion
     void Start()
     {
@@ -275,12 +284,25 @@ public class Menu1 : MonoBehaviour
         string_Z_0 = GUILayout.TextField(string_Z_0);
         GUILayout.EndHorizontal();
 
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Number");
+        int.TryParse(GUILayout.TextField(numberInputString), out numberInput);
+        numberInputString = numberInput.ToString(); 
         centerPosition = VectorFromStrings(string_X_0, string_Y_0, string_Z_0);
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        GUILayout.Label("Range");
+        float.TryParse(GUILayout.TextField(floatInputString), out floatInput);
+        floatInputString = floatInput.ToString();
+        centerPosition = VectorFromStrings(string_X_0, string_Y_0, string_Z_0);
+        GUILayout.EndHorizontal();
+
 
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Generate"))
         {
-            Inventory.GetComponent<RandomPoints>().createRandomPoints(centerPosition, 333);
+            Inventory.GetComponent<RandomPoints>().createRandomPoints(centerPosition, numberInput, floatInput);
         }
         if (GUILayout.Button("Back"))
         {

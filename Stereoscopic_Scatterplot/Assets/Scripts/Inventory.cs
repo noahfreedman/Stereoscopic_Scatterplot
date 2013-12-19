@@ -11,11 +11,10 @@ public class Inventory : MonoBehaviour
     public Transform MainCamera;
     public Texture ColorButtonTexture;
     public bool DoubleMenu = false; // Main menu controls this
-    public bool ShowMinimizeMenu = true;
     public float MenuWidth = 200;
     private float MenuHeight = 200;
     private string filename = "TestSave.txt";
-    private string ScaleString = "";
+    private float ScaleStep = 0.25f;
     private GameObject CurrentSelection;
     private Color MenuDefaultGUIColor;
     private Color SelectedColor = Color.green;
@@ -137,8 +136,6 @@ public class Inventory : MonoBehaviour
 
             GUILayout.Label(obj.name);
 
-            ColorSelector(obj);
-
             if (MainCamera)
             {
                 if (GUILayout.Button("Look At"))
@@ -146,13 +143,22 @@ public class Inventory : MonoBehaviour
                     MainCamera.LookAt(obj.transform);
                 }
             }
+
             GUILayout.BeginHorizontal();
-            ScaleString = GUILayout.TextField(ScaleString);
-            if (GUILayout.Button("Set Scale"))
+            GUILayout.Label("Point Size");
+            if (GUILayout.Button(" + "))
             {
-                MainCamera.LookAt(obj.transform);
+                SetScaleChildren(obj, ScaleStep);
+            }
+            if (GUILayout.Button(" - "))
+            {
+                SetScaleChildren(obj, (-ScaleStep));
             }
             GUILayout.EndHorizontal();
+
+            ColorSelector(obj);
+
+
             if (GUILayout.Button("delete"))
             {
                 Destroy(obj); // note this makes SelectedObject null, making it unselected.
@@ -280,14 +286,14 @@ public class Inventory : MonoBehaviour
                 {
                     if (GUILayout.Button(ColorButtonTexture))
                     {
-                        ColorChildAssignment(obj, c);
+                        SetColorChildren(obj, c);
                     }
                 }
                 else
                 {
                     if (GUILayout.Button("x"))
                     {
-                        ColorChildAssignment(obj, c);
+                        SetColorChildren(obj, c);
                     }
 
 
@@ -299,7 +305,7 @@ public class Inventory : MonoBehaviour
         }
         GUILayout.EndHorizontal();
     }
-    void ColorChildAssignment(GameObject obj, Color color)
+    void SetColorChildren(GameObject obj, Color color)
     {
         if (obj.renderer)
         {
@@ -319,6 +325,18 @@ public class Inventory : MonoBehaviour
         }
         
     }
+    void SetScaleChildren(GameObject obj, float scale)
+    {
+        if (obj.transform.childCount > 0)
+        {
+            Debug.Log(obj.transform.childCount.ToString());
+            foreach (Transform child in obj.transform)
+            {
+                child.transform.localScale += new Vector3(scale, scale, scale);
+            }
 
+        }
+
+    }
 
 }

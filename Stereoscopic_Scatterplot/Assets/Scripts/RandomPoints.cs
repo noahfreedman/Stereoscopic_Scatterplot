@@ -6,17 +6,7 @@ public class RandomPoints : MonoBehaviour
 {
 		public GameObject  pointPrefab;
 		public int numberPoints = 100;
-		public bool showPointsAtStart = false;
 		public List<GameObject> CreatedPointGroups;
-
-		void Start ()
-		{
-				if (showPointsAtStart) {
-						if (pointPrefab) {
-								this.createRandomPoints (pointPrefab, gameObject.transform.position, numberPoints);
-						}
-				}
-		}
 
 		public void createSinglePoint (Vector3 center)
 		{
@@ -35,26 +25,25 @@ public class RandomPoints : MonoBehaviour
 
 		public void createRandomPoints (int number)
 		{
-				createRandomPoints (pointPrefab, Vector3.one, number);
+				createRandomPoints (pointPrefab, Vector3.one, number, 1.0f);
 		}
 
-		public void createRandomPoints (Vector3 center, int number)
+        public void createRandomPoints(Vector3 center, int number, float range = 1.0f)
 		{
-				createRandomPoints (pointPrefab, center, number);
+				createRandomPoints (pointPrefab, center, number, range);
 		}
 
-		public void createRandomPoints (GameObject pointPrefab, Vector3 center, int count)
+		public void createRandomPoints (GameObject pointPrefab, Vector3 center, int count, float range)
 		{
-				GameObject group = new GameObject ("Random Points Group"); 
+				GameObject group = new GameObject ("Random Points"); 
 				group.transform.parent = transform;
 				group.transform.position = center;
 				group.transform.rotation = transform.rotation;
 
 				for (int i = 0; i < count; i++) {
 
-						GameObject preFabObj = Instantiate (pointPrefab, Random.insideUnitSphere, Quaternion.identity) as GameObject;
+						GameObject preFabObj = Instantiate (pointPrefab, (Random.insideUnitSphere * range), Quaternion.identity) as GameObject;
 						if (preFabObj) {			
-								//prefabGroupRandomPoints.transform.parent = this.gameObject.transform;
 								preFabObj.transform.parent = group.transform;
 								preFabObj.transform.position = preFabObj.transform.position + center;
 
