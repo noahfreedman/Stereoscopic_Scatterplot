@@ -15,6 +15,7 @@ public class Inventory : MonoBehaviour
     private float MenuHeight = 200;
     private string filename = "TestSave.txt";
     private float ScaleStep = 0.25f;
+    private float ScaleLine = 0.0f;
     private GameObject CurrentSelection;
     private Color MenuDefaultGUIColor;
     private Color SelectedColor = Color.green;
@@ -104,7 +105,7 @@ public class Inventory : MonoBehaviour
         Debug.Log("SelectableObjectsMenu");
         if (GUILayout.Button("(load test)"))
         {
-            TestLoad(); // note this makes SelectedObject null, making it unselected.
+            TestLoad();
         }
         if (transform.childCount > 0)
         {
@@ -145,21 +146,56 @@ public class Inventory : MonoBehaviour
             }
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Point Size");
-            if (GUILayout.Button(" + "))
+
+            if (obj.GetComponent<LineRenderer>())
             {
-                SetScaleChildren(obj, ScaleStep);
+                GUILayout.Label("Thickness");
+                if (GUILayout.Button(" + "))
+                {
+                    ScaleLine += ScaleStep;
+                    obj.GetComponent<LineRenderer>().SetWidth(ScaleLine, ScaleLine);
+
+                }
+                if (GUILayout.Button(" - "))
+                {
+                    ScaleLine -= ScaleStep;
+                    obj.GetComponent<LineRenderer>().SetWidth(ScaleLine, ScaleLine);
+                }
             }
-            if (GUILayout.Button(" - "))
+            else
             {
-                SetScaleChildren(obj, (-ScaleStep));
+                if ((obj.GetComponent<MeshFilter>()) && (obj.GetComponent<MeshFilter>().name == "Plane"))
+                {
+                    GUILayout.Label("Plane Size");
+                    if (GUILayout.Button(" + "))
+                    {
+                        obj.transform.localScale += new Vector3(ScaleStep, ScaleStep, ScaleStep);
+                    }
+                    if (GUILayout.Button(" - "))
+                    {
+                        obj.transform.localScale += new Vector3(ScaleStep, ScaleStep, ScaleStep);
+                    }
+                }
+                else
+                {
+                    GUILayout.Label("Point Size");
+                    if (GUILayout.Button(" + "))
+                    {
+                        SetScaleChildren(obj, ScaleStep);
+                    }
+                    if (GUILayout.Button(" - "))
+                    {
+                        SetScaleChildren(obj, (-ScaleStep));
+                    }
+
+                }
             }
             GUILayout.EndHorizontal();
 
-            ColorSelector(obj);
+            ColorButtons(obj);
 
 
-            if (GUILayout.Button("delete"))
+            if (GUILayout.Button("Delete"))
             {
                 Destroy(obj); // note this makes SelectedObject null, making it unselected.
             }
@@ -272,7 +308,7 @@ public class Inventory : MonoBehaviour
             return null;
         }
     }
-    void ColorSelector(GameObject obj)
+    void ColorButtons(GameObject obj)
     {
         GUILayout.BeginHorizontal();
         if (AssignableColors.Length > 0)
