@@ -18,9 +18,6 @@ public class PlanesList : MonoBehaviour {
 		plane.transform.parent = transform;
 		createdPlanes.Add (plane);
 		plane.renderer.material = planeMaterial;
-
-
-
 	}
 
 }

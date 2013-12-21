@@ -3,14 +3,14 @@
 
 function Start ()
 {
-	//GeneratePlane();
 }
 
-public static function GeneratePlane (parent:GameObject, points:ArrayList, width, height)
+public static function GeneratePlane (points, width, height)
 {
 	
 	var heightMap : Texture2D;
 	var material : Material;
+	material = Resources.Load("DoubleSided", typeof(Material)) as Material;
 	//var size = Vector3(200, 30, 200);
 	// Create the game object containing the renderer
 	var plane : GameObject = new GameObject("plane");
