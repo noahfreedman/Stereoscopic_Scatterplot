@@ -27,18 +27,19 @@ public class ScalingAxes : MonoBehaviour
 	
 	private int canvasIndex = 0;
 	private float lineSize = 0.006f;
-	private float RoundedDistance = 0.1f; // keeps the last mesured modulo of the distance to the camera
+	private float RoundedDistance = 0.1f; // distance to the camera rounded to nearest whole number to limit number of updates
 	private float LineThicknessMultiplier = 0.01f;//
 	private float MarkerDepthCameraGap = 0.9f; // prevents the floating label problem. 0.9 is 90% the distance from origin to camera.
 	private bool NearXOld;
 	void Start()
 	{
-		
-		float roundedDistance = (float)System.Math.Round(Vector3.Distance(transform.position, Camera.transform.position));
+
+        RoundedDistance = (float)System.Math.Round(Vector3.Distance(transform.position, Camera.transform.position));
 		DrawAxes();
 	}
 	void Update()
 	{
+        Debug.Log(RoundedDistance.ToString());
 		// Only recreate axis when distance from origin changes 
 		float currentDistance = (float)System.Math.Round(Vector3.Distance(transform.position, Camera.transform.position));
 		bool nearX = Math.Abs(Camera.transform.position.x) > Math.Abs(Camera.transform.position.z);

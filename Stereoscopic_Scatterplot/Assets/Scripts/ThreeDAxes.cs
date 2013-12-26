@@ -13,43 +13,42 @@ public class ThreeDAxes : MonoBehaviour
     public Color yTickColor = new Color(0, 1, 0, 1f);
     public Color zColor = new Color(0, 0, 1, 1f);
     public Color zTickColor = new Color(0, 0, 1, 1f);
-    public int axis_range = 1000;
-    private float LabelInterval = 10.0f;
-    private float LabelRangeMin = 1f;// these get overwritten
-    private float LabelRangeMax = 1f;
-    private float LabelHeight = 0.05f;
     public float LabelHeightMultiplier = 0.05f;
-    public float LabelSize = 0.003f;
     public bool showTicks = true;
     public bool showAxes = true;
-
+    public int axis_range = 1000;
+    private float LabelRangeMax = 1f;
+    private float LabelRangeMin = 1f;// these get overwritten
+    private float LabelInterval = 5.0f;
+    private float TickLineHeight = 0.05f;
+    private float TickLineSize = 0.003f;
     private int canvasIndex = 0;
     private float lineSize = 0.006f;
     private float LastUpdatedDistance = 0.1f; // the last mesured distance to the camera
     private float LineThicknessMultiplier = 0.01f;//
     private float TextSizeMultiplier = 0.5f;//
     public float LabelIntervalDivisor = 5.0f;
-    private bool NearXOld;
+
     void Start()
     {
-
-        float roundedDistance = (float)System.Math.Round(Vector3.Distance(transform.position, Camera.transform.position));
+        LastUpdatedDistance = (float)System.Math.Round(Vector3.Distance(transform.position, Camera.transform.position));
         DrawAxes();
     }
     void Update()
     {
+        Debug.Log(Vector3.Distance(transform.position, Camera.transform.position).ToString());
         // Only recreate axis when distance from origin changes 
         float currentDistance = (float)System.Math.Round(Vector3.Distance(transform.position, Camera.transform.position));
         bool nearX = Math.Abs(Camera.transform.position.x) > Math.Abs(Camera.transform.position.z);
 
         // when the cam's relative position changes 
-        if ((LastUpdatedDistance < currentDistance) || (LastUpdatedDistance > currentDistance) || (NearXOld != nearX))
+        //if ((LastUpdatedDistance < currentDistance) || (LastUpdatedDistance > currentDistance))
+        if ((LastUpdatedDistance < currentDistance) || (LastUpdatedDistance > currentDistance))
         {
             DrawAxes();
         }
 
         LastUpdatedDistance = currentDistance;
-        NearXOld = nearX;
     }
     private void DrawAxes()
     {
@@ -60,19 +59,22 @@ public class ThreeDAxes : MonoBehaviour
         }
         if (showTicks)
         {
-
-            LabelInterval = LastUpdatedDistance / LabelIntervalDivisor;
-            LabelHeight = LastUpdatedDistance * LabelHeightMultiplier;
-            LabelRangeMax = LastUpdatedDistance * 0.9f;
-            LabelRangeMin = LastUpdatedDistance * -0.9f;
-            LabelSize = LastUpdatedDistance * LineThicknessMultiplier / 5;
+            LabelInterval = 50.0f;
+            //LabelInterval = LastUpdatedDistance / LabelIntervalDivisor;
+            TickLineHeight = LastUpdatedDistance * LabelHeightMultiplier;
+            LabelRangeMax = 1000;
+            LabelRangeMin = -1000;
+            //LabelRangeMax = LastUpdatedDistance * 0.9f;
+            //LabelRangeMin = LastUpdatedDistance * -0.9f;
+            TickLineSize = LastUpdatedDistance * LineThicknessMultiplier;
             for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
             {
                 // Y
-                Vector3 start = new Vector3(-LabelHeight / 2, i, 0);
-                Vector3 end = new Vector3(LabelHeight / 2, i, 0);
-                GameObject line = createLine(start, end, LabelSize, yTickColor);
-                //attachObjectLabel(line, SigFigs(i), yColor);
+                Vector3 start = new Vector3(-TickLineHeight / 2, i, 0);
+                Vector3 end = new Vector3(TickLineHeight / 2, i, 0);
+                //Vector3 start = new Vector3(-TickLineHeight, i, 0);
+                //Vector3 end = new Vector3(TickLineHeight, i, 0);
+                GameObject line = createLine(start, end, TickLineSize, yTickColor);
                 attachObjectLabel(line, SigFifths(i), yColor);
                 
 
@@ -81,18 +83,18 @@ public class ThreeDAxes : MonoBehaviour
             for (float i = LabelRangeMin ; i <= LabelRangeMax ; i += LabelInterval)
             {
                 // z 
-                Vector3 start = new Vector3(0, -LabelHeight / 2, i);
-                Vector3 end = new Vector3(0, LabelHeight / 2, i);
-                GameObject line = createLine(start, end, LabelSize, zTickColor);
+                Vector3 start = new Vector3(0, -TickLineHeight / 2, i);
+                Vector3 end = new Vector3(0, TickLineHeight / 2, i);
+                GameObject line = createLine(start, end, TickLineSize, zTickColor);
                 //attachObjectLabel(line, SigFigs(i), zColor);
                 attachObjectLabel(line, SigFifths(i), zColor);
             }
             for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
             {
                 // x
-                Vector3 start = new Vector3(i, -LabelHeight / 2, 0);
-                Vector3 end = new Vector3(i, LabelHeight / 2, 0);
-                GameObject line = createLine(start, end, LabelSize, xTickColor);
+                Vector3 start = new Vector3(i, -TickLineHeight / 2, 0);
+                Vector3 end = new Vector3(i, TickLineHeight / 2, 0);
+                GameObject line = createLine(start, end, TickLineSize, xTickColor);
 
                 attachObjectLabel(line, SigFifths(i), xColor);
                 //attachObjectLabel(line, SigFigs(i), xColor);
@@ -112,7 +114,7 @@ public class ThreeDAxes : MonoBehaviour
             Vector3 z_start = new Vector3(0, 0, -axis_range);
             Vector3 z_end = new Vector3(0, 0, axis_range);
             createLine(x_start, x_end, lineSize, xColor);
-            createLine(y_start, y_end, lineSize, yColor);
+            createLine(y_start, y_end, lineSize * 2, yColor);
             createLine(z_start, z_end, lineSize, zColor);
         }
 
