@@ -4,6 +4,7 @@ using System;
 
 public class ThreeDAxes : MonoBehaviour
 {
+    # region
     public GameObject AxesTextPrefab;
     public Transform Camera;
     public Shader shader;
@@ -24,14 +25,15 @@ public class ThreeDAxes : MonoBehaviour
     private float TickLineSize = 0.003f;
     private int canvasIndex = 0;
     private float lineSize = 0.006f;
-    private float LastUpdatedDistance = 0.1f; // the last mesured distance to the camera
+    private float LastDistance = 0.1f; // the last mesured distance to the camera
     private float LineThicknessMultiplier = 0.01f;//
     private float TextSizeMultiplier = 0.5f;//
     public float LabelIntervalDivisor = 5.0f;
-
+    public Vector2[] CameraZones;
+    # endregion
     void Start()
     {
-        LastUpdatedDistance = (float)System.Math.Round(Vector3.Distance(transform.position, Camera.transform.position));
+        LastDistance = (float)System.Math.Round(Vector3.Distance(transform.position, Camera.transform.position));
         DrawAxes();
     }
     void Update()
@@ -43,12 +45,12 @@ public class ThreeDAxes : MonoBehaviour
 
         // when the cam's relative position changes 
         //if ((LastUpdatedDistance < currentDistance) || (LastUpdatedDistance > currentDistance))
-        if ((LastUpdatedDistance < currentDistance) || (LastUpdatedDistance > currentDistance))
+        if ((LastDistance < currentDistance) || (LastDistance > currentDistance))
         {
             DrawAxes();
         }
 
-        LastUpdatedDistance = currentDistance;
+        LastDistance = currentDistance;
     }
     private void DrawAxes()
     {
@@ -60,24 +62,22 @@ public class ThreeDAxes : MonoBehaviour
         if (showTicks)
         {
             LabelInterval = 50.0f;
-            //LabelInterval = LastUpdatedDistance / LabelIntervalDivisor;
-            TickLineHeight = LastUpdatedDistance * LabelHeightMultiplier;
+            TickLineHeight = LastDistance * LabelHeightMultiplier;
             LabelRangeMax = 1000;
             LabelRangeMin = -1000;
-            //LabelRangeMax = LastUpdatedDistance * 0.9f;
-            //LabelRangeMin = LastUpdatedDistance * -0.9f;
-            TickLineSize = LastUpdatedDistance * LineThicknessMultiplier;
-            for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
+            TickLineSize = LastDistance * LineThicknessMultiplier;
+            for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval / 2)
             {
-                // Y
-                Vector3 start = new Vector3(-TickLineHeight / 2, i, 0);
-                Vector3 end = new Vector3(TickLineHeight / 2, i, 0);
-                //Vector3 start = new Vector3(-TickLineHeight, i, 0);
-                //Vector3 end = new Vector3(TickLineHeight, i, 0);
+                // Y Vertical!!
+                Vector3 start = new Vector3(-TickLineHeight, i, 0);
+                Vector3 end = new Vector3(TickLineHeight, i, 0);
                 GameObject line = createLine(start, end, TickLineSize, yTickColor);
-                attachObjectLabel(line, SigFifths(i), yColor);
-                
 
+                Vector3 start2 = new Vector3(0, i, -TickLineHeight);
+                Vector3 end2 = new Vector3(0, i, TickLineHeight);
+                GameObject line2 = createLine(start2, end2, TickLineSize, yTickColor);
+
+                attachObjectLabel(line, SigFigs(i), yColor);
             }
   
             for (float i = LabelRangeMin ; i <= LabelRangeMax ; i += LabelInterval)
@@ -86,8 +86,7 @@ public class ThreeDAxes : MonoBehaviour
                 Vector3 start = new Vector3(0, -TickLineHeight / 2, i);
                 Vector3 end = new Vector3(0, TickLineHeight / 2, i);
                 GameObject line = createLine(start, end, TickLineSize, zTickColor);
-                //attachObjectLabel(line, SigFigs(i), zColor);
-                attachObjectLabel(line, SigFifths(i), zColor);
+                attachObjectLabel(line, SigFigs(i), zColor);
             }
             for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
             {
@@ -95,18 +94,12 @@ public class ThreeDAxes : MonoBehaviour
                 Vector3 start = new Vector3(i, -TickLineHeight / 2, 0);
                 Vector3 end = new Vector3(i, TickLineHeight / 2, 0);
                 GameObject line = createLine(start, end, TickLineSize, xTickColor);
-
-                attachObjectLabel(line, SigFifths(i), xColor);
-                //attachObjectLabel(line, SigFigs(i), xColor);
+                attachObjectLabel(line, SigFigs(i), xColor);
             }
-
-
-
         }
-
         if (showAxes)
         {
-            lineSize = LineThicknessMultiplier * LastUpdatedDistance;
+            lineSize = LineThicknessMultiplier * LastDistance;
             Vector3 x_start = new Vector3(-axis_range, 0, 0);
             Vector3 x_end = new Vector3(axis_range, 0, 0);
             Vector3 y_start = new Vector3(0, -axis_range, 0);
@@ -117,14 +110,11 @@ public class ThreeDAxes : MonoBehaviour
             createLine(y_start, y_end, lineSize * 2, yColor);
             createLine(z_start, z_end, lineSize, zColor);
         }
-
     }
-
     private GameObject createLine(Vector3 start, Vector3 end, float lineSize, Color c)
     {
         return createLine(start, end, lineSize, c, shader);
     }
-
     private GameObject createLine(Vector3 start, Vector3 end, float lineSize, Color c, Shader s)
     {
 
@@ -144,7 +134,6 @@ public class ThreeDAxes : MonoBehaviour
         canvasIndex++;
         return canvas;
     }
-    //AxesText prefab instead of GUIText...
     private void attachObjectLabel(GameObject target, string text, Color? color = null)
     {
 
@@ -154,7 +143,7 @@ public class ThreeDAxes : MonoBehaviour
             preFabObj.transform.parent = target.transform;
             preFabObj.transform.position = preFabObj.transform.position + target.transform.position;
             preFabObj.GetComponent<TextMesh>().text = text;
-            preFabObj.GetComponent<TextMesh>().fontSize = (int)(LastUpdatedDistance * TextSizeMultiplier);
+            preFabObj.GetComponent<TextMesh>().fontSize = (int)(LastDistance * TextSizeMultiplier);
         }
     }
     private string SigFigs(float i)
