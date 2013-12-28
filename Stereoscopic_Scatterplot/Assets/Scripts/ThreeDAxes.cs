@@ -5,7 +5,8 @@ using System;
 public class ThreeDAxes : MonoBehaviour
 {
     # region
-    public GameObject AxesTextPrefab;
+    public GameObject AxesTextPrefab;   // use in horizontal axes
+    public GameObject AxesTextOffsetPrefab; // use in vertical axes 
     public Transform Camera;
     public Shader shader;
     public Color xColor = new Color(1, 0, 0, 1f);
@@ -27,7 +28,7 @@ public class ThreeDAxes : MonoBehaviour
     private float lineSize = 0.006f;
     private float LastDistance = 0.1f; // the last mesured distance to the camera
     private float LineThicknessMultiplier = 0.01f;//
-    private float TextSizeMultiplier = 0.5f;//
+    private float CharacterSizeMultiplier = 0.01f;//
     public float LabelIntervalDivisor = 5.0f;
     public Vector2[] CameraZones;
     # endregion
@@ -63,36 +64,36 @@ public class ThreeDAxes : MonoBehaviour
         {
             LabelInterval = 50.0f;
             TickLineHeight = LastDistance * LabelHeightMultiplier;
-            LabelRangeMax = 1000;
-            LabelRangeMin = -1000;
+            LabelRangeMax = axis_range;
+            LabelRangeMin = -axis_range;
             TickLineSize = LastDistance * LineThicknessMultiplier;
-            for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval / 2)
+            for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval )
             {
                 // Y Vertical!!
-                Vector3 start = new Vector3(-TickLineHeight, i, 0);
-                Vector3 end = new Vector3(TickLineHeight, i, 0);
+                Vector3 start = new Vector3(-TickLineHeight * 2, i, 0);
+                Vector3 end = new Vector3(TickLineHeight * 2, i, 0);
                 GameObject line = createLine(start, end, TickLineSize, yTickColor);
 
-                Vector3 start2 = new Vector3(0, i, -TickLineHeight);
-                Vector3 end2 = new Vector3(0, i, TickLineHeight);
+                Vector3 start2 = new Vector3(0, i, -TickLineHeight* 2);
+                Vector3 end2 = new Vector3(0, i, TickLineHeight * 2);
                 GameObject line2 = createLine(start2, end2, TickLineSize, yTickColor);
 
-                attachObjectLabel(line, SigFigs(i), yColor);
+                attachObjectLabelOffset(line, SigFigs(i), yColor);
             }
   
             for (float i = LabelRangeMin ; i <= LabelRangeMax ; i += LabelInterval)
             {
                 // z 
-                Vector3 start = new Vector3(0, -TickLineHeight / 2, i);
-                Vector3 end = new Vector3(0, TickLineHeight / 2, i);
+                Vector3 start = new Vector3(0, -TickLineHeight, i);
+                Vector3 end = new Vector3(0, TickLineHeight, i);
                 GameObject line = createLine(start, end, TickLineSize, zTickColor);
                 attachObjectLabel(line, SigFigs(i), zColor);
             }
             for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
             {
                 // x
-                Vector3 start = new Vector3(i, -TickLineHeight / 2, 0);
-                Vector3 end = new Vector3(i, TickLineHeight / 2, 0);
+                Vector3 start = new Vector3(i, -TickLineHeight, 0);
+                Vector3 end = new Vector3(i, TickLineHeight , 0);
                 GameObject line = createLine(start, end, TickLineSize, xTickColor);
                 attachObjectLabel(line, SigFigs(i), xColor);
             }
@@ -143,7 +144,24 @@ public class ThreeDAxes : MonoBehaviour
             preFabObj.transform.parent = target.transform;
             preFabObj.transform.position = preFabObj.transform.position + target.transform.position;
             preFabObj.GetComponent<TextMesh>().text = text;
-            preFabObj.GetComponent<TextMesh>().fontSize = (int)(LastDistance * TextSizeMultiplier);
+            preFabObj.GetComponent<TextMesh>().characterSize = (int)(LastDistance * CharacterSizeMultiplier);
+        }
+    }
+    private void attachObjectLabelOffset(GameObject target, string text, Color? color = null)
+    {
+
+        GameObject preFabObj = Instantiate(AxesTextOffsetPrefab, target.transform.position, Quaternion.identity) as GameObject;
+        if (preFabObj)
+        {
+            preFabObj.transform.parent = target.transform;
+            preFabObj.transform.position = preFabObj.transform.position + target.transform.position;
+            Component[] textMeshes = GetComponentsInChildren<TextMesh>();
+            foreach (TextMesh tm in textMeshes)
+            {
+                tm.text = text;
+                tm.characterSize = (int)(LastDistance * CharacterSizeMultiplier);
+            }
+
         }
     }
     private string SigFigs(float i)
