@@ -10,18 +10,15 @@ public class ThreeDAxes : MonoBehaviour
     public Transform Camera;
     public Shader shader;
     public Color xColor = new Color(1, 0, 0, 1f);
-    public Color xTickColor = new Color(1, 0, 0, 1f);
     public Color yColor = new Color(0, 1, 0, 1f);
-    public Color yTickColor = new Color(0, 1, 0, 1f);
     public Color zColor = new Color(0, 0, 1, 1f);
-    public Color zTickColor = new Color(0, 0, 1, 1f);
     public float LabelHeightMultiplier = 0.05f;
     public bool showTicks = true;
     public bool showAxes = true;
     public int axis_range = 1000;
     private float LabelRangeMax = 1f;
     private float LabelRangeMin = 1f;// these get overwritten
-    private float LabelInterval = 5.0f;
+    private float LabelInterval = 100.0f;
     private float TickLineHeight = 0.05f;
     private float TickLineSize = 0.003f;
     private int canvasIndex = 0;
@@ -62,7 +59,6 @@ public class ThreeDAxes : MonoBehaviour
         }
         if (showTicks)
         {
-            LabelInterval = 50.0f;
             TickLineHeight = LastDistance * LabelHeightMultiplier;
             LabelRangeMax = axis_range;
             LabelRangeMin = -axis_range;
@@ -72,11 +68,11 @@ public class ThreeDAxes : MonoBehaviour
                 // Y Vertical!!
                 Vector3 start = new Vector3(-TickLineHeight * 2, i, 0);
                 Vector3 end = new Vector3(TickLineHeight * 2, i, 0);
-                GameObject line = createLine(start, end, TickLineSize, yTickColor);
+                GameObject line = createLine(start, end, TickLineSize, yColor);
 
                 Vector3 start2 = new Vector3(0, i, -TickLineHeight* 2);
                 Vector3 end2 = new Vector3(0, i, TickLineHeight * 2);
-                GameObject line2 = createLine(start2, end2, TickLineSize, yTickColor);
+                GameObject line2 = createLine(start2, end2, TickLineSize, yColor);
 
                 attachObjectLabelOffset(line, SigFigs(i), yColor);
             }
@@ -86,7 +82,7 @@ public class ThreeDAxes : MonoBehaviour
                 // z 
                 Vector3 start = new Vector3(0, -TickLineHeight, i);
                 Vector3 end = new Vector3(0, TickLineHeight, i);
-                GameObject line = createLine(start, end, TickLineSize, zTickColor);
+                GameObject line = createLine(start, end, TickLineSize, zColor);
                 attachObjectLabel(line, SigFigs(i), zColor);
             }
             for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
@@ -94,7 +90,7 @@ public class ThreeDAxes : MonoBehaviour
                 // x
                 Vector3 start = new Vector3(i, -TickLineHeight, 0);
                 Vector3 end = new Vector3(i, TickLineHeight , 0);
-                GameObject line = createLine(start, end, TickLineSize, xTickColor);
+                GameObject line = createLine(start, end, TickLineSize, xColor);
                 attachObjectLabel(line, SigFigs(i), xColor);
             }
         }
@@ -108,7 +104,7 @@ public class ThreeDAxes : MonoBehaviour
             Vector3 z_start = new Vector3(0, 0, -axis_range);
             Vector3 z_end = new Vector3(0, 0, axis_range);
             createLine(x_start, x_end, lineSize, xColor);
-            createLine(y_start, y_end, lineSize * 2, yColor);
+            createLine(y_start, y_end, lineSize, yColor);
             createLine(z_start, z_end, lineSize, zColor);
         }
     }

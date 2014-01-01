@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class Inventory : MonoBehaviour
 {
     #region
+    private int Version = 1;
     public GUISkin MenuSkin;
     public Transform MainCamera;
     public Texture ColorButtonTexture;
@@ -251,11 +252,12 @@ public class Inventory : MonoBehaviour
     {
 
         SaveFile(filename, obj);
+        Debug.Log("SaveFile x = " + obj.transform.position.x.ToString());
     }
     void TestLoad()
     {
         GameObject obj = (GameObject)LoadFile(filename);
-
+        Debug.Log("loaded x = " + obj.transform.position.x.ToString());
     }
     void TexturedButton(Texture texture)
     {
