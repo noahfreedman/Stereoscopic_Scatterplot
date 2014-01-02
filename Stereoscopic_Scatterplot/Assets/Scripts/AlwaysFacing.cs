@@ -2,14 +2,21 @@
 
 using UnityEngine;
 
- 
+
 public class AlwaysFacing : MonoBehaviour
 {
-    
-void Update()
-    {
+    public Transform Target;
 
+    void LateUpdate()
+    {
+        if (Target)
+        {
+            transform.LookAt(transform.position - Target.transform.position, Vector3.up);
+        }
+        else
+        {
             transform.LookAt(transform.position - Camera.main.transform.position, Vector3.up);
+        }
 
     }
 }
