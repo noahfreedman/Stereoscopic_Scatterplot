@@ -14,6 +14,8 @@ public class ThreeDAxes : MonoBehaviour
     public Color yColor = new Color(0, 1, 0, 1f);
     public Color zColor = new Color(0, 0, 1, 1f);
 
+    public bool showHalfTicks = false;
+    public bool showQuarterTicks = false;
     public bool showTicks = true;
     public bool showAxes = true;
     public int axis_range = 1000;
@@ -22,6 +24,8 @@ public class ThreeDAxes : MonoBehaviour
     public int LabelInterval = 100;
     public float TickLineHeight = 1.0f;
     public float LineThickness = 0.45f;
+
+    public int[] ZoomLevels;
 
     private int canvasIndex = 0;
 
@@ -55,13 +59,6 @@ public class ThreeDAxes : MonoBehaviour
     private void DestroyChildren()
     {
 		//TODO: a nice fade bewteen would be nice
-        //Transform[] allTransforms = gameObject.GetComponentsInChildren<Transform>();
-
-        //foreach (Transform childObjects in allTransforms)
-        //{
-        //    if (gameObject.transform.IsChildOf(childObjects.transform) == false)
-        //        Destroy(childObjects.gameObject);
-        //}
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
