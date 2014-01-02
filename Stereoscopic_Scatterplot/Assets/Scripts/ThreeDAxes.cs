@@ -87,7 +87,6 @@ public class ThreeDAxes : MonoBehaviour
                     Vector3 end = new Vector3(TickLineHeight * 3, i, 0);
                     GameObject line = createLine(start, end, LineThickness, yColor);
                     line.name = "yTick ";
-                    //attachObjectLabelOffset(line, SigFigs(i), yColor);
                     Vector3 start2 = new Vector3(0, i, TickLineHeight * 3);
                     Vector3 end2 = new Vector3(0, i, -TickLineHeight * 3);
                     GameObject line2 = createLine(start2, end2, LineThickness, yColor);
@@ -196,7 +195,7 @@ public class ThreeDAxes : MonoBehaviour
 
             foreach (TextMesh component in textMeshes)
             {
-                Debug.Log(text);
+
                 component.text = text;
                 component.characterSize = CharacterSize;
 
@@ -208,20 +207,6 @@ public class ThreeDAxes : MonoBehaviour
             {
                 component.Target = Camera;
             }
-            //Transform[] allTransforms = gameObject.GetComponentsInChildren<Transform>();
-
-            //foreach (Transform childObjects in allTransforms)
-            //{
-            //    childObjects.GetComponent<TextMesh>().text = text;
-            //    childObjects.GetComponent<TextMesh>().characterSize = (int)(CharacterSize);
-            //    childObjects.GetComponent<AlwaysFacing>().Target = Camera;
-            //}
-            //foreach (GameObject tm in textMeshes)
-            //{
-            //    tm.GetComponent<TextMesh>().text = text;
-            //    tm.GetComponent<TextMesh>().characterSize = (int)(CharacterSize);
-            //    tm.GetComponent<AlwaysFacing>().Target = Camera;
-            //}
 
         }
     }

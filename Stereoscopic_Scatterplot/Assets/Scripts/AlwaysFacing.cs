@@ -14,6 +14,11 @@ public class AlwaysFacing : MonoBehaviour
             transform.LookAt(Target);
             transform.Rotate(Vector3.up, 180);
         }
+        else
+        {
+            transform.LookAt(Camera.main.transform.position);
+
+        }
 
     }
 }
