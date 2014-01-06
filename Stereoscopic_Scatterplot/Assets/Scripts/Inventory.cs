@@ -7,6 +7,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 public class Inventory : MonoBehaviour
 {
     #region
+    private int Version = 1;
     public GUISkin MenuSkin;
     public Transform MainCamera;
     public Texture ColorButtonTexture;
@@ -74,7 +75,7 @@ public class Inventory : MonoBehaviour
         GUI.enabled = true;
         GUILayout.BeginHorizontal();
         GUILayout.Space((Screen.width / 2) - (MenuWidth * 2));
-        Debug.Log("DisplayMenus");
+        //Debug.Log("DisplayMenus");
 
         if (CurrentSelection == null)
         {
@@ -96,13 +97,13 @@ public class Inventory : MonoBehaviour
         GUILayout.EndVertical();
         GUILayout.EndHorizontal();
         GUI.enabled = true;
-        Debug.Log("DisplayMenus exit");
+        //Debug.Log("DisplayMenus exit");
     }
 
     void SelectableObjectsMenu()
     {
 
-        Debug.Log("SelectableObjectsMenu");
+        //Debug.Log("SelectableObjectsMenu");
         if (GUILayout.Button("(load test)"))
         {
             TestLoad();
@@ -127,7 +128,7 @@ public class Inventory : MonoBehaviour
             GUILayout.Label("0 Objects");
         }
 
-        Debug.Log("SelectableObjectsMenu exit");
+        //Debug.Log("SelectableObjectsMenu exit");
 
     }
     void SubMenuObjectProperties(GameObject obj)
@@ -251,11 +252,12 @@ public class Inventory : MonoBehaviour
     {
 
         SaveFile(filename, obj);
+        Debug.Log("SaveFile x = " + obj.transform.position.x.ToString());
     }
     void TestLoad()
     {
         GameObject obj = (GameObject)LoadFile(filename);
-
+        Debug.Log("loaded x = " + obj.transform.position.x.ToString());
     }
     void TexturedButton(Texture texture)
     {
