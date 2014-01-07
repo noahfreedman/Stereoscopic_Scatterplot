@@ -9,7 +9,7 @@ public class ThreeDAxes : MonoBehaviour
     public GameObject AxesTextPrefab;   // use in horizontal axes
     public GameObject AxesTextOffsetPrefab; // use in vertical axes 
     public Transform MainCamera;
-    public Shader shader;
+    public Shader Shader;
     public Color xColor = new Color(1, 0, 0, 1f);
     public Color yColor = new Color(0, 1, 0, 1f);
     public Color zColor = new Color(0, 0, 1, 1f);
@@ -26,6 +26,7 @@ public class ThreeDAxes : MonoBehaviour
     public float LineThickness = 0.45f;
     public float VerticalLabelsOffset = 1.0f;
     public float CharacterSize = 2.0f;//
+ 
 
     private int canvasIndex = 0;
     private int LabelRangeMax = 1;
@@ -46,18 +47,10 @@ public class ThreeDAxes : MonoBehaviour
             Destroy(child.gameObject);
         }
     }
-    private void BuildAxes(int zoomLevel = 0)
+    private void BuildAxes()
     {
-        // The question is
-        // what parameters are needed to change between drawing the smallest axis and the n number of versions?
-        // label range max min? yes
-        // axis range too. 
-        // at closer ranges are we adding / removing labels
-        // axis themselves get thinner
-        // LabelInterval
+
         DestroyChildren(); // this is slow
-
-
         if (showTicks)
         {
 
@@ -70,7 +63,7 @@ public class ThreeDAxes : MonoBehaviour
 
                 // Y Vertical
                 // The origin is nearly always far from camera so this will be fatter 3X
-                if (i != 0)
+                if (Math.Abs(i) >= LabelInterval)
                 {
                     Vector3 start = new Vector3(-TickLineHeight * 3, i, 0);
                     Vector3 end = new Vector3(TickLineHeight * 3, i, 0);
@@ -91,7 +84,7 @@ public class ThreeDAxes : MonoBehaviour
             for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
             {
                 // z
-                if (i != 0)
+                if (Math.Abs(i) >= LabelInterval)
                 {
                     Vector3 start = new Vector3(0, -TickLineHeight, i);
                     Vector3 end = new Vector3(0, TickLineHeight, i);
@@ -104,7 +97,7 @@ public class ThreeDAxes : MonoBehaviour
             for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
             {
                 // x
-                if (i != 0)
+                if (Math.Abs(i) >= LabelInterval)
                 {
                     Vector3 start = new Vector3(i, -TickLineHeight, 0);
                     Vector3 end = new Vector3(i, TickLineHeight, 0);
@@ -136,7 +129,7 @@ public class ThreeDAxes : MonoBehaviour
     }
     private GameObject createLine(Vector3 start, Vector3 end, float lineSize, Color c)
     {
-        return createLine(start, end, lineSize, c, shader);
+        return createLine(start, end, lineSize, c, Shader);
     }
     private GameObject createLine(Vector3 start, Vector3 end, float lineSize, Color c, Shader s)
     {
@@ -208,18 +201,8 @@ public class ThreeDAxes : MonoBehaviour
     {
         return SignificantDigits.ToString(System.Convert.ToDouble(i), 2);
     }
-    private string SigFigs(int i)
-    {
 
-        return i.ToString();
-    }
-    private string SigFifths(float i)
-    {
-        i = (float)Math.Round(i / 5.0) * 5;
-        return SignificantDigits.ToString(System.Convert.ToDouble(i), 2);
-    }
-
-
+ 
 }
 
 
