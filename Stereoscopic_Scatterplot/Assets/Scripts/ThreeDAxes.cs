@@ -8,7 +8,7 @@ public class ThreeDAxes : MonoBehaviour
     # region
     public GameObject AxesTextPrefab;   // use in horizontal axes
     public GameObject AxesTextOffsetPrefab; // use in vertical axes 
-    public Transform Camera;
+    public Transform MainCamera;
     public Shader shader;
     public Color xColor = new Color(1, 0, 0, 1f);
     public Color yColor = new Color(0, 1, 0, 1f);
@@ -19,65 +19,57 @@ public class ThreeDAxes : MonoBehaviour
     public bool showTicks = true;
     public bool showAxes = true;
     public int axis_range = 1000;
-    private int LabelRangeMax = 1;
-    private int LabelRangeMin = 1;// these get overwritten
-    public int LabelInterval = 100;
+    public int LabelRange = 1000;
+
+    public float LabelInterval = 100;
     public float TickLineHeight = 1.0f;
     public float LineThickness = 0.45f;
-
-    public int[] ZoomLevels;
+    public float VerticalLabelsOffset = 1.0f;
+    public float CharacterSize = 2.0f;//
 
     private int canvasIndex = 0;
+    private int LabelRangeMax = 1;
+    private int LabelRangeMin = 1;// these get overwritten
 
-    private float LastDistance = 0.1f;
-    // the last measured distance from this transform (axis origin) to the camera
-    // used to scale labels axis line thickness and label interval
-    public float CharacterSize = 2.0f;//
     # endregion
     void Start()
     {
-        LastDistance = (float)System.Math.Round(Vector3.Distance(transform.position, Camera.transform.position));
+
         BuildAxes();
     }
-    void Update()
-    {
-        // recreate axis when distance from origin changes 
-        //float currentDistance = (float)System.Math.Round(Vector3.Distance(transform.position, Camera.transform.position));
-        float currentDistance = (float)Vector3.Distance(transform.position, Camera.transform.position);
-        bool nearX = Math.Abs(Camera.transform.position.x) > Math.Abs(Camera.transform.position.z);
 
-        // when the cam's relative position changes 
-
-        if ((LastDistance < currentDistance) || (LastDistance > currentDistance))
-        {
-            //BuildAxes();
-            //TODO: Smarter way: Remove delete from drawaxes. instead update the values..
-        }
-
-        LastDistance = currentDistance;
-    }
     private void DestroyChildren()
     {
-		//TODO: a nice fade bewteen would be nice
+        //TODO: a nice fade bewteen would be nice
         foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
     }
-    private void BuildAxes()
+    private void BuildAxes(int zoomLevel = 0)
     {
+        // The question is
+        // what parameters are needed to change between drawing the smallest axis and the n number of versions?
+        // label range max min? yes
+        // axis range too. 
+        // at closer ranges are we adding / removing labels
+        // axis themselves get thinner
+        // LabelInterval
         DestroyChildren(); // this is slow
+
+
         if (showTicks)
         {
 
-            LabelRangeMax = axis_range;
-            LabelRangeMin = -axis_range;
+            LabelRangeMax = LabelRange;
+            LabelRangeMin = -LabelRange;
 
-            for (int i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
+
+            for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
             {
 
                 // Y Vertical
-                // The origin is nearly always far from camera so this will be fatter
+                // The origin is nearly always far from camera so this will be fatter 3X
                 if (i != 0)
                 {
                     Vector3 start = new Vector3(-TickLineHeight * 3, i, 0);
@@ -91,12 +83,12 @@ public class ThreeDAxes : MonoBehaviour
                     line2.name = "yTick " + i.ToString();
                     line.transform.parent = transform;
                     line2.transform.parent = transform;
-  
+
                     LabelVerticalAxes(line2, SigFigs(i), yColor);
                 }
             }
 
-            for (int i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval )
+            for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
             {
                 // z
                 if (i != 0)
@@ -109,7 +101,7 @@ public class ThreeDAxes : MonoBehaviour
                     LabelAxes(line, SigFigs(i), zColor);
                 }
             }
-            for (int i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
+            for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
             {
                 // x
                 if (i != 0)
@@ -133,7 +125,7 @@ public class ThreeDAxes : MonoBehaviour
             Vector3 z_start = new Vector3(0, 0, -axis_range);
             Vector3 z_end = new Vector3(0, 0, axis_range);
             GameObject xLine = createLine(x_start, x_end, LineThickness, xColor);
-            GameObject yLine = createLine(y_start, y_end, LineThickness *3, yColor);
+            GameObject yLine = createLine(y_start, y_end, LineThickness * 3, yColor);
             GameObject zLine = createLine(z_start, z_end, LineThickness, zColor);
 
             xLine.transform.parent = transform;
@@ -175,8 +167,8 @@ public class ThreeDAxes : MonoBehaviour
             //preFabObj.transform.position = preFabObj.transform.position + target.transform.position;
             preFabObj.transform.parent = target.transform;
             preFabObj.GetComponent<TextMesh>().text = text;
-            preFabObj.GetComponent<AlwaysFacing>().Target = Camera;
-            preFabObj.GetComponent<TextMesh>().characterSize = (int)(CharacterSize);
+            preFabObj.GetComponent<AlwaysFacing>().Target = MainCamera;
+            preFabObj.GetComponent<TextMesh>().characterSize = CharacterSize;
         }
     }
     private void LabelVerticalAxes(GameObject target, string text, Color? color = null)
@@ -187,7 +179,7 @@ public class ThreeDAxes : MonoBehaviour
         if (preFabObj)
         {
             preFabObj.transform.parent = target.transform;
-			Component[] textMeshes = preFabObj.GetComponentsInChildren<TextMesh>();
+            Component[] textMeshes = preFabObj.GetComponentsInChildren<TextMesh>();
 
 
             foreach (TextMesh component in textMeshes)
@@ -196,15 +188,20 @@ public class ThreeDAxes : MonoBehaviour
                 component.text = text;
                 component.characterSize = CharacterSize;
 
+
+
+                Vector3 labelPosition = component.transform.position;
+                labelPosition.x = VerticalLabelsOffset;
+                component.transform.position = labelPosition;
+
             }
             preFabObj.transform.GetComponentInChildren<TextMesh>().text = text;
-            Component[] facings = GetComponentsInChildren<AlwaysFacing>();
+            Component[] components = GetComponentsInChildren<AlwaysFacing>();
 
-            foreach (AlwaysFacing component in facings)
+            foreach (AlwaysFacing component in components)
             {
-                component.Target = Camera;
+                component.Target = MainCamera;
             }
-
         }
     }
     private string SigFigs(float i)
@@ -221,6 +218,8 @@ public class ThreeDAxes : MonoBehaviour
         i = (float)Math.Round(i / 5.0) * 5;
         return SignificantDigits.ToString(System.Convert.ToDouble(i), 2);
     }
+
+
 }
 
 
