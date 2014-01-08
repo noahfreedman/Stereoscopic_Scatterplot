@@ -373,9 +373,9 @@ public class Menu1 : MonoBehaviour
 
     void MenuDemoMode()
     {
-        GUILayout.Label("Demo Rotation");
+        GUILayout.Label("Auto Rotation");
 
-        hSliderValue = GUI.HorizontalSlider(new Rect(25, 25, 100, 30), hSliderValue, -(RotationalSpeedMax), RotationalSpeedMax);
+		hSliderValue = GUI.HorizontalSlider(new Rect(25, 25, 100, 30), hSliderValue, -RotationalSpeedMax, RotationalSpeedMax);
         if (MainCamera)
         {
             MainCamera.GetComponent<DemoOrbitCamera>().RotationSpeed = hSliderValue;
@@ -403,7 +403,7 @@ public class Menu1 : MonoBehaviour
         GUI.enabled = true;
 
 
-        AxisObject.active = GUILayout.Toggle(AxisObject.active, "Hide Axis");
+        AxisObject.active = GUILayout.Toggle(AxisObject.active, "Show Axis");
         DoubleMenu = GUILayout.Toggle(DoubleMenu, "Steroscope Menu");
         Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu;
 
@@ -461,7 +461,7 @@ public class Menu1 : MonoBehaviour
             {
                 SubMenuOptions = true;
             }
-            if (GUILayout.Button("Demo Mode"))
+            if (GUILayout.Button("Auto-Rotation"))
             {
                 SubMenuDemo = true;
             }
