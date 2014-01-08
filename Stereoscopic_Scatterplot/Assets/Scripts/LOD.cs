@@ -27,16 +27,22 @@ public class LOD : MonoBehaviour
 
 		void Update ()
 		{
-				runtimeCameraDistance = cameraDistance;
-				for (int i = 0; i < LODs.Count; i++) {
-		
-						if ((runtimeCameraDistance >= LODRanges [i].x) & (runtimeCameraDistance < LODRanges [i].y)) {
-				
-								LODs [i].SetActive (true);
-						} else {
-			
-								LODs [i].SetActive (false);
-						}
-				}
+ 
+                runtimeCameraDistance = cameraDistance;
+                for (int i = 0; i < LODs.Count; i++)
+                {
+
+                    if ((runtimeCameraDistance >= LODRanges[i].x) & (runtimeCameraDistance < LODRanges[i].y))
+                    {
+
+                        LODs[i].SetActive(true);
+
+                    }
+                    else
+                    {
+
+                        LODs[i].SetActive(false);
+                    }
+                }
 		}
 }
