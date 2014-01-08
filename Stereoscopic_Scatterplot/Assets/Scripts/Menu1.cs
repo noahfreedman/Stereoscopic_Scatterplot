@@ -466,7 +466,7 @@ public class Menu1 : MonoBehaviour
                 SubMenuDemo = true;
             }
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Minimize"))
+            if (GUILayout.Button("Close"))
             {
                 BackButton();
             }
@@ -474,7 +474,8 @@ public class Menu1 : MonoBehaviour
             {
                 ShowingSubmenu = false;
                 // TODO: Application.Quit isn't working in debug... be sure to try in a build
-                Application.Quit();
+                //Application.Quit();
+				System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
             GUILayout.EndHorizontal();
             //GUILayout.EndVertical();
