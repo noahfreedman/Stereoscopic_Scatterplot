@@ -26,7 +26,9 @@ public class MyCamera : SFCamera {
 	
     public MainMenu demo1 = null;
 	public RenderTextureDemo rttDemo = null;
-	
+
+	public String swfFile = "MainMenu3D.swf";
+
 	////////////////
 	public const int STATE_BEGIN = 1;
 	public const int STATE_MAIN_MENU = 2;
@@ -132,7 +134,7 @@ public class MyCamera : SFCamera {
     {
         if (demo1 == null)
         {
-            SFMovieCreationParams creationParams = CreateMovieCreationParams("MainMenu.swf");
+            SFMovieCreationParams creationParams = CreateMovieCreationParams(swfFile);
             creationParams.TheScaleModeType  = ScaleModeType.SM_ShowAll;
             creationParams.IsInitFirstFrame = false;
             demo1 = new MainMenu(this, SFMgr, creationParams);
