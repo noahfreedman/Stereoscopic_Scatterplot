@@ -43,9 +43,8 @@ public class Menu1 : MonoBehaviour
     private string string_Y_min = "-2.0";
     private string string_Y_interval = "0.2";
     private string string_Y_max = "2.0";
-    private Vector3 centerPosition;
-    private string menuFileName = "default.csv";
-    private string menuFilePath = "";
+	private Vector3 centerPosition;
+	private string menuFilePath = "Enter a full file path.";
     public float hSliderValue = 0.0f;
     private float RotationalSpeedMax = 6.0f;
 
@@ -53,12 +52,10 @@ public class Menu1 : MonoBehaviour
     void Start()
     {
         centerPosition = Vector3.zero;
-        menuFileName = Inventory.GetComponent<LoadPoints>().fileName.ToString();
-        menuFilePath = Inventory.GetComponent<LoadPoints>()._filePath.ToString();
-
-    }
-
-    void Update()
+		menuFilePath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+	}
+	
+	void Update()
     {
         // esc opens the option menu, closes submenus.
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -314,24 +311,13 @@ public class Menu1 : MonoBehaviour
 
     void MenuLoadPoints()
     {
-        string fp = Inventory.GetComponent<LoadPoints>()._filePath;
-        string fn = Inventory.GetComponent<LoadPoints>().fileName;
-        string labelName = System.IO.Path.Combine(fp, fn);
-
-
-        GUILayout.Label(labelName);
-
-        menuFileName = GUILayout.TextField(menuFileName);
+        menuFilePath = GUILayout.TextField(menuFilePath);
 
         GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Set"))
-        {
-            Inventory.GetComponent<LoadPoints>().fileName = menuFileName;
-
-        }
         if (GUILayout.Button("Load"))
-        {
-            Inventory.GetComponent<LoadPoints>().LoadPointsFile();
+		{
+			Inventory.GetComponent<LoadPoints>()._filePath = menuFilePath;
+			Inventory.GetComponent<LoadPoints>().LoadPointsFile();
         }
         if (GUILayout.Button("Back"))
         {
@@ -342,14 +328,14 @@ public class Menu1 : MonoBehaviour
         GUILayout.EndVertical();
 
         GUILayout.BeginVertical("box");
-        List<string> foundRecentFilenames = Inventory.GetComponent<LoadPoints>().recentFiles;
+        /*List<string> foundRecentFilenames = Inventory.GetComponent<LoadPoints>().recentFiles;
         if (foundRecentFilenames.Count > 0)
         {
             foreach (string recentFile in foundRecentFilenames)
             {
                 GUILayout.Label(recentFile);
             }
-        }
+        }*/
 
     }
 
@@ -413,8 +399,6 @@ public class Menu1 : MonoBehaviour
 
     void MenuOptions()
     {
-        string csvPath = Inventory.GetComponent<LoadPoints>()._filePath.ToString();
-        string csvFilename = Inventory.GetComponent<LoadPoints>().fileName.ToString();
 
         GUI.enabled = true;
 

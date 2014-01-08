@@ -9,40 +9,36 @@ using System.Collections.Generic;
 /// </summary>
 public class LOD : MonoBehaviour
 {
-		public GameObject CameraTransform;
-		public List<GameObject> LODs;
-		public List<Vector2> LODRanges;
-		public float runtimeCameraDistance;
+	public GameObject CameraTransform;
+	public List<GameObject> LODs;
+	public List<Vector2> LODRanges;
+	public float runtimeCameraDistance;
 
-		public float cameraDistance {
-				get {
-						return Vector3.Distance (CameraTransform.transform.position, transform.position); 
-				}
+	public float cameraDistance {
+		get {
+			return Vector3.Distance (CameraTransform.transform.position, transform.position); 
 		}
+	}
 	
-		void Start ()
-		{
+	void Start ()
+	{
 		
-		}
+	}
 
-		void Update ()
-		{
+	void Update ()
+	{
  
-                runtimeCameraDistance = cameraDistance;
-                for (int i = 0; i < LODs.Count; i++)
-                {
+		runtimeCameraDistance = cameraDistance;
+		for (int i = 0; i < LODs.Count; i++) {
 
-                    if ((runtimeCameraDistance >= LODRanges[i].x) & (runtimeCameraDistance < LODRanges[i].y))
-                    {
+			if ((runtimeCameraDistance >= LODRanges [i].x) & (runtimeCameraDistance < LODRanges [i].y)) {
 
-                        LODs[i].SetActive(true);
+				LODs [i].SetActive (true);
 
-                    }
-                    else
-                    {
+			} else {
 
-                        LODs[i].SetActive(false);
-                    }
-                }
+				LODs [i].SetActive (false);
+			}
 		}
+	}
 }
