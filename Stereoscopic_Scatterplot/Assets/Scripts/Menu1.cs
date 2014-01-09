@@ -5,6 +5,7 @@ public class Menu1 : MonoBehaviour
 {
     #region
 
+	public Font font;
     public GUISkin MenuSkin;
     public Transform MainCamera;
     public Texture OnButtonTexture;
@@ -51,7 +52,7 @@ public class Menu1 : MonoBehaviour
     #endregion
     void Start()
     {
-        centerPosition = Vector3.zero;
+		centerPosition = Vector3.zero;
 		menuFilePath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
 	}
 	
