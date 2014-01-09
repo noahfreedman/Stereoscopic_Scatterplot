@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlaneData : MonoBehaviour {
+public class PlaneData : BaseData {
 	public Vector3 point1;
 	public Vector3 point2;
 

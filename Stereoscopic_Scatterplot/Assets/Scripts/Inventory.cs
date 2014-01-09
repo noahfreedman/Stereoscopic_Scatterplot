@@ -102,12 +102,6 @@ public class Inventory : MonoBehaviour
 
     void SelectableObjectsMenu()
     {
-
-        //Debug.Log("SelectableObjectsMenu");
-        if (GUILayout.Button("(load test)"))
-        {
-            TestLoad();
-        }
         if (transform.childCount > 0)
         {
             foreach (Transform child in transform)
@@ -200,10 +194,6 @@ public class Inventory : MonoBehaviour
             {
                 Destroy(obj); // note this makes SelectedObject null, making it unselected.
             }
-            if (GUILayout.Button("save test"))
-            {
-                TestSave(obj); // note this makes SelectedObject null, making it unselected.
-            }
 
         }
 
@@ -248,17 +238,6 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    void TestSave(GameObject obj)
-    {
-
-        SaveFile(filename, obj);
-        Debug.Log("SaveFile x = " + obj.transform.position.x.ToString());
-    }
-    void TestLoad()
-    {
-        GameObject obj = (GameObject)LoadFile(filename);
-        Debug.Log("loaded x = " + obj.transform.position.x.ToString());
-    }
     void TexturedButton(Texture texture)
     {
         if (texture)
@@ -279,7 +258,10 @@ public class Inventory : MonoBehaviour
         }
 
     }
-    public static void SaveFile(string filename, System.Object obj)
+	public void SaveScene() {
+
+	}
+    public void SaveFile(string filename, System.Object obj)
     {
         try
         {

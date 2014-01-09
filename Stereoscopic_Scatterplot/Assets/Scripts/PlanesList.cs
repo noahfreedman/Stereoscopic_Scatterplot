@@ -16,6 +16,9 @@ public class PlanesList : ObjectContainer {
 
 		plane.transform.parent = transform;
 		plane.renderer.material = planeMaterial;
+		PlaneData data = (PlaneData) plane.AddComponent("PlaneData");
+		data.point1 = point1;
+		data.point2 = point2;
 		gameObjects.Add(plane);
 	}
 }

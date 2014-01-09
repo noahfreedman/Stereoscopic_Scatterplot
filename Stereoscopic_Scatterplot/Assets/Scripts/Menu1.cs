@@ -10,7 +10,7 @@ public class Menu1 : MonoBehaviour
     public Transform MainCamera;
     public Texture OnButtonTexture;
 
-    public GameObject Inventory;
+    public Inventory Inventory;
     public GameObject AxisObject;
 
     // menu state
@@ -183,18 +183,19 @@ public class Menu1 : MonoBehaviour
         string_Y_0 = GUILayout.TextField(string_Y_0);
         string_Z_0 = GUILayout.TextField(string_Z_0);
         GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Point 2");
-        string_X_1 = GUILayout.TextField(string_X_1);
-        string_Y_1 = GUILayout.TextField(string_Y_1);
-        string_Z_1 = GUILayout.TextField(string_Z_1);
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("Create Plane"))
+		
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("Point 2");
+		string_X_1 = GUILayout.TextField(string_X_1);
+		string_Y_1 = GUILayout.TextField(string_Y_1);
+		string_Z_1 = GUILayout.TextField(string_Z_1);
+		GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.BeginHorizontal();
+		
+		if (GUILayout.Button("Create Plane"))
         {
-            Vector3 startPosition = GUIVectorFromStrings(string_X_0, string_Y_0, string_Z_0);
+			Vector3 startPosition = VectorFromStrings(string_X_0, string_Y_0, string_Z_0);
             Vector3 endPosition = VectorFromStrings(string_X_1, string_Y_1, string_Z_1);
             Inventory.GetComponent<PlanesList>().AddPlane(startPosition, endPosition);
         }
@@ -415,6 +416,10 @@ public class Menu1 : MonoBehaviour
 
     }
 
+	void OpenScene() {
+
+	}
+
     void MainMenu()
     {
         //Menu Hides itself
@@ -461,13 +466,21 @@ public class Menu1 : MonoBehaviour
             if (GUILayout.Button("Options"))
             {
                 SubMenuOptions = true;
-            }
-            if (GUILayout.Button("Auto-Rotation"))
-            {
-                SubMenuDemo = true;
-            }
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Close"))
+			}
+			if (GUILayout.Button("Auto-Rotation"))
+			{
+				SubMenuDemo = true;
+			}
+			if (GUILayout.Button("Open Scene"))
+			{
+				//go to open menu
+			}
+			if (GUILayout.Button("Save Scene"))
+			{
+				Inventory.SaveFile();
+			}
+			GUILayout.BeginHorizontal();
+			if (GUILayout.Button("Close"))
             {
                 BackButton();
             }
