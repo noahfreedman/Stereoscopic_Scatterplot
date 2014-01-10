@@ -410,7 +410,7 @@ public class Menu1 : MonoBehaviour
 
 
     }
-
+    private bool disableStereoMode ;
     void MenuOptions()
     {
         string csvPath = Inventory.GetComponent<LoadPoints>()._filePath.ToString();
@@ -419,10 +419,24 @@ public class Menu1 : MonoBehaviour
         GUI.enabled = true;
 
 
-        AxisObject.active = GUILayout.Toggle(AxisObject.active, "Hide Axis");
-        DoubleMenu = GUILayout.Toggle(DoubleMenu, "Steroscope Menu");
-        Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu;
+        AxisObject.active = GUILayout.Toggle(AxisObject.active, "   Hide Axis");
 
+        Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu;
+        disableStereoMode = GUILayout.Toggle(disableStereoMode, "   Disable Stero Mode?");
+        if (disableStereoMode)
+        {
+            DoubleMenu = false;
+            GUI.enabled = false;
+            MainCamera.active = false;
+        }
+        else
+        {
+            GUI.enabled = true;
+            MainCamera.active = true;
+        }
+        DoubleMenu = GUILayout.Toggle(DoubleMenu, "   Steroscope Menu");
+
+        GUI.enabled = true;
         if (GUILayout.Button("Back"))
         {
             BackButton();
