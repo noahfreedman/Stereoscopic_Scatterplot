@@ -7,6 +7,8 @@ public class Menu1 : MonoBehaviour
 
     public GUISkin MenuSkin;
     public Transform MainCamera;
+    public Transform LeftCamera;
+    public Transform RightCamera;
     public Texture OnButtonTexture;
 
     public GameObject Inventory;
@@ -422,17 +424,21 @@ public class Menu1 : MonoBehaviour
         AxisObject.active = GUILayout.Toggle(AxisObject.active, "   Hide Axis");
 
         Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu;
-        disableStereoMode = GUILayout.Toggle(disableStereoMode, "   Disable Stero Mode?");
+        disableStereoMode = GUILayout.Toggle(disableStereoMode, "   Disable Stero Mode");
         if (disableStereoMode)
         {
             DoubleMenu = false;
             GUI.enabled = false;
-            MainCamera.active = false;
+            //MainCamera.active = false;
+            LeftCamera.GetComponent<Camera>().active = false;
+            RightCamera.GetComponent<Camera>().active = false;
         }
         else
         {
             GUI.enabled = true;
-            MainCamera.active = true;
+            //MainCamera.active = true;
+            LeftCamera.GetComponent<Camera>().active = true;
+            RightCamera.GetComponent<Camera>().active = true;
         }
         DoubleMenu = GUILayout.Toggle(DoubleMenu, "   Steroscope Menu");
 
@@ -461,7 +467,7 @@ public class Menu1 : MonoBehaviour
         else
         {
             //GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth));
-
+            //disableStereoMode = GUILayout.Toggle(disableStereoMode, "   Disable Stero Mode?");
             if (GUILayout.Button("Create Line.."))
             {
                 SubMenuCreateLine = true;
@@ -495,6 +501,7 @@ public class Menu1 : MonoBehaviour
             {
                 SubMenuDemo = true;
             }
+            //disableStereoMode = GUILayout.Toggle(disableStereoMode, "   Disable Stero Mode?");
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Minimize"))
             {
@@ -506,6 +513,7 @@ public class Menu1 : MonoBehaviour
                 // TODO: Application.Quit isn't working in debug... be sure to try in a build
                 Application.Quit();
             }
+
             GUILayout.EndHorizontal();
             //GUILayout.EndVertical();
             GUI.enabled = true;
