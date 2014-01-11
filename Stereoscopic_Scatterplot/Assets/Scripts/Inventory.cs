@@ -11,6 +11,7 @@ public class Inventory : MonoBehaviour
     public GUISkin MenuSkin;
     public Transform MainCamera;
     public Texture ColorButtonTexture;
+    public bool StereoMenu = true;
     public bool DoubleMenu = false; // Main menu controls this
     public float MenuWidth = 200;
     private float MenuHeight = 200;
@@ -74,7 +75,14 @@ public class Inventory : MonoBehaviour
 
         GUI.enabled = true;
         GUILayout.BeginHorizontal();
-        GUILayout.Space((Screen.width / 2) - (MenuWidth * 2));
+        if (StereoMenu)
+        {
+            GUILayout.Space((Screen.width / 2) - (MenuWidth * 2));
+        }
+        else
+        {
+            GUILayout.Space((Screen.width) - (MenuWidth * 2));
+        }
         //Debug.Log("DisplayMenus");
 
         if (CurrentSelection == null)

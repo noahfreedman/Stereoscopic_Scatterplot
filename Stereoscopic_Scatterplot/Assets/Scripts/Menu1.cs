@@ -412,7 +412,7 @@ public class Menu1 : MonoBehaviour
 
 
     }
-    private bool disableStereoMode ;
+    private bool isStereoMode = true;
     void MenuOptions()
     {
         string csvPath = Inventory.GetComponent<LoadPoints>()._filePath.ToString();
@@ -424,22 +424,34 @@ public class Menu1 : MonoBehaviour
         AxisObject.active = GUILayout.Toggle(AxisObject.active, "   Hide Axis");
 
         Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu;
-        disableStereoMode = GUILayout.Toggle(disableStereoMode, "   Disable Stero Mode");
-        if (disableStereoMode)
+        isStereoMode = GUILayout.Toggle(isStereoMode, "   Stero Mode");
+
+
+        //DoubleMenu = isStereoMode;
+        GUI.enabled = isStereoMode;
+        LeftCamera.GetComponent<Camera>().active = isStereoMode;
+        RightCamera.GetComponent<Camera>().active = isStereoMode;
+        if (Inventory.GetComponent<Inventory>())
         {
-            DoubleMenu = false;
-            GUI.enabled = false;
-            //MainCamera.active = false;
-            LeftCamera.GetComponent<Camera>().active = false;
-            RightCamera.GetComponent<Camera>().active = false;
+            Inventory.GetComponent<Inventory>().StereoMenu = isStereoMode;
         }
-        else
-        {
-            GUI.enabled = true;
-            //MainCamera.active = true;
-            LeftCamera.GetComponent<Camera>().active = true;
-            RightCamera.GetComponent<Camera>().active = true;
-        }
+        //if (disableStereoMode)
+        //{
+        //    DoubleMenu = false;
+        //    GUI.enabled = false;
+
+        //    LeftCamera.GetComponent<Camera>().active = false;
+        //    RightCamera.GetComponent<Camera>().active = false;
+        //    AxisObject.GetComponent<Inventory>().DoubleMenu = false;
+        //}
+        //else
+        //{
+        //    GUI.enabled = true;
+        //    //MainCamera.active = true;
+        //    LeftCamera.GetComponent<Camera>().active = true;
+        //    RightCamera.GetComponent<Camera>().active = true;
+        //    AxisObject.GetComponent<Inventory>().DoubleMenu = true;
+        //}
         DoubleMenu = GUILayout.Toggle(DoubleMenu, "   Steroscope Menu");
 
         GUI.enabled = true;
