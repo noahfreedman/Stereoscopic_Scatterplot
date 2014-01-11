@@ -424,7 +424,7 @@ public class Menu1 : MonoBehaviour
         AxisObject.active = GUILayout.Toggle(AxisObject.active, "   Hide Axis");
 
         Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu;
-        isStereoMode = GUILayout.Toggle(isStereoMode, "   Stero Mode");
+        isStereoMode = GUILayout.Toggle(isStereoMode, "   Stereo Menu Mode");
 
 
         //DoubleMenu = isStereoMode;
