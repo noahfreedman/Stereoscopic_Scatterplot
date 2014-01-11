@@ -112,10 +112,10 @@ public class Inventory : MonoBehaviour
     {
 
         //Debug.Log("SelectableObjectsMenu");
-        if (GUILayout.Button("(load test)"))
-        {
-            TestLoad();
-        }
+        //if (GUILayout.Button("(load test)"))
+        //{
+        //    TestLoad();
+        //}
         if (transform.childCount > 0)
         {
             foreach (Transform child in transform)
@@ -208,10 +208,10 @@ public class Inventory : MonoBehaviour
             {
                 Destroy(obj); // note this makes SelectedObject null, making it unselected.
             }
-            if (GUILayout.Button("save test"))
-            {
-                TestSave(obj); // note this makes SelectedObject null, making it unselected.
-            }
+            //if (GUILayout.Button("save test"))
+            //{
+            //    TestSave(obj); // note this makes SelectedObject null, making it unselected.
+            //}
 
         }
 
