@@ -1,17 +1,15 @@
 using UnityEngine;
-using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 
 //this one
-public class LoadPoints : MonoBehaviour
+public class LoadedPointsList : PointsList
 {
-	public List<GameObject> CreatedPoints;
-	public GameObject PointPrefab;
+	public GameObject pointPrefab;
 	public string _filePath = "";
 	public List<string> recentFiles;
-	private ArrayList points;
+	private List<Vector3S> points;
 	private string notificationMessage = "";
 	private float minX = Mathf.Infinity;
 	private float minY = Mathf.Infinity;
@@ -21,7 +19,7 @@ public class LoadPoints : MonoBehaviour
 	private float maxZ = Mathf.NegativeInfinity;
 	private float scale;
 		
-	void pointsArrayListToObjects (ArrayList pointarray)
+	void pointsArrayListToObjects (List<Vector3S> pointarray)
 	{
 		//point size to 1% of longest range
 		float longestRange = maxX - minX;
@@ -29,22 +27,11 @@ public class LoadPoints : MonoBehaviour
 		if (maxZ - minZ > longestRange) longestRange = maxZ - minZ;
 		scale = longestRange / 100f;
 				
-		GameObject group = new GameObject ();
+		PointsData pointsData = new PointsData();
 		string fileName = System.IO.Path.GetFileName (_filePath);
-		group.name = fileName;
-		group.transform.parent = transform;
-		//group.transform.rotation = transform.rotation;
-
-		foreach (Vector3 point in pointarray) {
-
-			GameObject preFabObj = Instantiate (PointPrefab, point, Quaternion.identity) as GameObject;
-			if (preFabObj) {			
-				preFabObj.transform.parent = group.transform;
-				preFabObj.transform.localScale = new Vector3(scale, scale, scale);
-			}
-			
-		}
-		CreatedPoints.Add (group);
+		pointsData.name = fileName;
+		pointsData.points = pointarray;
+		CreatePoints(pointsData);
 	}
 
 	public void showNotification (string s)
@@ -71,7 +58,7 @@ public class LoadPoints : MonoBehaviour
 
 		pointFilePath = System.IO.Path.GetFullPath (_filePath);
 		//_filePath = pointFilePath;
-		points = new ArrayList ();	
+		points = new List<Vector3S> ();	
 
 		bool hasHeaders = false;
 
@@ -94,7 +81,7 @@ public class LoadPoints : MonoBehaviour
 					float y = float.Parse (values [1]);
 					float z = float.Parse (values [2]);
 					//add to point ArrayList
-					points.Add (new Vector3 (x, y, z));
+					points.Add (new Vector3S (x, y, z));
 					if (x < minX)
 						minX = x;	
 					if (y < minY)
@@ -117,5 +104,8 @@ public class LoadPoints : MonoBehaviour
 			showNotification (f.Message);
 		}
 
+	}
+	public GameObject CreatePoints(PointsData pointsData) {
+		return CreatePoints (pointsData, pointPrefab);
 	}
 }

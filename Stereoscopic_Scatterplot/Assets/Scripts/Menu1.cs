@@ -142,10 +142,20 @@ public class Menu1 : MonoBehaviour
             MainMenuButton();
         }
     }
-
+	void CloseMenu() {
+        ShowingSubmenu = false;
+        SubMenuCreateLine = false;
+        SubMenuCreatePlane = false;
+        SubMenuCreatePlanarFunction = false;
+        SubMenuLoadPoints = false;
+        SubMenuGenPoints = false;
+        SubMenuOptions = false;
+        SubMenuCreateSinglePoint = false;
+        SubMenuDemo = false;
+	}
     void BackButton()
     {
-        ShowingSubmenu = !ShowingSubmenu;
+        ShowingSubmenu = true;
         SubMenuCreateLine = false;
         SubMenuCreatePlane = false;
         SubMenuCreatePlanarFunction = false;
@@ -190,7 +200,6 @@ public class Menu1 : MonoBehaviour
 		string_Y_1 = GUILayout.TextField(string_Y_1);
 		string_Z_1 = GUILayout.TextField(string_Z_1);
 		GUILayout.EndHorizontal();
-		GUILayout.BeginHorizontal();
 		GUILayout.BeginHorizontal();
 		
 		if (GUILayout.Button("Create Plane"))
@@ -263,7 +272,7 @@ public class Menu1 : MonoBehaviour
 
             Vector3 point = GUIVectorFromStrings(string_X_0, string_Y_0, string_Z_0);
 
-            Inventory.GetComponent<RandomPoints>().createSinglePoint(point);
+            Inventory.GetComponent<ScatterplotList>().createSinglePoint(point);
         }
         if (GUILayout.Button("Back"))
         {
@@ -301,7 +310,7 @@ public class Menu1 : MonoBehaviour
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Generate"))
         {
-            Inventory.GetComponent<RandomPoints>().createRandomPoints(centerPosition, numberInput, floatInput);
+            Inventory.GetComponent<ScatterplotList>().createRandomPoints(centerPosition, numberInput, floatInput);
         }
         if (GUILayout.Button("Back"))
         {
@@ -318,8 +327,8 @@ public class Menu1 : MonoBehaviour
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Load"))
 		{
-			Inventory.GetComponent<LoadPoints>()._filePath = menuFilePath;
-			Inventory.GetComponent<LoadPoints>().LoadPointsFile();
+			Inventory.GetComponent<LoadedPointsList>()._filePath = menuFilePath;
+			Inventory.GetComponent<LoadedPointsList>().LoadPointsFile();
         }
         if (GUILayout.Button("Back"))
         {
@@ -474,15 +483,20 @@ public class Menu1 : MonoBehaviour
 			if (GUILayout.Button("Open Scene"))
 			{
 				//go to open menu
+				Inventory.OpenScene("/Users/Noah/Documents/TestSave.3D");
 			}
 			if (GUILayout.Button("Save Scene"))
 			{
-				Inventory.SaveFile();
+				Inventory.SaveScene();
+			}
+			if (GUILayout.Button("Clear Scene"))
+			{
+				Inventory.ClearScene();
 			}
 			GUILayout.BeginHorizontal();
 			if (GUILayout.Button("Close"))
             {
-                BackButton();
+                CloseMenu();
             }
             if (GUILayout.Button("Quit."))
             {
