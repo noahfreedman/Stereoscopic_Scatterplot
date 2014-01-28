@@ -31,7 +31,7 @@ public class UniFileBrowserExample : MonoBehaviour {
 		if (GUI.Button (new Rect(100, 200, 95, 35), "Open Folder")) {
 			UniFileBrowser.use.OpenFolderWindow (true, OpenFolder);
 		}
-		var col = GUI.color;
+		var col = new Color(1f, 1f, 1f);
 		col.a = alpha;
 		GUI.color = col;
 		GUI.Label (new Rect(100, 275, 500, 1000), message);

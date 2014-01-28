@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
@@ -94,8 +95,8 @@ public class LoadedPointsList : PointsList
 			} else {
 				showNotification ("Error loading file. No lines detected.");
 			}
-		} catch (FileNotFoundException f) {
-			showNotification (f.Message);
+		} catch (Exception e) {
+			showNotification (e.Message);
 		}
 
 	}
