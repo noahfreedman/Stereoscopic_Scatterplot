@@ -1,22 +1,26 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class Menu1 : MonoBehaviour
 {
     #region
 
+	public Font font;
     public GUISkin MenuSkin;
     public Transform MainCamera;
     public Transform LeftCamera;
     public Transform RightCamera;
     public Texture OnButtonTexture;
+	public Texture Logo;
 
-    public GameObject Inventory;
+    public Inventory Inventory;
     public GameObject AxisObject;
 
     // menu state
     public bool DoubleMenu = false;
-    private bool ShowingSubmenu = false;
+	private bool ShowingSubmenu = false;
+	private bool SubMenuAbout = false;
     private bool SubMenuCreateLine = false;
     private bool SubMenuCreatePlane = false;
     private bool SubMenuLoadPoints = false;
@@ -45,22 +49,33 @@ public class Menu1 : MonoBehaviour
     private string string_Y_min = "-2.0";
     private string string_Y_interval = "0.2";
     private string string_Y_max = "2.0";
-    private Vector3 centerPosition;
-    private string menuFileName = "default.csv";
-    private string menuFilePath = "";
+	private Vector3 centerPosition;
+	private string menuFilePath = "Enter a full file path.";
     public float hSliderValue = 0.0f;
     private float RotationalSpeedMax = 6.0f;
-
-    #endregion
-    void Start()
+	#endregion
+	private GUIStyle noBorders;
+	//For UniFileBrowser
+	string message = "";
+	float alpha = 1.0f;
+	private char pathChar = '/';
+	private string docsPath;
+	private bool _cameraFrozen;
+	void Start()
     {
-        centerPosition = Vector3.zero;
-        menuFileName = Inventory.GetComponent<LoadPoints>().fileName.ToString();
-        menuFilePath = Inventory.GetComponent<LoadPoints>()._filePath.ToString();
-
-    }
-
-    void Update()
+		centerPosition = Vector3.zero;
+		noBorders = new GUIStyle();
+		noBorders.border = new RectOffset(0,0,0,0); 
+		//Init File Browser
+		if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer) {
+			pathChar = '\\';
+		}
+		docsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+		UniFileBrowser.use.SetPath(docsPath);
+		_cameraFrozen = MainCamera.GetComponent<CameraController>().FreezeCamera;
+	}
+	
+	void Update()
     {
         // esc opens the option menu, closes submenus.
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -86,31 +101,41 @@ public class Menu1 : MonoBehaviour
         //GUILayout.EndArea();
         if (DoubleMenu)
         {
-
             GUILayout.BeginArea(new Rect(Screen.width / 2, 0, Screen.width, Screen.height)); //menu  double
             DisplayMenus();
             GUILayout.EndArea();
         }
+
+		//UniFileBrowser
+		var col = GUI.color;
+		col.a = alpha;
+		GUI.color = col;
+		GUI.Label (new Rect(MenuWidth + 10, 50, 500, 1000), message);
+		col.a = 1.0f;
+		GUI.color = col;
     }
 
     void DisplayMenus()
     {
         if (ShowingSubmenu)
         {
+			//if menu is open, freeze cameras
+			FreezeCamera();
+
             GUI.enabled = true;
+			//Close inventory
+			Inventory.CloseInventory();
 
             GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth));  // column one - the open/close menu button
             MainMenu();
             /////////// SUBMENUS
-
+			if (SubMenuAbout)
+			{
+				MenuAbout();
+			}
             if (SubMenuCreateLine)
             {
                 MenuCreateLine();
-            }
-
-            if (SubMenuLoadPoints)
-            {
-                MenuLoadPoints();
             }
 
             if (SubMenuGenPoints)
@@ -118,10 +143,10 @@ public class Menu1 : MonoBehaviour
                 MenuGeneratePoints();
             }
 
-            if (SubMenuCreatePlane)
-            {
-                MenuCreatePlanes();
-            }
+            //if (SubMenuCreatePlane)
+            //{
+            //    MenuCreatePlanes();
+            //}
             if (SubMenuCreatePlanarFunction)
             {
                 MenuCreatePlanarFunction();
@@ -143,13 +168,43 @@ public class Menu1 : MonoBehaviour
         }
         else
         {
+			//if menu is open, freeze cameras
+			UnfreezeCamera();
             MainMenuButton();
         }
-    }
+	}
+	public void FreezeCamera() {
+		if (_cameraFrozen != true) {
+			_cameraFrozen = true;
+			MainCamera.GetComponent<CameraController>().FreezeCamera = true;
+		}
+	}
+	public void UnfreezeCamera() {
+		if (_cameraFrozen != false) {
+			_cameraFrozen = false;
+			MainCamera.GetComponent<CameraController>().FreezeCamera = false;
+		}
+	}
+	public void CloseMenu() {
+		UnfreezeCamera();
+        ShowingSubmenu = false;
+		SubMenuAbout = false;
+        SubMenuCreateLine = false;
+        SubMenuCreatePlane = false;
+        SubMenuCreatePlanarFunction = false;
+        SubMenuLoadPoints = false;
+        SubMenuGenPoints = false;
+        SubMenuOptions = false;
+        SubMenuCreateSinglePoint = false;
+        SubMenuDemo = false;
+	}
+	public void ShowNotification() {
 
+	}
     void BackButton()
     {
-        ShowingSubmenu = !ShowingSubmenu;
+        ShowingSubmenu = true;
+		SubMenuAbout = false;
         SubMenuCreateLine = false;
         SubMenuCreatePlane = false;
         SubMenuCreatePlanarFunction = false;
@@ -172,12 +227,18 @@ public class Menu1 : MonoBehaviour
         else
         {
             if (GUI.Button(new Rect(0, 0, 100, 20), "menu"))
-
                 ShowingSubmenu = true;
         }
 
     }
-
+	void MenuAbout() {
+		GUILayout.Box (Logo, noBorders);
+		GUILayout.Label("Stereoscopic Stats Copyright 2014 Stanford University Graduate School of Education. For more info, please see https://gse-it.stanford.edu/. Developed by Noah Freedman.");
+		if (GUILayout.Button("Back"))
+		{
+			BackButton();
+		}
+	}
     void MenuCreatePlanes()
     {
 
@@ -187,18 +248,18 @@ public class Menu1 : MonoBehaviour
         string_Y_0 = GUILayout.TextField(string_Y_0);
         string_Z_0 = GUILayout.TextField(string_Z_0);
         GUILayout.EndHorizontal();
-
-        GUILayout.BeginHorizontal();
-        GUILayout.Label("Point 2");
-        string_X_1 = GUILayout.TextField(string_X_1);
-        string_Y_1 = GUILayout.TextField(string_Y_1);
-        string_Z_1 = GUILayout.TextField(string_Z_1);
-        GUILayout.EndHorizontal();
-        GUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("Create Plane"))
+		
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("Point 2");
+		string_X_1 = GUILayout.TextField(string_X_1);
+		string_Y_1 = GUILayout.TextField(string_Y_1);
+		string_Z_1 = GUILayout.TextField(string_Z_1);
+		GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		
+		if (GUILayout.Button("Create Plane"))
         {
-            Vector3 startPosition = GUIVectorFromStrings(string_X_0, string_Y_0, string_Z_0);
+			Vector3 startPosition = VectorFromStrings(string_X_0, string_Y_0, string_Z_0);
             Vector3 endPosition = VectorFromStrings(string_X_1, string_Y_1, string_Z_1);
             Inventory.GetComponent<PlanesList>().AddPlane(startPosition, endPosition);
         }
@@ -266,7 +327,7 @@ public class Menu1 : MonoBehaviour
 
             Vector3 point = GUIVectorFromStrings(string_X_0, string_Y_0, string_Z_0);
 
-            Inventory.GetComponent<RandomPoints>().createSinglePoint(point);
+            Inventory.GetComponent<ScatterplotList>().createSinglePoint(point);
         }
         if (GUILayout.Button("Back"))
         {
@@ -304,54 +365,13 @@ public class Menu1 : MonoBehaviour
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Generate"))
         {
-            Inventory.GetComponent<RandomPoints>().createRandomPoints(centerPosition, numberInput, floatInput);
+            Inventory.GetComponent<ScatterplotList>().createRandomPoints(centerPosition, numberInput, floatInput);
         }
         if (GUILayout.Button("Back"))
         {
             BackButton();
         }
         GUILayout.EndHorizontal();
-
-    }
-
-    void MenuLoadPoints()
-    {
-        string fp = Inventory.GetComponent<LoadPoints>()._filePath;
-        string fn = Inventory.GetComponent<LoadPoints>().fileName;
-        string labelName = System.IO.Path.Combine(fp, fn);
-
-
-        GUILayout.Label(labelName);
-
-        menuFileName = GUILayout.TextField(menuFileName);
-
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Set"))
-        {
-            Inventory.GetComponent<LoadPoints>().fileName = menuFileName;
-
-        }
-        if (GUILayout.Button("Load"))
-        {
-            Inventory.GetComponent<LoadPoints>().LoadPointsFile();
-        }
-        if (GUILayout.Button("Back"))
-        {
-            BackButton();
-        }
-        GUILayout.EndHorizontal();
-
-        GUILayout.EndVertical();
-
-        GUILayout.BeginVertical("box");
-        List<string> foundRecentFilenames = Inventory.GetComponent<LoadPoints>().recentFiles;
-        if (foundRecentFilenames.Count > 0)
-        {
-            foreach (string recentFile in foundRecentFilenames)
-            {
-                GUILayout.Label(recentFile);
-            }
-        }
 
     }
 
@@ -378,9 +398,9 @@ public class Menu1 : MonoBehaviour
         {
             Vector3 startPosition = GUIVectorFromStrings(string_X_0, string_Y_0, string_Z_0);
             Vector3 endPosition = GUIVectorFromStrings(string_X_1, string_Y_1, string_Z_1);
-            Inventory.GetComponent<LinesList>().AddALine(startPosition, endPosition);
-        }
-        if (GUILayout.Button("Back"))
+			Inventory.GetComponent<LinesList>().AddALine(startPosition, endPosition, MainCamera.transform.position);
+		}
+		if (GUILayout.Button("Back"))
         {
             BackButton();
         }
@@ -389,9 +409,9 @@ public class Menu1 : MonoBehaviour
 
     void MenuDemoMode()
     {
-        GUILayout.Label("Demo Rotation");
+        GUILayout.Label("Auto Rotation");
 
-        hSliderValue = GUI.HorizontalSlider(new Rect(25, 25, 100, 30), hSliderValue, -(RotationalSpeedMax), RotationalSpeedMax);
+		hSliderValue = GUI.HorizontalSlider(new Rect(25, 25, 100, 30), hSliderValue, -RotationalSpeedMax, RotationalSpeedMax);
         if (MainCamera)
         {
             MainCamera.GetComponent<DemoOrbitCamera>().RotationSpeed = hSliderValue;
@@ -415,16 +435,12 @@ public class Menu1 : MonoBehaviour
     private bool isStereoMode = true;
     void MenuOptions()
     {
-        string csvPath = Inventory.GetComponent<LoadPoints>()._filePath.ToString();
-        string csvFilename = Inventory.GetComponent<LoadPoints>().fileName.ToString();
 
         GUI.enabled = true;
 
 
-        AxisObject.active = GUILayout.Toggle(AxisObject.active, "   Hide Axis");
-
-        Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu;
-        isStereoMode = GUILayout.Toggle(isStereoMode, "   Stereo Menu Mode");
+        AxisObject.active = GUILayout.Toggle(AxisObject.active, "Show Axis");
+        isStereoMode = GUILayout.Toggle(isStereoMode, "Stereoscopic Mode");
 
 
         //DoubleMenu = isStereoMode;
@@ -433,7 +449,9 @@ public class Menu1 : MonoBehaviour
         RightCamera.GetComponent<Camera>().active = isStereoMode;
         if (Inventory.GetComponent<Inventory>())
         {
-            Inventory.GetComponent<Inventory>().StereoMenu = isStereoMode;
+			Inventory.GetComponent<Inventory>().StereoMenu = isStereoMode; //Controls menu doubling
+			Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu; //Controls whether inventory is on right
+			DoubleMenu = isStereoMode; //Controls camera doubling
         }
         //if (disableStereoMode)
         //{
@@ -452,7 +470,6 @@ public class Menu1 : MonoBehaviour
         //    RightCamera.GetComponent<Camera>().active = true;
         //    AxisObject.GetComponent<Inventory>().DoubleMenu = true;
         //}
-        DoubleMenu = GUILayout.Toggle(DoubleMenu, "   Steroscope Menu");
 
         GUI.enabled = true;
         if (GUILayout.Button("Back"))
@@ -465,73 +482,117 @@ public class Menu1 : MonoBehaviour
     void MainMenu()
     {
         //Menu Hides itself
-        if (SubMenuCreateLine
+		if (SubMenuAbout
+		    || SubMenuCreateLine
             || SubMenuCreatePlane
-            || SubMenuLoadPoints
             || SubMenuGenPoints
             || SubMenuOptions
             || SubMenuCreateSinglePoint
             || SubMenuCreatePlanarFunction
             || SubMenuDemo)
         {
-
         }
         else
         {
             //GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth));
             //disableStereoMode = GUILayout.Toggle(disableStereoMode, "   Disable Stero Mode?");
-            if (GUILayout.Button("Create Line.."))
+			GUILayout.Box(Logo);
+			if (GUILayout.Button("About"))
+			{
+				SubMenuAbout = true;
+			}
+			if (GUILayout.Button("Create Line"))
             {
                 SubMenuCreateLine = true;
             }
 
-            if (GUILayout.Button("Create Point.."))
+            if (GUILayout.Button("Create Point"))
             {
                 SubMenuCreateSinglePoint = true;
             }
-            if (GUILayout.Button("Load Point Data.."))
+            if (GUILayout.Button("Load Point Data"))
             {
-                SubMenuLoadPoints = true;
+				FreezeCamera();
+				UniFileBrowser.use.OpenFileWindow(_LoadPoints);
             }
-            if (GUILayout.Button("Generate Scatter.."))
+            if (GUILayout.Button("Generate Scatter"))
             {
                 SubMenuGenPoints = true;
             }
-            if (GUILayout.Button("Create Plane.."))
+            /*if (GUILayout.Button("Create Plane.."))
             {
                 SubMenuCreatePlane = true;
-            }
-            if (GUILayout.Button("Create Planar Function.."))
+            }*/
+            if (GUILayout.Button("Create Planar Function"))
             {
                 SubMenuCreatePlanarFunction = true;
             }
             if (GUILayout.Button("Options"))
             {
                 SubMenuOptions = true;
-            }
-            if (GUILayout.Button("Demo Mode"))
-            {
-                SubMenuDemo = true;
-            }
-            //disableStereoMode = GUILayout.Toggle(disableStereoMode, "   Disable Stero Mode?");
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Minimize"))
-            {
-                BackButton();
+			}
+			if (GUILayout.Button("Auto-Rotation"))
+			{
+				SubMenuDemo = true;
+			}
+			if (GUILayout.Button("Import Scene"))
+			{
+				//Show Open Scene menu
+				FreezeCamera();
+				UniFileBrowser.use.OpenFileWindow (_OpenScene);
+			}
+			if (GUILayout.Button("Save Scene"))
+			{
+				FreezeCamera();
+				UniFileBrowser.use.SaveFileWindow (_SaveScene);
+			}
+			if (GUILayout.Button("Clear Scene"))
+			{
+				Inventory.ClearScene();
+			}
+			GUILayout.BeginHorizontal();
+			if (GUILayout.Button("Close")) {
+                CloseMenu();
             }
             if (GUILayout.Button("Quit."))
             {
                 ShowingSubmenu = false;
                 // TODO: Application.Quit isn't working in debug... be sure to try in a build
-                Application.Quit();
+                //Application.Quit();
+				System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
 
             GUILayout.EndHorizontal();
             //GUILayout.EndVertical();
             GUI.enabled = true;
         }
-    }
-    public Vector3 GUIVectorFromStrings(string x, string y, string z)
+	}
+	private void _LoadPoints(string pathToFile) {
+		var fileIndex = pathToFile.LastIndexOf (pathChar);
+		string filename = pathToFile.Substring (fileIndex+1, pathToFile.Length-fileIndex-1);
+		CloseMenu();
+		UniFileBrowser.use.SetPath(pathToFile.Substring (0, fileIndex));
+		Inventory.GetComponent<LoadedPointsList>().LoadPointsFile(pathToFile, filename);
+	}
+	private void _OpenScene(string pathToFile) {
+		var fileIndex = pathToFile.LastIndexOf (pathChar);
+		string filename = pathToFile.Substring (fileIndex+1, pathToFile.Length-fileIndex-1);
+		message = "You selected file: " + filename;
+		Fade();
+		CloseMenu();
+		UniFileBrowser.use.SetPath(pathToFile.Substring (0, fileIndex));
+		Inventory.OpenScene(pathToFile);
+	}
+	private void _SaveScene(string pathToFile) {
+		var fileIndex = pathToFile.LastIndexOf (pathChar);
+		string filename = pathToFile.Substring (fileIndex+1, pathToFile.Length-fileIndex-1);
+		message = "You're saving file: " + filename;
+		Fade();
+		CloseMenu();
+		UniFileBrowser.use.SetPath(pathToFile.Substring (0, fileIndex));
+		Inventory.SaveScene(pathToFile);
+	}
+	public Vector3 GUIVectorFromStrings(string x, string y, string z)
     {
         float float_X;
         float float_Y;
@@ -555,5 +616,19 @@ public class Menu1 : MonoBehaviour
         return new Vector3(float_X, float_Y, float_Z);
 
     }
-
+	
+	//UniFileBrowser
+	void Fade () {
+		StopCoroutine ("FadeAlpha");	// Interrupt FadeAlpha if it's already running, so only one instance at a time can run
+		StartCoroutine ("FadeAlpha");
+	}
+	
+	IEnumerator FadeAlpha () {
+		alpha = 1.0f;
+		yield return new WaitForSeconds (5.0f);
+		for (alpha = 1.0f; alpha > 0.0f; alpha -= Time.deltaTime/4) {
+			yield return null;
+		}
+		message = "";
+	}
 }

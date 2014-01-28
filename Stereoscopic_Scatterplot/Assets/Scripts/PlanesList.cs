@@ -3,21 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 public class PlanesList : MonoBehaviour {
 
-	public List<GameObject> createdPlanes;
 	public Material planeMaterial;
-	void Start () {
-		createdPlanes = new List<GameObject> ();
-	}
 
-	public void AddPlane (Vector3 point1, Vector3 point2) {
-		//LineRenderer plane = new GameObject ("Line").AddComponent ("LineRenderer") as LineRenderer;
+	public PlanesList() {
+
+	}
+	public GameObject AddPlane(Vector3 point1, Vector3 point2) {
+		PlaneData planeData = new PlaneData(point1, point2);
+		return AddPlane(planeData);
+	}
+	public GameObject AddPlane (PlaneData planeData) {
 		GameObject plane = GameObject.CreatePrimitive (PrimitiveType.Plane);
 
-		plane.transform.position = point1;
+		plane.transform.position = planeData.point1;
 
 		plane.transform.parent = transform;
-		createdPlanes.Add (plane);
 		plane.renderer.material = planeMaterial;
-	}
+		DataHolder holder = (DataHolder) plane.AddComponent("DataHolder");
+		holder.StatsData = planeData;
 
+		return plane;
+	}
 }
