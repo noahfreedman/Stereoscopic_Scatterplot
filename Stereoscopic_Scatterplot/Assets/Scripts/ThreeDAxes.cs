@@ -56,6 +56,10 @@ public class ThreeDAxes : MonoBehaviour
 
             LabelRangeMax = LabelRange;
             LabelRangeMin = -LabelRange;
+            //float tickInterval = LabelInterval / (1 + showQuarterTicks); // bool to int
+            //LabelInterval = showHalfTicks;
+
+
 
 
             for (float i = LabelRangeMin; i <= LabelRangeMax; i += LabelInterval)
