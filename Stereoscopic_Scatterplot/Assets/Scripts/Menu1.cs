@@ -365,9 +365,9 @@ public class Menu1 : MonoBehaviour
         {
             Vector3 startPosition = GUIVectorFromStrings(string_X_0, string_Y_0, string_Z_0);
             Vector3 endPosition = GUIVectorFromStrings(string_X_1, string_Y_1, string_Z_1);
-            Inventory.GetComponent<LinesList>().AddALine(startPosition, endPosition);
-        }
-        if (GUILayout.Button("Back"))
+			Inventory.GetComponent<LinesList>().AddALine(startPosition, endPosition, MainCamera.transform.position);
+		}
+		if (GUILayout.Button("Back"))
         {
             BackButton();
         }

@@ -378,6 +378,8 @@ public class Inventory : MonoBehaviour {
 	}
 
 	void SetScaleLine(GameObject obj, float scale) {
+		print (scale);
+		print (Vector3.Distance(obj.transform.position, MainCamera.transform.position));
 		obj.GetComponent<LineRenderer> ().SetWidth (scale, scale);
 		if (obj.GetComponent<DataHolder> ()) {
 			StatsData statsData = obj.GetComponent<DataHolder> ().StatsData;
