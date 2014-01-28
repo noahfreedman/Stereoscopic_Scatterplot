@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 
 public class MatLabInterface : MonoBehaviour {
@@ -49,7 +50,7 @@ public class MatLabInterface : MonoBehaviour {
 		//generate full point data based on range. Data is returned in rows of increasing x. Columns increase by Y.
 		string[] lines = data.Split ("\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 		int rowLength = 0;
-		ArrayList pointsList = new ArrayList();
+		List<Vector3> pointsList = new List<Vector3>();
 		//record length of x row, so then can process points in grid
 		for (int i = 0, l = lines.Length; i < l; i++) {
 			float x = xMin + xInterval * i;

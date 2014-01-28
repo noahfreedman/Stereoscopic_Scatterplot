@@ -244,6 +244,9 @@ public class Inventory : MonoBehaviour {
 					case "PointsData":
 						obj = GetComponent<ScatterplotList> ().CreatePoints ((PointsData) statsData);
 						break;
+					case "PlanarFunctionData":
+						obj = GetComponent<PlanarFunctionsList> ().AddPlanar((PlanarFunctionData) statsData);
+						break;
 				}
 				if (obj != null && statsData.color != null) {
 					SetColor (obj, (Color)statsData.color);

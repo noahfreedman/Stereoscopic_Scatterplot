@@ -480,10 +480,10 @@ public class Menu1 : MonoBehaviour
             {
                 SubMenuGenPoints = true;
             }
-            if (GUILayout.Button("Create Plane.."))
+            /*if (GUILayout.Button("Create Plane.."))
             {
                 SubMenuCreatePlane = true;
-            }
+            }*/
             if (GUILayout.Button("Create Planar Function.."))
             {
                 SubMenuCreatePlanarFunction = true;
