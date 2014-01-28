@@ -19,7 +19,8 @@ public class Menu1 : MonoBehaviour
 
     // menu state
     public bool DoubleMenu = false;
-    private bool ShowingSubmenu = false;
+	private bool ShowingSubmenu = false;
+	private bool SubMenuAbout = false;
     private bool SubMenuCreateLine = false;
     private bool SubMenuCreatePlane = false;
     private bool SubMenuLoadPoints = false;
@@ -124,7 +125,10 @@ public class Menu1 : MonoBehaviour
             GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth));  // column one - the open/close menu button
             MainMenu();
             /////////// SUBMENUS
-
+			if (SubMenuAbout)
+			{
+				MenuAbout();
+			}
             if (SubMenuCreateLine)
             {
                 MenuCreateLine();
@@ -165,6 +169,7 @@ public class Menu1 : MonoBehaviour
     }
 	public void CloseMenu() {
         ShowingSubmenu = false;
+		SubMenuAbout = false;
         SubMenuCreateLine = false;
         SubMenuCreatePlane = false;
         SubMenuCreatePlanarFunction = false;
@@ -180,6 +185,7 @@ public class Menu1 : MonoBehaviour
     void BackButton()
     {
         ShowingSubmenu = true;
+		SubMenuAbout = false;
         SubMenuCreateLine = false;
         SubMenuCreatePlane = false;
         SubMenuCreatePlanarFunction = false;
@@ -206,7 +212,14 @@ public class Menu1 : MonoBehaviour
         }
 
     }
-
+	void MenuAbout() {
+		GUILayout.Box (Logo, noBorders);
+		GUILayout.Label("Stereoscopic Stats Copyright 2014 Stanford University Graduate School of Education. For more info, please see https://gse-it.stanford.edu/. Developed by Noah Freedman.");
+		if (GUILayout.Button("Back"))
+		{
+			BackButton();
+		}
+	}
     void MenuCreatePlanes()
     {
 
@@ -450,7 +463,8 @@ public class Menu1 : MonoBehaviour
     void MainMenu()
     {
         //Menu Hides itself
-        if (SubMenuCreateLine
+		if (SubMenuAbout
+		    || SubMenuCreateLine
             || SubMenuCreatePlane
             || SubMenuGenPoints
             || SubMenuOptions
@@ -465,20 +479,24 @@ public class Menu1 : MonoBehaviour
             //GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth));
             //disableStereoMode = GUILayout.Toggle(disableStereoMode, "   Disable Stero Mode?");
 			GUILayout.Box(Logo);
-			if (GUILayout.Button("Create Line.."))
+			if (GUILayout.Button("About"))
+			{
+				SubMenuAbout = true;
+			}
+			if (GUILayout.Button("Create Line"))
             {
                 SubMenuCreateLine = true;
             }
 
-            if (GUILayout.Button("Create Point.."))
+            if (GUILayout.Button("Create Point"))
             {
                 SubMenuCreateSinglePoint = true;
             }
-            if (GUILayout.Button("Load Point Data.."))
+            if (GUILayout.Button("Load Point Data"))
             {
 				UniFileBrowser.use.OpenFileWindow(_LoadPoints);
             }
-            if (GUILayout.Button("Generate Scatter.."))
+            if (GUILayout.Button("Generate Scatter"))
             {
                 SubMenuGenPoints = true;
             }
@@ -486,7 +504,7 @@ public class Menu1 : MonoBehaviour
             {
                 SubMenuCreatePlane = true;
             }*/
-            if (GUILayout.Button("Create Planar Function.."))
+            if (GUILayout.Button("Create Planar Function"))
             {
                 SubMenuCreatePlanarFunction = true;
             }
