@@ -133,10 +133,10 @@ public class Menu1 : MonoBehaviour
                 MenuGeneratePoints();
             }
 
-            if (SubMenuCreatePlane)
-            {
-                MenuCreatePlanes();
-            }
+            //if (SubMenuCreatePlane)
+            //{
+            //    MenuCreatePlanes();
+            //}
             if (SubMenuCreatePlanarFunction)
             {
                 MenuCreatePlanarFunction();
@@ -171,6 +171,9 @@ public class Menu1 : MonoBehaviour
         SubMenuOptions = false;
         SubMenuCreateSinglePoint = false;
         SubMenuDemo = false;
+	}
+	public void ShowNotification() {
+
 	}
     void BackButton()
     {
