@@ -7,7 +7,6 @@ using System.Collections.Generic;
 public class LoadedPointsList : PointsList
 {
 	public GameObject pointPrefab;
-	public string _filePath = "";
 	public List<string> recentFiles;
 	private List<Vector3S> points;
 	private string notificationMessage = "";
@@ -19,16 +18,15 @@ public class LoadedPointsList : PointsList
 	private float maxZ = Mathf.NegativeInfinity;
 	private float scale;
 		
-	void pointsArrayListToObjects (List<Vector3S> pointarray)
+	void pointsArrayListToObjects (List<Vector3S> pointarray, string fileName = "Points")
 	{
 		//point size to 1% of longest range
 		float longestRange = maxX - minX;
 		if (maxY - minY > longestRange) longestRange = maxY - minY;
 		if (maxZ - minZ > longestRange) longestRange = maxZ - minZ;
-		scale = longestRange / 100f;
+		scale = longestRange * scaleSizeFactor;
 				
 		PointsData pointsData = new PointsData();
-		string fileName = System.IO.Path.GetFileName (_filePath);
 		pointsData.name = fileName;
 		pointsData.points = pointarray;
 		CreatePoints(pointsData);
@@ -45,19 +43,15 @@ public class LoadedPointsList : PointsList
 		notificationMessage = "";
 	}
 
-	public void LoadPointsFile ()
-	{
-		LoadPointsFile (_filePath);	
-	}
 	//(csvDataFileName, csvDataPath);
 	//ToDo: all these object factories need better names
-	public void LoadPointsFile (string pointFilePath)
+	public void LoadPointsFile (string pointFilePath, string pointFileName = "Points")
 	{	
 				
-		//fileName = pointFilename;
 
-		pointFilePath = System.IO.Path.GetFullPath (_filePath);
-		//_filePath = pointFilePath;
+
+		pointFilePath = System.IO.Path.GetFullPath (pointFilePath);
+
 		points = new List<Vector3S> ();	
 
 		bool hasHeaders = false;
@@ -96,7 +90,7 @@ public class LoadedPointsList : PointsList
 						maxZ = z;		
 				}
 				
-				pointsArrayListToObjects (points);
+				pointsArrayListToObjects (points, pointFileName);
 			} else {
 				showNotification ("Error loading file. No lines detected.");
 			}

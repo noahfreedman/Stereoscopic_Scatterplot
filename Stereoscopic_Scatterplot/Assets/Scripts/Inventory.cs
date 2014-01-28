@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System;
 using System.IO;
-using System.Collections;
 
 //using System.IO.Stream;
 using System.Runtime.Serialization;
@@ -24,11 +23,6 @@ public class Inventory : MonoBehaviour {
 	private Color SelectedColor = Color.green;
 	private Color[] AssignableColors;
 	#endregion
-	//For UniFileBrowser
-	string message = "";
-	float alpha = 1.0f;
-	private char pathChar = '/';
-	private string docsPath;
 
 	void Start() {
 		MenuDefaultGUIColor = GUI.contentColor;
@@ -39,13 +33,6 @@ public class Inventory : MonoBehaviour {
 		AssignableColors [2] = Color.green;
 		AssignableColors [3] = Color.blue;
 		AssignableColors [4] = Color.yellow;
-
-		//Init File Browser
-		if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer) {
-			pathChar = '\\';
-		}
-		docsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-		UniFileBrowser.use.SetPath(docsPath);
 	}
 	
 	void Update() {
@@ -73,14 +60,6 @@ public class Inventory : MonoBehaviour {
 			DisplayMenus ();
 			GUILayout.EndArea ();
 		}
-		//UniFileBrowser
-		
-		var col = GUI.color;
-		col.a = alpha;
-		GUI.color = col;
-		GUI.Label (new Rect(100, 275, 500, 1000), message);
-		col.a = 1.0f;
-		GUI.color = col;
 	}
 	
 	void DisplayMenus() {
@@ -233,17 +212,8 @@ public class Inventory : MonoBehaviour {
 			}
 		}
 	}
-	
-	public void OpenScene() {
-		UniFileBrowser.use.OpenFileWindow (_OpenScene);
-	}
-	private void _OpenScene(string pathToFile) {
-		var fileIndex = pathToFile.LastIndexOf (pathChar);
-		string filename = pathToFile.Substring (fileIndex+1, pathToFile.Length-fileIndex-1);
-		message = "You selected file: " + filename;
-		Fade();
-		UniFileBrowser.use.SetPath(pathToFile.Substring (0, fileIndex));
 
+	public void OpenScene(string pathToFile) {
 		Stream serializationStream;
 		FileStream fs = File.Open (pathToFile, FileMode.Open);
 		FileData fileData;
@@ -278,19 +248,8 @@ public class Inventory : MonoBehaviour {
 			fs.Close ();
 		}
 	}
-	
-	public void SaveScene() {
-		UniFileBrowser.use.SaveFileWindow (_SaveScene);
-	}
 
-	private void _SaveScene(string pathToFile) {
-
-		var fileIndex = pathToFile.LastIndexOf (pathChar);
-		string filename = pathToFile.Substring (fileIndex+1, pathToFile.Length-fileIndex-1);
-		message = "You're saving file: " + filename;
-		Fade();
-		UniFileBrowser.use.SetPath(pathToFile.Substring (0, fileIndex));
-
+	public void SaveScene(string pathToFile) {
 		//Load all StatsData objects from each GameObject in Inventory
 		//Persist them via the FileData object
 		FileData fileData = new FileData ();
@@ -436,19 +395,5 @@ public class Inventory : MonoBehaviour {
 			StatsData statsData = obj.GetComponent<DataHolder> ().StatsData;
 			statsData.scale = scale;
 		}
-	}
-	//UniFileBrowser
-	void Fade () {
-		StopCoroutine ("FadeAlpha");	// Interrupt FadeAlpha if it's already running, so only one instance at a time can run
-		StartCoroutine ("FadeAlpha");
-	}
-	
-	IEnumerator FadeAlpha () {
-		alpha = 1.0f;
-		yield return new WaitForSeconds (5.0f);
-		for (alpha = 1.0f; alpha > 0.0f; alpha -= Time.deltaTime/4) {
-			yield return null;
-		}
-		message = "";
 	}
 }

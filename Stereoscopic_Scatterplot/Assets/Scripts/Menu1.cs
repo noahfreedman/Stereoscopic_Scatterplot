@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class Menu1 : MonoBehaviour
@@ -50,11 +51,24 @@ public class Menu1 : MonoBehaviour
 	private string menuFilePath = "Enter a full file path.";
     public float hSliderValue = 0.0f;
     private float RotationalSpeedMax = 6.0f;
+	#endregion
 
-    #endregion
-    void Start()
+	//For UniFileBrowser
+	string message = "";
+	float alpha = 1.0f;
+	private char pathChar = '/';
+	private string docsPath;
+
+	void Start()
     {
 		centerPosition = Vector3.zero;
+
+		//Init File Browser
+		if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer) {
+			pathChar = '\\';
+		}
+		docsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+		UniFileBrowser.use.SetPath(docsPath);
 	}
 	
 	void Update()
@@ -83,11 +97,18 @@ public class Menu1 : MonoBehaviour
         //GUILayout.EndArea();
         if (DoubleMenu)
         {
-
             GUILayout.BeginArea(new Rect(Screen.width / 2, 0, Screen.width, Screen.height)); //menu  double
             DisplayMenus();
             GUILayout.EndArea();
         }
+
+		//UniFileBrowser
+		var col = GUI.color;
+		col.a = alpha;
+		GUI.color = col;
+		GUI.Label (new Rect(MenuWidth + 10, 50, 500, 1000), message);
+		col.a = 1.0f;
+		GUI.color = col;
     }
 
     void DisplayMenus()
@@ -103,11 +124,6 @@ public class Menu1 : MonoBehaviour
             if (SubMenuCreateLine)
             {
                 MenuCreateLine();
-            }
-
-            if (SubMenuLoadPoints)
-            {
-                MenuLoadPoints();
             }
 
             if (SubMenuGenPoints)
@@ -321,36 +337,6 @@ public class Menu1 : MonoBehaviour
 
     }
 
-    void MenuLoadPoints()
-    {
-        menuFilePath = GUILayout.TextField(menuFilePath);
-
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("Load"))
-		{
-			Inventory.GetComponent<LoadedPointsList>()._filePath = menuFilePath;
-			Inventory.GetComponent<LoadedPointsList>().LoadPointsFile();
-        }
-        if (GUILayout.Button("Back"))
-        {
-            BackButton();
-        }
-        GUILayout.EndHorizontal();
-
-        GUILayout.EndVertical();
-
-        GUILayout.BeginVertical("box");
-        /*List<string> foundRecentFilenames = Inventory.GetComponent<LoadPoints>().recentFiles;
-        if (foundRecentFilenames.Count > 0)
-        {
-            foreach (string recentFile in foundRecentFilenames)
-            {
-                GUILayout.Label(recentFile);
-            }
-        }*/
-
-    }
-
     void MenuCreateLine()
     {
 
@@ -460,7 +446,6 @@ public class Menu1 : MonoBehaviour
         //Menu Hides itself
         if (SubMenuCreateLine
             || SubMenuCreatePlane
-            || SubMenuLoadPoints
             || SubMenuGenPoints
             || SubMenuOptions
             || SubMenuCreateSinglePoint
@@ -484,7 +469,7 @@ public class Menu1 : MonoBehaviour
             }
             if (GUILayout.Button("Load Point Data.."))
             {
-                SubMenuLoadPoints = true;
+				UniFileBrowser.use.OpenFileWindow(_LoadPoints);
             }
             if (GUILayout.Button("Generate Scatter.."))
             {
@@ -506,14 +491,14 @@ public class Menu1 : MonoBehaviour
 			{
 				SubMenuDemo = true;
 			}
-			if (GUILayout.Button("Open Scene"))
+			if (GUILayout.Button("Import Scene"))
 			{
-				//go to open menu
-				Inventory.OpenScene();
+				//Show Open Scene menu
+				UniFileBrowser.use.OpenFileWindow (_OpenScene);
 			}
 			if (GUILayout.Button("Save Scene"))
 			{
-				Inventory.SaveScene();
+				UniFileBrowser.use.SaveFileWindow (_SaveScene);
 			}
 			if (GUILayout.Button("Clear Scene"))
 			{
@@ -535,8 +520,33 @@ public class Menu1 : MonoBehaviour
             //GUILayout.EndVertical();
             GUI.enabled = true;
         }
-    }
-    public Vector3 GUIVectorFromStrings(string x, string y, string z)
+	}
+	private void _LoadPoints(string pathToFile) {
+		var fileIndex = pathToFile.LastIndexOf (pathChar);
+		string filename = pathToFile.Substring (fileIndex+1, pathToFile.Length-fileIndex-1);
+		CloseMenu();
+		UniFileBrowser.use.SetPath(pathToFile.Substring (0, fileIndex));
+		Inventory.GetComponent<LoadedPointsList>().LoadPointsFile(pathToFile, filename);
+	}
+	private void _OpenScene(string pathToFile) {
+		var fileIndex = pathToFile.LastIndexOf (pathChar);
+		string filename = pathToFile.Substring (fileIndex+1, pathToFile.Length-fileIndex-1);
+		message = "You selected file: " + filename;
+		Fade();
+		CloseMenu();
+		UniFileBrowser.use.SetPath(pathToFile.Substring (0, fileIndex));
+		Inventory.OpenScene(pathToFile);
+	}
+	private void _SaveScene(string pathToFile) {
+		var fileIndex = pathToFile.LastIndexOf (pathChar);
+		string filename = pathToFile.Substring (fileIndex+1, pathToFile.Length-fileIndex-1);
+		message = "You're saving file: " + filename;
+		Fade();
+		CloseMenu();
+		UniFileBrowser.use.SetPath(pathToFile.Substring (0, fileIndex));
+		Inventory.SaveScene(pathToFile);
+	}
+	public Vector3 GUIVectorFromStrings(string x, string y, string z)
     {
         float float_X;
         float float_Y;
@@ -560,5 +570,19 @@ public class Menu1 : MonoBehaviour
         return new Vector3(float_X, float_Y, float_Z);
 
     }
-
+	
+	//UniFileBrowser
+	void Fade () {
+		StopCoroutine ("FadeAlpha");	// Interrupt FadeAlpha if it's already running, so only one instance at a time can run
+		StartCoroutine ("FadeAlpha");
+	}
+	
+	IEnumerator FadeAlpha () {
+		alpha = 1.0f;
+		yield return new WaitForSeconds (5.0f);
+		for (alpha = 1.0f; alpha > 0.0f; alpha -= Time.deltaTime/4) {
+			yield return null;
+		}
+		message = "";
+	}
 }

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class PointsList : MonoBehaviour
 {
+	protected float scaleSizeFactor = 0.015f;
+
 	public GameObject CreatePoints(PointsData pointsData, GameObject pointPrefab) {
 		GameObject group = new GameObject (pointsData.name); 
 		group.transform.parent = transform;

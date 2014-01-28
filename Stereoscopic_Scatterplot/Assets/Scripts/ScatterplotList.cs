@@ -22,7 +22,7 @@ public class ScatterplotList : PointsList {
 	}
 			
 	public void createRandomPoints(Vector3 center, int number, float range = 1.0f) {
-		float scale = range / 100;
+		float scale = range * scaleSizeFactor;
 		PointsData pointsData = new PointsData ();
 		pointsData.scale = scale;
 				
