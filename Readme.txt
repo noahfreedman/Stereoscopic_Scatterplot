@@ -1,4 +1,4 @@
-Stereoscopic Scatter Plot
+Stereoscopic Statistics v1.0
 ==========================
 
 The goal of this project is to enable 3D stereoscopic visualizations of data to assist in the teaching of statistics and to enable clearer visual analysis of data. No existing tools were found that are designed to display data in stereoscopic 3D visualizations.
