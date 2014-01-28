@@ -12,6 +12,7 @@ public class Menu1 : MonoBehaviour
     public Transform LeftCamera;
     public Transform RightCamera;
     public Texture OnButtonTexture;
+	public Texture Logo;
 
     public Inventory Inventory;
     public GameObject AxisObject;
@@ -52,7 +53,7 @@ public class Menu1 : MonoBehaviour
     public float hSliderValue = 0.0f;
     private float RotationalSpeedMax = 6.0f;
 	#endregion
-
+	private GUIStyle noBorders;
 	//For UniFileBrowser
 	string message = "";
 	float alpha = 1.0f;
@@ -62,7 +63,8 @@ public class Menu1 : MonoBehaviour
 	void Start()
     {
 		centerPosition = Vector3.zero;
-
+		noBorders = new GUIStyle();
+		noBorders.border = new RectOffset(0,0,0,0); 
 		//Init File Browser
 		if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer) {
 			pathChar = '\\';
@@ -200,7 +202,6 @@ public class Menu1 : MonoBehaviour
         else
         {
             if (GUI.Button(new Rect(0, 0, 100, 20), "menu"))
-
                 ShowingSubmenu = true;
         }
 
@@ -463,7 +464,8 @@ public class Menu1 : MonoBehaviour
         {
             //GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth));
             //disableStereoMode = GUILayout.Toggle(disableStereoMode, "   Disable Stero Mode?");
-            if (GUILayout.Button("Create Line.."))
+			GUILayout.Box(Logo);
+			if (GUILayout.Button("Create Line.."))
             {
                 SubMenuCreateLine = true;
             }
