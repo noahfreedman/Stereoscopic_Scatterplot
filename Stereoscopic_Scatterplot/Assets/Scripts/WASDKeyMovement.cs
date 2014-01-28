@@ -19,9 +19,14 @@ public class WASDKeyMovement : MonoBehaviour
 				if (requireMouseButton & Input.GetMouseButton (mouseButtonWASD) || !requireMouseButton) {
 
 						if (Input.GetKey ("w") || Input.GetKey (KeyCode.UpArrow)) {
-								transform.Translate (Vector3.forward * CurrentSpeed);
+								transform.Translate (Vector3.up * CurrentSpeed);
 						} else if (Input.GetKey ("s") || Input.GetKey (KeyCode.DownArrow)) { 
-								transform.Translate (Vector3.back * CurrentSpeed);
+								transform.Translate (Vector3.down * CurrentSpeed);
+						} 
+						if (Input.GetKey ("r")) {
+							transform.Translate (Vector3.forward * CurrentSpeed);
+						} else if (Input.GetKey ("f") ) { 
+							transform.Translate (Vector3.back * CurrentSpeed);
 						} 
 						if (Input.GetKey ("a") || Input.GetKey (KeyCode.LeftArrow)) {
 								transform.Translate (Vector3.left * CurrentSpeed);

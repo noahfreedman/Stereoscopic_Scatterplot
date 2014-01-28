@@ -64,7 +64,15 @@ function LateUpdate () {
 		//if (MainCamera.GetComponent<DemoOrbitCamera>()) {
 		//	MainCamera.GetComponent<DemoOrbitCamera>.Pause;
 		//}
-
+		/* Try to allow zooming in and out from one place. Problem is cannot control zoom well enough
+		var newPos = transform.position + Camera.main.transform.TransformDirection(Vector3.forward)
+		 * Input.GetAxis("Mouse ScrollWheel") * currentScrollSpeed;
+		var newDistance = Vector3.Distance(transform.position, origin);
+		if ((newDistance > cameraDistanceMin) && (newDistance < cameraDistanceMax)) {
+			transform.position = newPos;
+			distance = newDistance;
+		}
+		*/
 		
 	}
 }
