@@ -11,6 +11,7 @@ public class Inventory : MonoBehaviour {
 	private int Version = 1;
 	public GUISkin MenuSkin;
 	public Transform MainCamera;
+	public Menu1 MainMenu;
 	public Texture ColorButtonTexture;
 	public bool StereoMenu = true;
 	public bool DoubleMenu = false; // Main menu controls this
@@ -75,6 +76,9 @@ public class Inventory : MonoBehaviour {
 			
 			GUILayout.Space (MenuWidth);
 		} else {
+			//Close MainMenu if Inventory is open
+			MainMenu.CloseMenu();
+
 			GUILayout.BeginVertical ("box", GUILayout.Width (MenuWidth));
 			SubMenuObjectProperties (CurrentSelection);
 			GUILayout.EndVertical ();
@@ -176,6 +180,10 @@ public class Inventory : MonoBehaviour {
 		} else {
 			CurrentSelection = obj;
 		}
+	}
+
+	public void CloseInventory() {
+		CurrentSelection = null;
 	}
 	
 	Color CurrentButtonColor(GameObject obj) {

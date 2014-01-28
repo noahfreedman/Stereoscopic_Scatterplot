@@ -116,6 +116,8 @@ public class Menu1 : MonoBehaviour
         if (ShowingSubmenu)
         {
             GUI.enabled = true;
+			//Close inventory
+			Inventory.CloseInventory();
 
             GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth));  // column one - the open/close menu button
             MainMenu();
@@ -159,7 +161,7 @@ public class Menu1 : MonoBehaviour
             MainMenuButton();
         }
     }
-	void CloseMenu() {
+	public void CloseMenu() {
         ShowingSubmenu = false;
         SubMenuCreateLine = false;
         SubMenuCreatePlane = false;
