@@ -60,7 +60,7 @@ public class Menu1 : MonoBehaviour
 	float alpha = 1.0f;
 	private char pathChar = '/';
 	private string docsPath;
-
+	private bool _cameraFrozen;
 	void Start()
     {
 		centerPosition = Vector3.zero;
@@ -72,6 +72,7 @@ public class Menu1 : MonoBehaviour
 		}
 		docsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
 		UniFileBrowser.use.SetPath(docsPath);
+		_cameraFrozen = MainCamera.GetComponent<CameraController>().FreezeCamera;
 	}
 	
 	void Update()
@@ -118,6 +119,9 @@ public class Menu1 : MonoBehaviour
     {
         if (ShowingSubmenu)
         {
+			//if menu is open, freeze cameras
+			FreezeCamera();
+
             GUI.enabled = true;
 			//Close inventory
 			Inventory.CloseInventory();
@@ -164,10 +168,25 @@ public class Menu1 : MonoBehaviour
         }
         else
         {
+			//if menu is open, freeze cameras
+			UnfreezeCamera();
             MainMenuButton();
         }
-    }
+	}
+	public void FreezeCamera() {
+		if (_cameraFrozen != true) {
+			_cameraFrozen = true;
+			MainCamera.GetComponent<CameraController>().FreezeCamera = true;
+		}
+	}
+	public void UnfreezeCamera() {
+		if (_cameraFrozen != false) {
+			_cameraFrozen = false;
+			MainCamera.GetComponent<CameraController>().FreezeCamera = false;
+		}
+	}
 	public void CloseMenu() {
+		UnfreezeCamera();
         ShowingSubmenu = false;
 		SubMenuAbout = false;
         SubMenuCreateLine = false;
@@ -472,7 +491,6 @@ public class Menu1 : MonoBehaviour
             || SubMenuCreatePlanarFunction
             || SubMenuDemo)
         {
-
         }
         else
         {
@@ -494,6 +512,7 @@ public class Menu1 : MonoBehaviour
             }
             if (GUILayout.Button("Load Point Data"))
             {
+				FreezeCamera();
 				UniFileBrowser.use.OpenFileWindow(_LoadPoints);
             }
             if (GUILayout.Button("Generate Scatter"))
@@ -519,10 +538,12 @@ public class Menu1 : MonoBehaviour
 			if (GUILayout.Button("Import Scene"))
 			{
 				//Show Open Scene menu
+				FreezeCamera();
 				UniFileBrowser.use.OpenFileWindow (_OpenScene);
 			}
 			if (GUILayout.Button("Save Scene"))
 			{
+				FreezeCamera();
 				UniFileBrowser.use.SaveFileWindow (_SaveScene);
 			}
 			if (GUILayout.Button("Clear Scene"))
