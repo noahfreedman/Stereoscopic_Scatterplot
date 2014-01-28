@@ -8,6 +8,8 @@ public class Menu1 : MonoBehaviour
 	public Font font;
     public GUISkin MenuSkin;
     public Transform MainCamera;
+    public Transform LeftCamera;
+    public Transform RightCamera;
     public Texture OnButtonTexture;
 
     public Inventory Inventory;
@@ -407,7 +409,7 @@ public class Menu1 : MonoBehaviour
 
 
     }
-
+    private bool isStereoMode = true;
     void MenuOptions()
     {
 
@@ -417,7 +419,37 @@ public class Menu1 : MonoBehaviour
         AxisObject.active = GUILayout.Toggle(AxisObject.active, "Show Axis");
         DoubleMenu = GUILayout.Toggle(DoubleMenu, "Steroscope Menu");
         Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu;
+        isStereoMode = GUILayout.Toggle(isStereoMode, "   Stereo Menu Mode");
 
+
+        //DoubleMenu = isStereoMode;
+        GUI.enabled = isStereoMode;
+        LeftCamera.GetComponent<Camera>().active = isStereoMode;
+        RightCamera.GetComponent<Camera>().active = isStereoMode;
+        if (Inventory.GetComponent<Inventory>())
+        {
+            Inventory.GetComponent<Inventory>().StereoMenu = isStereoMode;
+        }
+        //if (disableStereoMode)
+        //{
+        //    DoubleMenu = false;
+        //    GUI.enabled = false;
+
+        //    LeftCamera.GetComponent<Camera>().active = false;
+        //    RightCamera.GetComponent<Camera>().active = false;
+        //    AxisObject.GetComponent<Inventory>().DoubleMenu = false;
+        //}
+        //else
+        //{
+        //    GUI.enabled = true;
+        //    //MainCamera.active = true;
+        //    LeftCamera.GetComponent<Camera>().active = true;
+        //    RightCamera.GetComponent<Camera>().active = true;
+        //    AxisObject.GetComponent<Inventory>().DoubleMenu = true;
+        //}
+        DoubleMenu = GUILayout.Toggle(DoubleMenu, "   Steroscope Menu");
+
+        GUI.enabled = true;
         if (GUILayout.Button("Back"))
         {
             BackButton();
@@ -446,7 +478,7 @@ public class Menu1 : MonoBehaviour
         else
         {
             //GUILayout.BeginVertical("box", GUILayout.Width(MenuWidth));
-
+            //disableStereoMode = GUILayout.Toggle(disableStereoMode, "   Disable Stero Mode?");
             if (GUILayout.Button("Create Line.."))
             {
                 SubMenuCreateLine = true;
@@ -494,8 +526,7 @@ public class Menu1 : MonoBehaviour
 				Inventory.ClearScene();
 			}
 			GUILayout.BeginHorizontal();
-			if (GUILayout.Button("Close"))
-            {
+			if (GUILayout.Button("Close")) {
                 CloseMenu();
             }
             if (GUILayout.Button("Quit."))
@@ -505,6 +536,7 @@ public class Menu1 : MonoBehaviour
                 //Application.Quit();
 				System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
+
             GUILayout.EndHorizontal();
             //GUILayout.EndVertical();
             GUI.enabled = true;
