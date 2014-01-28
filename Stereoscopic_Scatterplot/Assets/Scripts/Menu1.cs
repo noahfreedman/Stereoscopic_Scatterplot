@@ -417,9 +417,7 @@ public class Menu1 : MonoBehaviour
 
 
         AxisObject.active = GUILayout.Toggle(AxisObject.active, "Show Axis");
-        DoubleMenu = GUILayout.Toggle(DoubleMenu, "Steroscope Menu");
-        Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu;
-        isStereoMode = GUILayout.Toggle(isStereoMode, "   Stereo Menu Mode");
+        isStereoMode = GUILayout.Toggle(isStereoMode, "Stereoscopic Mode");
 
 
         //DoubleMenu = isStereoMode;
@@ -428,7 +426,9 @@ public class Menu1 : MonoBehaviour
         RightCamera.GetComponent<Camera>().active = isStereoMode;
         if (Inventory.GetComponent<Inventory>())
         {
-            Inventory.GetComponent<Inventory>().StereoMenu = isStereoMode;
+			Inventory.GetComponent<Inventory>().StereoMenu = isStereoMode; //Controls menu doubling
+			Inventory.GetComponent<Inventory>().DoubleMenu = DoubleMenu; //Controls whether inventory is on right
+			DoubleMenu = isStereoMode; //Controls camera doubling
         }
         //if (disableStereoMode)
         //{
@@ -447,7 +447,6 @@ public class Menu1 : MonoBehaviour
         //    RightCamera.GetComponent<Camera>().active = true;
         //    AxisObject.GetComponent<Inventory>().DoubleMenu = true;
         //}
-        DoubleMenu = GUILayout.Toggle(DoubleMenu, "   Steroscope Menu");
 
         GUI.enabled = true;
         if (GUILayout.Button("Back"))
