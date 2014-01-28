@@ -55,7 +55,6 @@ public class Menu1 : MonoBehaviour
     void Start()
     {
 		centerPosition = Vector3.zero;
-		menuFilePath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
 	}
 	
 	void Update()
@@ -456,10 +455,6 @@ public class Menu1 : MonoBehaviour
 
     }
 
-	void OpenScene() {
-
-	}
-
     void MainMenu()
     {
         //Menu Hides itself
@@ -514,7 +509,7 @@ public class Menu1 : MonoBehaviour
 			if (GUILayout.Button("Open Scene"))
 			{
 				//go to open menu
-				Inventory.OpenScene("/Users/Noah/Documents/TestSave.3D");
+				Inventory.OpenScene();
 			}
 			if (GUILayout.Button("Save Scene"))
 			{
