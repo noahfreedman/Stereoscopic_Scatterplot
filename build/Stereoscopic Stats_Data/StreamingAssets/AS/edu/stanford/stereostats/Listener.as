@@ -1,0 +1,1 @@
+﻿package edu.stanford.stereostats {	import flash.display.DisplayObject;		public class Listener {				public var obj:DisplayObject;		public var type:String;		public var func:Function;				public function Listener(obj:DisplayObject, type:String, func:Function) {			this.obj = obj;			this.type = type;			this.func = func;		}	}	}

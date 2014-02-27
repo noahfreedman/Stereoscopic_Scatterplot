@@ -297,11 +297,12 @@ public class Menu1 : MonoBehaviour
             //Vector3 startPosition = GUIVectorFromStrings (string_X_0, string_Y_0, string_Z_0);
             //Vector3 endPosition = VectorFromStrings (string_X_1, string_Y_1, string_Z_1);
             //Stage.GetComponent<PlanesList> ().AddPlane (startPosition, endPosition);
-
             MatLabInterface matlab = gameObject.AddComponent(typeof(MatLabInterface)) as MatLabInterface;
             double[] xRange = { double.Parse(string_X_min), double.Parse(string_X_interval), double.Parse(string_X_max) };
             double[] yRange = { double.Parse(string_Y_min), double.Parse(string_Y_interval), double.Parse(string_Y_max) };
-            matlab.formulaToMeshgrid(formula, xRange, yRange);
+			matlab.formulaToMeshgrid(formula, xRange, yRange);
+			Debug.Log ("MatLab server call.");
+			Debug.Log (formula);
         }
         if (GUILayout.Button("Back"))
         {

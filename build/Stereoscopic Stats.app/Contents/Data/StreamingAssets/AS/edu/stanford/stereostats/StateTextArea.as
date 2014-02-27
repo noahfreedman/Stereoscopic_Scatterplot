@@ -1,0 +1,1 @@
+﻿package edu.stanford.stereostats {		import flash.display.MovieClip;	import scaleform.clik.controls.TextArea;		public class StateTextArea extends TextArea {				public var sister:StateTextArea;				public function StateTextArea() {			super();		}			}	}

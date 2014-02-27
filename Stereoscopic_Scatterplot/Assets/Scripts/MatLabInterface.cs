@@ -30,12 +30,13 @@ public class MatLabInterface : MonoBehaviour {
 		form.AddField("yMax", yRange[2].ToString ());
 		
 		WWW www = new WWW(url, form);
+		Debug.Log ("Waiting for URL");
 		StartCoroutine(WaitForRequest(www));
 	}
 	
 	IEnumerator WaitForRequest(WWW www) {
 		yield return www;
-		
+
 		// check for errors
 		if (www.error == null)
 		{
