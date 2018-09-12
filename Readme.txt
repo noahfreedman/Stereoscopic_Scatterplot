@@ -16,7 +16,7 @@ Code overview:
 
 	- The points in the scatterplot can be imported from an external file or randomly generated. There are two paramters which identify the absolute file path and file name to load data points from. The format for the data is comma-deliminated x, y, and z coordinates. A first line of header data is ignored if any non-digits or commas are detected.
 
-	- The collection of data points is normalized to fit inside the cube. There is an paramted on GeneratePoints.cs to normalize the data points by either indiviudally scaling each axis (and distoring the projection), or maintaining the aspect ratio of the collection of data points as they are normalized to the scale of the the display cube. Alternatively, if the 'Auto Detect Data Range' option is disabled, then parameters for minimum and maximum X, Y, and Z values 
+	- The collection of data points is normalized to fit inside the cube. There is an paramted on GeneratePoints.cs to normalize the data points by either indiviudally scaling each axis (and distoring the projection), or maintaining the aspect ratio of the collection of data points as they are normalized to the scale of the display cube. Alternatively, if the 'Auto Detect Data Range' option is disabled, then parameters for minimum and maximum X, Y, and Z values 
 
 	- The cube can be rotated to by dragging it with the mouse. The cube on the right-side projection accepts mouse input. There is also a parameter to change the materials that the cube is rendered from.
 
